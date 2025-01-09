@@ -7,18 +7,18 @@ import android.widget.LinearLayout
 import com.avcialper.jdatetime.JDateTime
 import com.avcialper.jdatetime.model.JDayOfMonth
 import com.avcialper.owlcalendar.adapter.calendar.CalendarAdapter
+import com.avcialper.owlcalendar.adapter.calendardayname.CalendarDayNameAdapter
 import com.avcialper.owlcalendar.databinding.CalendarBinding
 import com.avcialper.owlcalendar.manager.CalendarLayoutManager
 import com.avcialper.owlcalendar.util.extensions.adjustStart
 import com.avcialper.owlcalendar.util.extensions.pushToastMessage
 
-class OwlCalendar @JvmOverloads constructor(
+class OwlCalendarView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
 ) : LinearLayout(context, attrs, defStyleAttr) {
 
-    private lateinit var calendarAdapter: CalendarAdapter
     private val binding: CalendarBinding
     private val jDateTime = JDateTime.instance
 
@@ -30,13 +30,21 @@ class OwlCalendar @JvmOverloads constructor(
     }
 
     private fun initCalendarAdapter() {
+        val dayNames = listOf("Pt", "Sa", "Ça", "Pe", "Cu", "Ct", "Pa")
         val days = getDate()
-        val calendarLayoutManager = CalendarLayoutManager(context)
 
-        calendarAdapter = CalendarAdapter(days, ::onDayClickListener)
-        binding.rvCalendar.apply {
-            layoutManager = calendarLayoutManager
-            adapter = calendarAdapter
+        val calendarDayNameAdapter = CalendarLayoutManager(context, VERTICAL)
+        val calendarLayoutManager = CalendarLayoutManager(context, VERTICAL)
+
+        binding.apply {
+            rvCalendarDayName.apply {
+                layoutManager = calendarDayNameAdapter
+                adapter = CalendarDayNameAdapter(dayNames)
+            }
+            rvCalendar.apply {
+                layoutManager = calendarLayoutManager
+                adapter = CalendarAdapter(days, ::onDayClickListener)
+            }
         }
     }
 

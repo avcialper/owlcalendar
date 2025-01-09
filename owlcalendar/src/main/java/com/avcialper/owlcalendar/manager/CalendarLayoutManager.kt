@@ -4,8 +4,9 @@ import android.content.Context
 import androidx.recyclerview.widget.GridLayoutManager
 
 class CalendarLayoutManager(
-    private val context: Context
-) : GridLayoutManager(context, 7, VERTICAL, false) {
+    private val context: Context,
+    orientation: Int
+) : GridLayoutManager(context, 7, orientation, false) {
 
     init {
         // Set span size lookup
@@ -13,15 +14,14 @@ class CalendarLayoutManager(
     }
 
     // Close vertical scrolling
-    override fun canScrollVertically(): Boolean {
-        return false
-    }
+    override fun canScrollVertically(): Boolean = false
+
+    // Close horizontal scrolling
+    override fun canScrollHorizontally(): Boolean = false
 
 }
 
 private class CalendarSpanSize : GridLayoutManager.SpanSizeLookup() {
     // Set all items span size to 1
-    override fun getSpanSize(position: Int): Int {
-        return 1
-    }
+    override fun getSpanSize(position: Int): Int = 1
 }
