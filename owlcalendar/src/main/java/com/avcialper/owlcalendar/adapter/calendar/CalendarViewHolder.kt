@@ -6,9 +6,7 @@ import com.avcialper.owlcalendar.OwlCalendarView
 import com.avcialper.owlcalendar.data.models.OwlDate
 import com.avcialper.owlcalendar.databinding.CalendarViewBinding
 
-class CalendarViewHolder(
-    private val binding: CalendarViewBinding,
-) : RecyclerView.ViewHolder(binding.root) {
+class CalendarViewHolder(binding: CalendarViewBinding) : RecyclerView.ViewHolder(binding.root) {
 
     // OwlCalendarView instance. It's a custom calendar view.
     private val owlCalendarView = OwlCalendarView(binding)

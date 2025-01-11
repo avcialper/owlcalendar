@@ -17,7 +17,7 @@ class CalendarViewViewHolder(
     private val selectedTextColor = ContextCompat.getColor(root.context, R.color.orange)
     private val defaultTextColor = root.currentTextColor
 
-    fun bind(day: JDayOfMonth?) {}
+    fun bind() {}
 
     fun bind(day: JDayOfMonth, isSelected: Boolean, onDayClickListener: (JDayOfMonth) -> Unit) {
         setTextColor(day)

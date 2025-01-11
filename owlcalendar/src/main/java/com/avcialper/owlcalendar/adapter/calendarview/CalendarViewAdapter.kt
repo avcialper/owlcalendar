@@ -25,7 +25,7 @@ class CalendarViewAdapter(
         val isSelected = selectedDate == day?.date
 
         if (day == null)
-            holder.bind(null)
+            holder.bind()
         else {
             holder.bind(day, isSelected) { jDayOfMonth ->
                 val date = jDayOfMonth.date
