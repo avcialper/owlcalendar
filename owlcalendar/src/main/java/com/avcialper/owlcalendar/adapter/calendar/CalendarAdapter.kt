@@ -3,47 +3,59 @@ package com.avcialper.owlcalendar.adapter.calendar
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.avcialper.jdatetime.JDateTime
 import com.avcialper.jdatetime.model.JDayOfMonth
-import com.avcialper.owlcalendar.databinding.CalendarDayBinding
+import com.avcialper.owlcalendar.data.models.OwlDate
+import com.avcialper.owlcalendar.databinding.CalendarViewBinding
 
 class CalendarAdapter(
-    private val days: List<JDayOfMonth?>,
+    dateLists: List<OwlDate>,
     private val onDayClickListener: (JDayOfMonth) -> Unit
 ) : RecyclerView.Adapter<CalendarViewHolder>() {
 
-    private var selectedDate: String = JDateTime.instance.date
+    // Date list of the adapter
+    private val dateLists: MutableList<OwlDate> = dateLists.toMutableList()
+
+    /**
+     * First item of the list. It change automatically.
+     */
+    val firstItem: OwlDate
+        get() = dateLists.first()
+
+    /**
+     * Last item of the list. It change automatically.
+     */
+    val lastItem: OwlDate
+        get() = dateLists.last()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val view = CalendarDayBinding.inflate(layoutInflater, parent, false)
+        val view = CalendarViewBinding.inflate(layoutInflater, parent, false)
         return CalendarViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: CalendarViewHolder, position: Int) {
-        val day = days[position]
-        val isSelected = selectedDate == day?.date
-
-        if (day == null)
-            holder.bind(null)
-        else {
-            holder.bind(day, isSelected) { jDayOfMonth ->
-                val date = jDayOfMonth.date
-                handleSelectedDate(date)
-                onDayClickListener.invoke(jDayOfMonth)
-            }
-        }
+        val date = dateLists[position]
+        holder.bind(date, onDayClickListener)
     }
 
-    override fun getItemCount(): Int = days.size
+    override fun getItemCount(): Int = dateLists.size
 
-    private fun handleSelectedDate(date: String) {
-        val oldDatePosition = days.indexOfFirst { it?.date == selectedDate }
-        val newDatePosition = days.indexOfFirst { it?.date == date }
-
-        notifyItemChanged(oldDatePosition)
-        notifyItemChanged(newDatePosition)
-
-        selectedDate = date
+    /**
+     * Add new item to the start of the list.
+     * @param owlDate new item
+     */
+    fun addItemToStart(owlDate: OwlDate) {
+        dateLists.add(0, owlDate)
+        notifyItemInserted(0)
     }
+
+    /**
+     * Add new item to the end of the list.
+     * @param owlDate new item
+     */
+    fun addItemToEnd(owlDate: OwlDate) {
+        dateLists.add(owlDate)
+        notifyItemInserted(dateLists.size - 1)
+    }
+
 }

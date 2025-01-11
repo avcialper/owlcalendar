@@ -1,47 +1,19 @@
 package com.avcialper.owlcalendar.adapter.calendar
 
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.avcialper.jdatetime.JDateTime
 import com.avcialper.jdatetime.model.JDayOfMonth
-import com.avcialper.owlcalendar.R
-import com.avcialper.owlcalendar.databinding.CalendarDayBinding
-import com.avcialper.owlcalendar.util.extensions.convertToString
+import com.avcialper.owlcalendar.OwlCalendarView
+import com.avcialper.owlcalendar.data.models.OwlDate
+import com.avcialper.owlcalendar.databinding.CalendarViewBinding
 
 class CalendarViewHolder(
-    binding: CalendarDayBinding
+    private val binding: CalendarViewBinding,
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    private val root = binding.root
-    private val jDateTime = JDateTime.instance
-    private val selectedTextColor = ContextCompat.getColor(root.context, R.color.orange)
-    private val defaultTextColor = root.currentTextColor
+    // OwlCalendarView instance. It's a custom calendar view.
+    private val owlCalendarView = OwlCalendarView(binding)
 
-    fun bind(day: JDayOfMonth?) {}
-
-    fun bind(day: JDayOfMonth, isSelected: Boolean, onDayClickListener: (JDayOfMonth) -> Unit) {
-        checkIfToday(day)
-        setStyle(isSelected)
-
-        val dayOfMonth = day.dayOfMonth.convertToString()
-        root.apply {
-            text = dayOfMonth
-            setOnClickListener {
-                onDayClickListener.invoke(day)
-            }
-        }
-
+    fun bind(owlDate: OwlDate, onDayClickListener: (JDayOfMonth) -> Unit) {
+        owlCalendarView.init(owlDate, onDayClickListener)
     }
-
-    private fun checkIfToday(day: JDayOfMonth) {
-        val isToday = jDateTime.date == day.date
-        val textColor = if (isToday) selectedTextColor else defaultTextColor
-        root.setTextColor(textColor)
-    }
-
-    private fun setStyle(isSelected: Boolean) {
-        val drawable = if (isSelected) R.drawable.calendar_focused else R.drawable.calendar_default
-        root.setBackgroundResource(drawable)
-    }
-
 }
