@@ -1,4 +1,4 @@
-package com.avcialper.owlcalendar.manager
+package com.avcialper.owlcalendar.helper
 
 import android.content.Context
 import androidx.recyclerview.widget.GridLayoutManager
