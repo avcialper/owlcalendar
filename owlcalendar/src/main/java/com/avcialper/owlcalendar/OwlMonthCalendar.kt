@@ -6,22 +6,23 @@ import androidx.recyclerview.widget.RecyclerView
 import com.avcialper.jdatetime.JDateTime
 import com.avcialper.jdatetime.model.JDayOfMonth
 import com.avcialper.owlcalendar.adapter.calendardayname.CalendarDayNameAdapter
-import com.avcialper.owlcalendar.adapter.calendarview.CalendarViewAdapter
+import com.avcialper.owlcalendar.adapter.calendarmonth.CalendarMonthAdapter
 import com.avcialper.owlcalendar.data.models.OwlDate
+import com.avcialper.owlcalendar.data.models.SelectedDate
 import com.avcialper.owlcalendar.databinding.CalendarViewBinding
 import com.avcialper.owlcalendar.helper.CalendarLayoutManager
 import com.avcialper.owlcalendar.util.constants.Constants
 import com.avcialper.owlcalendar.util.extensions.adjustDay
 import java.util.Locale
 
-class OwlCalendarView(private val binding: CalendarViewBinding) {
+class OwlMonthCalendar(private val binding: CalendarViewBinding) {
 
     private val context: Context = binding.root.context
     private val jDateTime = JDateTime.instance
 
     // Adapters
     private var calendarDayNameAdapter: CalendarDayNameAdapter? = null
-    private var calendarViewAdapter: CalendarViewAdapter? = null
+    private var calendarMonthAdapter: CalendarMonthAdapter? = null
 
     // Custom layout manager for calendar
     private var calendarLayoutManager: CalendarLayoutManager? = null
@@ -30,13 +31,17 @@ class OwlCalendarView(private val binding: CalendarViewBinding) {
      * Initialize calendar view.
      * @param owlDate [OwlDate] object. It's use for get days of the month.
      */
-    fun init(owlDate: OwlDate, onDayClickListener: (JDayOfMonth) -> Unit) {
+    fun init(
+        owlDate: OwlDate,
+        handleSelectedDate: () -> SelectedDate,
+        onDayClickListener: (JDayOfMonth) -> Unit
+    ) {
         val year = owlDate.year
         val month = owlDate.month
 
         initHeader(year, month)
         initCalendarDayNameAdapter()
-        initCalendarAdapter(year, month, onDayClickListener)
+        initCalendarAdapter(year, month, handleSelectedDate, onDayClickListener)
     }
 
     /**
@@ -73,15 +78,18 @@ class OwlCalendarView(private val binding: CalendarViewBinding) {
     private fun initCalendarAdapter(
         year: Int,
         month: Int,
+        handleSelectedDate: () -> SelectedDate,
         onDayClickListener: (JDayOfMonth) -> Unit
     ) {
         val days = getDays(year, month)
         val calendarLayoutManager = CalendarLayoutManager(context, VERTICAL)
-        calendarViewAdapter = CalendarViewAdapter(days, onDayClickListener)
+        calendarMonthAdapter = CalendarMonthAdapter(days, onDayClickListener)
+
+        calendarMonthAdapter?.handleSelectedDate(handleSelectedDate)
 
         binding.rvCalendar.apply {
             layoutManager = calendarLayoutManager
-            adapter = calendarViewAdapter
+            adapter = calendarMonthAdapter
         }
     }
 

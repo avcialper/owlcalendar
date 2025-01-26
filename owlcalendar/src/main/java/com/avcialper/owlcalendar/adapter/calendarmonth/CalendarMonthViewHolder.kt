@@ -1,4 +1,4 @@
-package com.avcialper.owlcalendar.adapter.calendarview
+package com.avcialper.owlcalendar.adapter.calendarmonth
 
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -7,7 +7,7 @@ import com.avcialper.owlcalendar.R
 import com.avcialper.owlcalendar.databinding.CalendarDayBinding
 import com.avcialper.owlcalendar.util.extensions.convertToString
 
-class CalendarViewViewHolder(
+class CalendarMonthViewHolder(
     binding: CalendarDayBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 

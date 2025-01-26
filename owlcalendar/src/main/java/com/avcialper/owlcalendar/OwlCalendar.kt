@@ -5,12 +5,11 @@ import android.util.AttributeSet
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.avcialper.jdatetime.JDateTime
-import com.avcialper.jdatetime.model.JDayOfMonth
 import com.avcialper.owlcalendar.adapter.calendar.CalendarAdapter
 import com.avcialper.owlcalendar.data.models.OwlDate
+import com.avcialper.owlcalendar.data.models.SelectedDate
 import com.avcialper.owlcalendar.helper.CalendarScrollListener
 import com.avcialper.owlcalendar.helper.CalendarSnapHelper
-import com.avcialper.owlcalendar.util.extensions.pushToastMessage
 
 class OwlCalendar @JvmOverloads constructor(
     context: Context,
@@ -20,6 +19,9 @@ class OwlCalendar @JvmOverloads constructor(
 
     // Custom PagerSnapHelper
     private val snapHelper = CalendarSnapHelper()
+
+    // Selected date instance
+    private var selectedDate: SelectedDate = SelectedDate(JDateTime.instance.date, 1)
 
     init {
         initAdapter()
@@ -32,7 +34,7 @@ class OwlCalendar @JvmOverloads constructor(
         val dateList = initDateList()
 
         layoutManager = LinearLayoutManager(context, HORIZONTAL, false)
-        adapter = CalendarAdapter(dateList, ::onDayClickListener)
+        adapter = CalendarAdapter(dateList, ::handleSelectedDate, ::onDayClickListener)
 
         snapHelper.attachToRecyclerView(this)
 
@@ -65,11 +67,19 @@ class OwlCalendar @JvmOverloads constructor(
     }
 
     /**
-     * To handle click of the day.
-     * @param jDayOfMonth Clicked day instance.
+     * To handle selected date.
+     * @return Selected date instance.
      */
-    private fun onDayClickListener(jDayOfMonth: JDayOfMonth) {
-        context.pushToastMessage(jDayOfMonth.date)
+    private fun handleSelectedDate(): SelectedDate {
+        return selectedDate
+    }
+
+    /**
+     * To handle click of the day.
+     * @param selectedDate Clicked day instance.
+     */
+    private fun onDayClickListener(selectedDate: SelectedDate) {
+        this.selectedDate = selectedDate
     }
 
     /**
@@ -98,6 +108,7 @@ class OwlCalendar @JvmOverloads constructor(
         val adapter = adapter as CalendarAdapter
         val prevMonth = adapter.firstItem.prev()
         adapter.addItemToStart(prevMonth)
+        selectedDate.increasePosition()
     }
 
     /**

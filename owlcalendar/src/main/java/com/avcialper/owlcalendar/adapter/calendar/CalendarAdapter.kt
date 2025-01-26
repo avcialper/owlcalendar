@@ -3,13 +3,14 @@ package com.avcialper.owlcalendar.adapter.calendar
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.avcialper.jdatetime.model.JDayOfMonth
 import com.avcialper.owlcalendar.data.models.OwlDate
+import com.avcialper.owlcalendar.data.models.SelectedDate
 import com.avcialper.owlcalendar.databinding.CalendarViewBinding
 
 class CalendarAdapter(
     dateLists: List<OwlDate>,
-    private val onDayClickListener: (JDayOfMonth) -> Unit
+    private val handleSelectedDate: () -> SelectedDate,
+    private val onDayClickListener: (SelectedDate) -> Unit
 ) : RecyclerView.Adapter<CalendarViewHolder>() {
 
     // Date list of the adapter
@@ -35,7 +36,12 @@ class CalendarAdapter(
 
     override fun onBindViewHolder(holder: CalendarViewHolder, position: Int) {
         val date = dateLists[position]
-        holder.bind(date, onDayClickListener)
+        holder.bind(date, handleSelectedDate) { jDayOfMonth ->
+            val selectedDate = SelectedDate(jDayOfMonth.date, position)
+
+            handleDayClick(selectedDate)
+            onDayClickListener.invoke(selectedDate)
+        }
     }
 
     override fun getItemCount(): Int = dateLists.size
@@ -58,4 +64,15 @@ class CalendarAdapter(
         notifyItemInserted(dateLists.size - 1)
     }
 
+    /**
+     * Handle click of the day.
+     * @param selectedDate Clicked day instance
+     */
+    private fun handleDayClick(selectedDate: SelectedDate) {
+        val oldPosition = handleSelectedDate.invoke().calendarPosition
+        val newPosition = selectedDate.calendarPosition
+
+        notifyItemChanged(oldPosition)
+        notifyItemChanged(newPosition)
+    }
 }
