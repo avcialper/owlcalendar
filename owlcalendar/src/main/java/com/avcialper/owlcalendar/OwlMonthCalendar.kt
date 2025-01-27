@@ -8,13 +8,13 @@ import com.avcialper.jdatetime.model.JDayOfMonth
 import com.avcialper.owlcalendar.adapter.calendardayname.CalendarDayNameAdapter
 import com.avcialper.owlcalendar.adapter.calendarmonth.CalendarMonthAdapter
 import com.avcialper.owlcalendar.data.models.OwlDate
-import com.avcialper.owlcalendar.databinding.CalendarViewBinding
+import com.avcialper.owlcalendar.databinding.CalendarBinding
 import com.avcialper.owlcalendar.helper.CalendarLayoutManager
 import com.avcialper.owlcalendar.util.constants.Constants
 import com.avcialper.owlcalendar.util.extensions.adjustDay
 import java.util.Locale
 
-internal class OwlMonthCalendar(private val binding: CalendarViewBinding) {
+internal class OwlMonthCalendar(private val binding: CalendarBinding) {
 
     private val context: Context = binding.root.context
     private val jDateTime = JDateTime.instance

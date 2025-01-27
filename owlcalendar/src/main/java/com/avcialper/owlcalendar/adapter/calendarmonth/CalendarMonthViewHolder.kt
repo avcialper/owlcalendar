@@ -63,7 +63,7 @@ internal class CalendarMonthViewHolder(
         val drawable = when {
             isSelected -> getDrawable(R.drawable.day_focused)
             markedDay != null -> markedDayDrawable
-            else -> getDrawable(R.drawable.day_default)
+            else -> null
         }
 
         root.background = drawable

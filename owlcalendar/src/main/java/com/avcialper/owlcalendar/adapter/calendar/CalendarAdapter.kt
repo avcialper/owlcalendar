@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.avcialper.jdatetime.model.JDayOfMonth
 import com.avcialper.owlcalendar.data.models.OwlDate
 import com.avcialper.owlcalendar.data.models.SelectedDate
-import com.avcialper.owlcalendar.databinding.CalendarViewBinding
+import com.avcialper.owlcalendar.databinding.CalendarBinding
 import com.avcialper.owlcalendar.util.constants.OwlCalendarValues
 
 internal class CalendarAdapter(
@@ -31,7 +31,7 @@ internal class CalendarAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val view = CalendarViewBinding.inflate(layoutInflater, parent, false)
+        val view = CalendarBinding.inflate(layoutInflater, parent, false)
         return CalendarViewHolder(view)
     }
 

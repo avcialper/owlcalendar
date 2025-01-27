@@ -4,9 +4,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.avcialper.jdatetime.model.JDayOfMonth
 import com.avcialper.owlcalendar.OwlMonthCalendar
 import com.avcialper.owlcalendar.data.models.OwlDate
-import com.avcialper.owlcalendar.databinding.CalendarViewBinding
+import com.avcialper.owlcalendar.databinding.CalendarBinding
 
-internal class CalendarViewHolder(binding: CalendarViewBinding) :
+internal class CalendarViewHolder(binding: CalendarBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     // OwlCalendarView instance. It's a custom calendar view.
