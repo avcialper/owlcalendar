@@ -4,15 +4,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.avcialper.jdatetime.model.JDayOfMonth
-import com.avcialper.owlcalendar.data.models.SelectedDate
 import com.avcialper.owlcalendar.databinding.CalendarDayBinding
+import com.avcialper.owlcalendar.util.constants.OwlCalendarValues
+import com.avcialper.owlcalendar.util.constants.OwlCalendarValues.selectedDate
 
 internal class CalendarMonthAdapter(
     private val days: List<JDayOfMonth?>,
     private val onDayClickListener: (JDayOfMonth) -> Unit
 ) : RecyclerView.Adapter<CalendarMonthViewHolder>() {
-
-    private var handleSelectedDate: (() -> SelectedDate)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarMonthViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -22,7 +21,7 @@ internal class CalendarMonthAdapter(
 
     override fun onBindViewHolder(holder: CalendarMonthViewHolder, position: Int) {
         val day = days[position]
-        val selectedDate = handleSelectedDate?.invoke()?.date
+        val selectedDate = OwlCalendarValues.selectedDate.date
         val isSelected = selectedDate == day?.date
 
         if (day != null) {
@@ -40,19 +39,10 @@ internal class CalendarMonthAdapter(
      * Handle selected date on the calendar.
      */
     private fun handleDayClick(date: String) {
-        val selectedDate = handleSelectedDate?.invoke()?.date
-
-        val oldDatePosition = days.indexOfFirst { it?.date == selectedDate }
+        val oldDatePosition = days.indexOfFirst { it?.date == selectedDate.date }
         val newDatePosition = days.indexOfFirst { it?.date == date }
 
         notifyItemChanged(oldDatePosition)
         notifyItemChanged(newDatePosition)
-    }
-
-    /**
-     * Set handle selected date.
-     */
-    fun handleSelectedDate(handleSelectedDate: () -> SelectedDate) {
-        this.handleSelectedDate = handleSelectedDate
     }
 }

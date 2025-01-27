@@ -10,6 +10,7 @@ import com.avcialper.owlcalendar.data.models.OwlDate
 import com.avcialper.owlcalendar.data.models.SelectedDate
 import com.avcialper.owlcalendar.helper.CalendarScrollListener
 import com.avcialper.owlcalendar.helper.CalendarSnapHelper
+import com.avcialper.owlcalendar.util.constants.OwlCalendarValues.selectedDate
 
 class OwlCalendar @JvmOverloads constructor(
     context: Context,
@@ -19,9 +20,6 @@ class OwlCalendar @JvmOverloads constructor(
 
     // Custom PagerSnapHelper
     private val snapHelper = CalendarSnapHelper()
-
-    // Selected date instance
-    private var selectedDate: SelectedDate = SelectedDate(JDateTime.instance.date, 1)
 
     init {
         initAdapter()
@@ -34,7 +32,7 @@ class OwlCalendar @JvmOverloads constructor(
         val dateList = initDateList()
 
         layoutManager = LinearLayoutManager(context, HORIZONTAL, false)
-        adapter = CalendarAdapter(dateList, ::handleSelectedDate, ::onDayClickListener)
+        adapter = CalendarAdapter(dateList, ::onDayClickListener)
 
         snapHelper.attachToRecyclerView(this)
 
@@ -67,19 +65,11 @@ class OwlCalendar @JvmOverloads constructor(
     }
 
     /**
-     * To handle selected date.
-     * @return Selected date instance.
-     */
-    private fun handleSelectedDate(): SelectedDate {
-        return selectedDate
-    }
-
-    /**
      * To handle click of the day.
      * @param selectedDate Clicked day instance.
      */
     private fun onDayClickListener(selectedDate: SelectedDate) {
-        this.selectedDate = selectedDate
+//        context.pushToastMessage(selectedDate.date)
     }
 
     /**

@@ -7,11 +7,4 @@ internal data class SelectedDate(val date: String, var calendarPosition: Int) {
     fun increasePosition() {
         calendarPosition++
     }
-
-    /**
-     * Decrement calendar position.
-     */
-    fun decreasePosition() {
-        calendarPosition--
-    }
 }
