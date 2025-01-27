@@ -8,4 +8,5 @@
     <color name="grey">#545454</color>
     <color name="orange">#FFA823</color>
     <color name="orange_transparent">#80FFA823</color>"
+    <color name="red_transparent">#95F80000</color>
 </resources>
