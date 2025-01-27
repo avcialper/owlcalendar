@@ -1,6 +1,6 @@
 package com.avcialper.owlcalendar.util.constants
 
-object Constants {
+internal object Constants {
     val dayNames = listOf("Pt", "Sa", "Ça", "Pe", "Cu", "Ct", "Pa")
 
     val monthNames = listOf(

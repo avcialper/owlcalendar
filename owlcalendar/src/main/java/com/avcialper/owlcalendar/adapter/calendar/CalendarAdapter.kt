@@ -7,7 +7,7 @@ import com.avcialper.owlcalendar.data.models.OwlDate
 import com.avcialper.owlcalendar.data.models.SelectedDate
 import com.avcialper.owlcalendar.databinding.CalendarViewBinding
 
-class CalendarAdapter(
+internal class CalendarAdapter(
     dateLists: List<OwlDate>,
     private val handleSelectedDate: () -> SelectedDate,
     private val onDayClickListener: (SelectedDate) -> Unit

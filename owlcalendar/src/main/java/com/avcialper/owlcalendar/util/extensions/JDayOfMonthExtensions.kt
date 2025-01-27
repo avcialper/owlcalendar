@@ -7,7 +7,7 @@ import com.avcialper.jdatetime.model.JDayOfMonth
  * standard view high.
  * @return List of nullable [JDayOfMonth] objects.
  */
-fun List<JDayOfMonth>.adjustDay(): List<JDayOfMonth?> {
+internal fun List<JDayOfMonth>.adjustDay(): List<JDayOfMonth?> {
     val firstDayIndex = this[0].dayOfWeek
     val emptyDays = MutableList<JDayOfMonth?>(firstDayIndex) { null }
     emptyDays.addAll(this)

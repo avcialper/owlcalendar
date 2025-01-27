@@ -7,7 +7,7 @@ import com.avcialper.owlcalendar.R
 import com.avcialper.owlcalendar.databinding.CalendarDayBinding
 import com.avcialper.owlcalendar.util.extensions.convertToString
 
-class CalendarMonthViewHolder(
+internal class CalendarMonthViewHolder(
     binding: CalendarDayBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 

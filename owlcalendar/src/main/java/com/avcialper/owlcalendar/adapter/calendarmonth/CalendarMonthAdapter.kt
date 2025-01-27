@@ -7,7 +7,7 @@ import com.avcialper.jdatetime.model.JDayOfMonth
 import com.avcialper.owlcalendar.data.models.SelectedDate
 import com.avcialper.owlcalendar.databinding.CalendarDayBinding
 
-class CalendarMonthAdapter(
+internal class CalendarMonthAdapter(
     private val days: List<JDayOfMonth?>,
     private val onDayClickListener: (JDayOfMonth) -> Unit
 ) : RecyclerView.Adapter<CalendarMonthViewHolder>() {

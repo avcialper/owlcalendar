@@ -3,7 +3,7 @@ package com.avcialper.owlcalendar.helper
 import android.content.Context
 import androidx.recyclerview.widget.GridLayoutManager
 
-class CalendarLayoutManager(
+internal class CalendarLayoutManager(
     private val context: Context,
     orientation: Int
 ) : GridLayoutManager(context, 7, orientation, false) {

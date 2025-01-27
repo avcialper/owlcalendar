@@ -1,6 +1,6 @@
 package com.avcialper.owlcalendar.data.models
 
-data class OwlDate(
+internal data class OwlDate(
     val year: Int,
     val month: Int,
 ) {

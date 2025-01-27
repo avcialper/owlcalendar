@@ -15,7 +15,7 @@ import com.avcialper.owlcalendar.util.constants.Constants
 import com.avcialper.owlcalendar.util.extensions.adjustDay
 import java.util.Locale
 
-class OwlMonthCalendar(private val binding: CalendarViewBinding) {
+internal class OwlMonthCalendar(private val binding: CalendarViewBinding) {
 
     private val context: Context = binding.root.context
     private val jDateTime = JDateTime.instance

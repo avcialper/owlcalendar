@@ -6,6 +6,6 @@ import android.widget.Toast
 /**
  * Push toast message to the screen.
  */
-fun Context.pushToastMessage(message: String) {
+internal fun Context.pushToastMessage(message: String) {
     Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 }

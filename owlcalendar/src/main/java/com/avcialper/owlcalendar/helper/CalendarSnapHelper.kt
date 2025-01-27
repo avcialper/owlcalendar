@@ -3,7 +3,7 @@ package com.avcialper.owlcalendar.helper
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 
-class CalendarSnapHelper : PagerSnapHelper() {
+internal class CalendarSnapHelper : PagerSnapHelper() {
 
     private var recyclerView: RecyclerView? = null
     private var currentPosition = 1

@@ -2,7 +2,7 @@ package com.avcialper.owlcalendar.helper
 
 import androidx.recyclerview.widget.RecyclerView
 
-class CalendarScrollListener(
+internal class CalendarScrollListener(
     private val snapHelper: CalendarSnapHelper,
     private val onPositionChanged: (Int) -> Unit
 ) : RecyclerView.OnScrollListener() {
