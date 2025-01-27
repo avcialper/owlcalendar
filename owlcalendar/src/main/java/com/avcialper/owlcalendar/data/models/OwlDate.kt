@@ -29,4 +29,10 @@ internal data class OwlDate(
         }
         return OwlDate(newYear, newMonth)
     }
+
+    /**
+     * Fınd current date index in the list.
+     * @param dates List of dates
+     */
+    fun findIndex(dates: List<OwlDate>): Int = dates.indexOf(this)
 }

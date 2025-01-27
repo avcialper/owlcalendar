@@ -1,10 +1,13 @@
 package com.avcialper.owlcalendar.adapter.calendarmonth
 
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.GradientDrawable
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.avcialper.jdatetime.model.JDayOfMonth
 import com.avcialper.owlcalendar.R
 import com.avcialper.owlcalendar.databinding.CalendarDayBinding
+import com.avcialper.owlcalendar.util.constants.OwlCalendarValues
 import com.avcialper.owlcalendar.util.extensions.convertToString
 
 internal class CalendarMonthViewHolder(
@@ -19,7 +22,7 @@ internal class CalendarMonthViewHolder(
 
     fun bind(day: JDayOfMonth, isSelected: Boolean, onDayClickListener: (JDayOfMonth) -> Unit) {
         setTextColor(day)
-        setBackground(isSelected)
+        setBackground(isSelected, day.date)
 
         val dayOfMonth = day.dayOfMonth.convertToString()
         root.apply {
@@ -45,9 +48,27 @@ internal class CalendarMonthViewHolder(
      * Set background of the day. If it is selected, set orange background.
      * @param isSelected Day is selected or not
      */
-    private fun setBackground(isSelected: Boolean) {
-        val drawable = if (isSelected) R.drawable.calendar_focused else R.drawable.calendar_default
-        root.setBackgroundResource(drawable)
+    private fun setBackground(isSelected: Boolean, date: String) {
+        val markedDay = OwlCalendarValues.findMarkedDay(date)
+
+        val markedDayDrawable = getDrawable(R.drawable.day_marked)?.mutate() as GradientDrawable
+        val cornerRadius = markedDayDrawable.cornerRadius
+
+
+        if (markedDay != null) {
+            markedDayDrawable.setColor(markedDay.color)
+            markedDayDrawable.cornerRadius = cornerRadius
+        }
+
+        val drawable = when {
+            isSelected -> getDrawable(R.drawable.day_focused)
+            markedDay != null -> markedDayDrawable
+            else -> getDrawable(R.drawable.day_default)
+        }
+
+        root.background = drawable
     }
+
+    private fun getDrawable(id: Int): Drawable? = ContextCompat.getDrawable(root.context, id)
 
 }

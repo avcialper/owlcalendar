@@ -1,9 +1,9 @@
 package com.avcialper.owlcalendar.adapter.calendar
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.avcialper.jdatetime.model.JDayOfMonth
 import com.avcialper.owlcalendar.data.models.OwlDate
 import com.avcialper.owlcalendar.data.models.SelectedDate
 import com.avcialper.owlcalendar.databinding.CalendarViewBinding
@@ -11,7 +11,7 @@ import com.avcialper.owlcalendar.util.constants.OwlCalendarValues
 
 internal class CalendarAdapter(
     dateLists: List<OwlDate>,
-    private val onDayClickListener: (SelectedDate) -> Unit
+    private val onDayClickListener: (JDayOfMonth) -> Unit
 ) : RecyclerView.Adapter<CalendarViewHolder>() {
 
     // Date list of the adapter
@@ -38,13 +38,11 @@ internal class CalendarAdapter(
     override fun onBindViewHolder(holder: CalendarViewHolder, position: Int) {
         val date = dateLists[position]
         holder.bind(date) { jDayOfMonth ->
-            val oldSelectedDatePosition = OwlCalendarValues.selectedDate.calendarPosition
-            val calendarPosition =
-                if (position < oldSelectedDatePosition) position + 1 else position
-            val selectedDate = SelectedDate(jDayOfMonth.date, calendarPosition)
+            val datePosition = date.findIndex(dateLists)
+            val selectedDate = SelectedDate(jDayOfMonth.date, datePosition)
 
             handleDayClick(selectedDate)
-            onDayClickListener.invoke(selectedDate)
+            onDayClickListener.invoke(jDayOfMonth)
         }
     }
 
@@ -76,8 +74,10 @@ internal class CalendarAdapter(
         val oldPosition = OwlCalendarValues.selectedDate.calendarPosition
         val newPosition = selectedDate.calendarPosition
 
-        notifyItemChanged(oldPosition)
-        notifyItemChanged(newPosition)
+        if (oldPosition != newPosition) {
+            notifyItemChanged(oldPosition)
+            notifyItemChanged(newPosition)
+        }
 
         OwlCalendarValues.selectedDate = selectedDate
     }

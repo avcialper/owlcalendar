@@ -5,11 +5,13 @@ import android.util.AttributeSet
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.avcialper.jdatetime.JDateTime
+import com.avcialper.jdatetime.model.JDayOfMonth
 import com.avcialper.owlcalendar.adapter.calendar.CalendarAdapter
+import com.avcialper.owlcalendar.data.models.MarkedDay
 import com.avcialper.owlcalendar.data.models.OwlDate
-import com.avcialper.owlcalendar.data.models.SelectedDate
 import com.avcialper.owlcalendar.helper.CalendarScrollListener
 import com.avcialper.owlcalendar.helper.CalendarSnapHelper
+import com.avcialper.owlcalendar.util.constants.OwlCalendarValues
 import com.avcialper.owlcalendar.util.constants.OwlCalendarValues.selectedDate
 
 class OwlCalendar @JvmOverloads constructor(
@@ -30,6 +32,8 @@ class OwlCalendar @JvmOverloads constructor(
      */
     private fun initAdapter() {
         val dateList = initDateList()
+        setHasFixedSize(true)
+        itemAnimator = null
 
         layoutManager = LinearLayoutManager(context, HORIZONTAL, false)
         adapter = CalendarAdapter(dateList, ::onDayClickListener)
@@ -66,9 +70,9 @@ class OwlCalendar @JvmOverloads constructor(
 
     /**
      * To handle click of the day.
-     * @param selectedDate Clicked day instance.
+     * @param jDayOfMonth Clicked day instance.
      */
-    private fun onDayClickListener(selectedDate: SelectedDate) {
+    private fun onDayClickListener(jDayOfMonth: JDayOfMonth) {
 //        context.pushToastMessage(selectedDate.date)
     }
 
@@ -109,5 +113,21 @@ class OwlCalendar @JvmOverloads constructor(
         val adapter = adapter as CalendarAdapter
         val nextMonth = adapter.lastItem.next()
         adapter.addItemToEnd(nextMonth)
+    }
+
+    /**
+     * Add new marked days to the list.
+     * @param newDays New marked days
+     */
+    fun addMarkedDays(newDays: List<MarkedDay>) {
+        OwlCalendarValues.addMarkedDays(newDays)
+    }
+
+    /**
+     * Add new marked day to the list.
+     * @param newDay New marked day
+     */
+    fun addMarkedDay(newDay: MarkedDay) {
+        OwlCalendarValues.addMarkedDay(newDay)
     }
 }

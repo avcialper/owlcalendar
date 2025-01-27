@@ -42,7 +42,9 @@ internal class CalendarMonthAdapter(
         val oldDatePosition = days.indexOfFirst { it?.date == selectedDate.date }
         val newDatePosition = days.indexOfFirst { it?.date == date }
 
-        notifyItemChanged(oldDatePosition)
-        notifyItemChanged(newDatePosition)
+        if (oldDatePosition != newDatePosition) {
+            notifyItemChanged(oldDatePosition)
+            notifyItemChanged(newDatePosition)
+        }
     }
 }

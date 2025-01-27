@@ -62,6 +62,7 @@ internal class OwlMonthCalendar(private val binding: CalendarViewBinding) {
         calendarDayNameAdapter = CalendarDayNameAdapter(dayNames)
 
         binding.rvCalendarDayName.apply {
+            setHasFixedSize(true)
             adapter = calendarDayNameAdapter
             layoutManager = calendarLayoutManager
         }
@@ -83,6 +84,7 @@ internal class OwlMonthCalendar(private val binding: CalendarViewBinding) {
         calendarMonthAdapter = CalendarMonthAdapter(days, onDayClickListener)
 
         binding.rvCalendar.apply {
+            setHasFixedSize(true)
             layoutManager = calendarLayoutManager
             adapter = calendarMonthAdapter
         }
