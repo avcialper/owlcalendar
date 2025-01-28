@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.avcialper.jdatetime.model.JDayOfMonth
+import com.avcialper.owlcalendar.data.models.MarkedDay
 import com.avcialper.owlcalendar.databinding.CalendarDayBinding
 import com.avcialper.owlcalendar.util.constants.OwlCalendarValues
 import com.avcialper.owlcalendar.util.constants.OwlCalendarValues.selectedDate
@@ -12,6 +13,10 @@ internal class CalendarMonthAdapter(
     private val days: List<JDayOfMonth?>,
     private val onDayClickListener: (JDayOfMonth) -> Unit
 ) : RecyclerView.Adapter<CalendarMonthViewHolder>() {
+
+    init {
+        OwlCalendarValues.setOnMarkedDayAddedListener(::onMarkedDayAddedListener)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarMonthViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -47,4 +52,13 @@ internal class CalendarMonthAdapter(
             notifyItemChanged(newDatePosition)
         }
     }
+
+    private fun onMarkedDayAddedListener(markedDay: MarkedDay) {
+        val markedItem = days.find { it?.date == markedDay.date }
+        if (markedItem != null) {
+            val index = days.indexOf(markedItem)
+            notifyItemChanged(index)
+        }
+    }
+
 }

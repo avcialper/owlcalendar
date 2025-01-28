@@ -7,14 +7,16 @@ import com.avcialper.owlcalendar.data.models.SelectedDate
 internal object OwlCalendarValues {
 
     var selectedDate: SelectedDate = SelectedDate(JDateTime.instance.date, 1)
-    var markedDays: MutableList<MarkedDay> = mutableListOf()
+    private val markedDays: MutableList<MarkedDay> = mutableListOf()
+
+    private var onMarkedDayAddedListener: ((MarkedDay) -> Unit)? = null
 
     /**
      * Add new marked days to the list.
      * @param newDays New marked days
      */
     fun addMarkedDays(newDays: List<MarkedDay>) {
-        markedDays.addAll(newDays)
+        newDays.forEach(::addMarkedDay)
     }
 
     /**
@@ -22,7 +24,13 @@ internal object OwlCalendarValues {
      * @param newDay New marked day
      */
     fun addMarkedDay(newDay: MarkedDay) {
-        markedDays.add(newDay)
+        val existingDay = findMarkedDay(newDay.date)
+        if (existingDay != null) {
+            existingDay.color = newDay.color
+        } else {
+            markedDays.add(newDay)
+        }
+        onMarkedDayAddedListener?.invoke(newDay)
     }
 
     /**
@@ -31,6 +39,10 @@ internal object OwlCalendarValues {
      */
     fun findMarkedDay(date: String): MarkedDay? {
         return markedDays.find { it.date == date }
+    }
+
+    fun setOnMarkedDayAddedListener(listener: (MarkedDay) -> Unit) {
+        onMarkedDayAddedListener = listener
     }
 
 }

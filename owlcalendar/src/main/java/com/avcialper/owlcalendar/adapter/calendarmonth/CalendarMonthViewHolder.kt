@@ -15,9 +15,10 @@ internal class CalendarMonthViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     private val root = binding.root
+    private val context = root.context
 
     // Text colors
-    private val selectedTextColor = ContextCompat.getColor(root.context, R.color.orange)
+    private val selectedTextColor = ContextCompat.getColor(context, R.color.orange)
     private val defaultTextColor = root.currentTextColor
 
     fun bind(day: JDayOfMonth, isSelected: Boolean, onDayClickListener: (JDayOfMonth) -> Unit) {
@@ -69,6 +70,5 @@ internal class CalendarMonthViewHolder(
         root.background = drawable
     }
 
-    private fun getDrawable(id: Int): Drawable? = ContextCompat.getDrawable(root.context, id)
-
+    private fun getDrawable(id: Int): Drawable? = ContextCompat.getDrawable(context, id)
 }
