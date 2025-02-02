@@ -1,10 +1,21 @@
 package com.avcialper.owlcalendar.data.models
 
-internal data class SelectedDate(val date: String, var calendarPosition: Int) {
+import com.avcialper.jdatetime.model.JDayOfMonth
+
+internal data class SelectedDate(
+    val year: Int,
+    val month: Int,
+    val dayOfMonth: Int,
+    var calendarPosition: Int
+) {
     /**
      * Increment calendar position.
      */
     fun increasePosition() {
         calendarPosition++
+    }
+
+    fun isEqual(other: JDayOfMonth?): Boolean {
+        return year == other?.year && month == other.month && dayOfMonth == other.dayOfMonth
     }
 }
