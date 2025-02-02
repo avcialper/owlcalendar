@@ -2,32 +2,38 @@ package com.avcialper.owlcalendar.adapter.calendar
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
 import com.avcialper.jdatetime.model.JDayOfMonth
-import com.avcialper.owlcalendar.data.models.OwlDate
+import com.avcialper.owlcalendar.adapter.BaseAdapter
+import com.avcialper.owlcalendar.data.models.MarkedDay
+import com.avcialper.owlcalendar.data.models.MonthAndYear
 import com.avcialper.owlcalendar.data.models.SelectedDate
+import com.avcialper.owlcalendar.data.models.findIndex
 import com.avcialper.owlcalendar.databinding.CalendarBinding
-import com.avcialper.owlcalendar.util.constants.OwlCalendarValues
+import com.avcialper.owlcalendar.util.constants.CalendarValues
 
 internal class CalendarAdapter(
-    dateLists: List<OwlDate>,
+    dateLists: List<MonthAndYear>,
     private val onDayClickListener: (JDayOfMonth) -> Unit
-) : RecyclerView.Adapter<CalendarViewHolder>() {
+) : BaseAdapter<CalendarViewHolder>() {
 
-    // Date list of the adapter
-    private val dateLists: MutableList<OwlDate> = dateLists.toMutableList()
+    init {
+        CalendarValues.setOnMarkedDayAddedListener(::onMarkedDayAddedListener)
+    }
+
+    private val months: MutableList<MonthAndYear> = dateLists.toMutableList()
+    private var clickedDatePosition: Int = 0
 
     /**
      * First item of the list. It change automatically.
      */
-    val firstItem: OwlDate
-        get() = dateLists.first()
+    val firstItem: MonthAndYear
+        get() = months.first()
 
     /**
      * Last item of the list. It change automatically.
      */
-    val lastItem: OwlDate
-        get() = dateLists.last()
+    val lastItem: MonthAndYear
+        get() = months.last()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -36,49 +42,61 @@ internal class CalendarAdapter(
     }
 
     override fun onBindViewHolder(holder: CalendarViewHolder, position: Int) {
-        val date = dateLists[position]
+        val date = months[position]
         holder.bind(date) { jDayOfMonth ->
-            val datePosition = date.findIndex(dateLists)
-            val selectedDate = SelectedDate(jDayOfMonth.date, datePosition)
-
-            handleDayClick(selectedDate)
+            clickedDatePosition = date.findIndex(months)
+            handleDayClick(jDayOfMonth)
             onDayClickListener.invoke(jDayOfMonth)
         }
     }
 
-    override fun getItemCount(): Int = dateLists.size
+    override fun getItemCount(): Int = months.size
 
     /**
      * Add new item to the start of the list.
-     * @param owlDate new item
+     * @param monthAndYear new item
      */
-    fun addItemToStart(owlDate: OwlDate) {
-        dateLists.add(0, owlDate)
+    fun addItemToStart(monthAndYear: MonthAndYear) {
+        months.add(0, monthAndYear)
         notifyItemInserted(0)
     }
 
     /**
      * Add new item to the end of the list.
-     * @param owlDate new item
+     * @param monthAndYear new item
      */
-    fun addItemToEnd(owlDate: OwlDate) {
-        dateLists.add(owlDate)
-        notifyItemInserted(dateLists.size - 1)
+    fun addItemToEnd(monthAndYear: MonthAndYear) {
+        months.add(monthAndYear)
+        notifyItemInserted(months.size - 1)
     }
 
     /**
      * Handle click of the day.
-     * @param selectedDate Clicked day instance
+     * @param jDayOfMonth Clicked day instance
      */
-    private fun handleDayClick(selectedDate: SelectedDate) {
-        val oldPosition = OwlCalendarValues.selectedDate.calendarPosition
-        val newPosition = selectedDate.calendarPosition
+    override fun handleDayClick(jDayOfMonth: JDayOfMonth) {
+        val oldPosition = CalendarValues.selectedDate?.calendarPosition
 
-        if (oldPosition != newPosition) {
+        if (oldPosition != null && oldPosition != clickedDatePosition) {
             notifyItemChanged(oldPosition)
-            notifyItemChanged(newPosition)
+            notifyItemChanged(clickedDatePosition)
         }
 
-        OwlCalendarValues.selectedDate = selectedDate
+        CalendarValues.selectedDate = SelectedDate(
+            jDayOfMonth.year,
+            jDayOfMonth.month,
+            jDayOfMonth.dayOfMonth,
+            clickedDatePosition
+        )
+    }
+
+    private fun onMarkedDayAddedListener(markedDay: MarkedDay) {
+        val selectedDateCalendarPosition = CalendarValues.selectedDate?.calendarPosition
+        val markedDayMonthIndex = months.findIndex(markedDay)
+
+        if (selectedDateCalendarPosition == markedDayMonthIndex)
+            CalendarValues.onDayUpdate(markedDay)
+        else
+            notifyItemChanged(markedDayMonthIndex)
     }
 }
