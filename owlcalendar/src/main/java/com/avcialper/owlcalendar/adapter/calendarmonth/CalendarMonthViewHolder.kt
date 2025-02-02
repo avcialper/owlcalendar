@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.avcialper.jdatetime.model.JDayOfMonth
 import com.avcialper.owlcalendar.R
 import com.avcialper.owlcalendar.databinding.CalendarDayBinding
-import com.avcialper.owlcalendar.util.constants.OwlCalendarValues
+import com.avcialper.owlcalendar.util.constants.CalendarValues
 import com.avcialper.owlcalendar.util.extensions.convertToString
 
 internal class CalendarMonthViewHolder(
@@ -23,7 +23,7 @@ internal class CalendarMonthViewHolder(
 
     fun bind(day: JDayOfMonth, isSelected: Boolean, onDayClickListener: (JDayOfMonth) -> Unit) {
         setTextColor(day)
-        setBackground(isSelected, day.date)
+        setBackground(isSelected, day)
 
         val dayOfMonth = day.dayOfMonth.convertToString()
         root.apply {
@@ -49,8 +49,8 @@ internal class CalendarMonthViewHolder(
      * Set background of the day. If it is selected, set orange background.
      * @param isSelected Day is selected or not
      */
-    private fun setBackground(isSelected: Boolean, date: String) {
-        val markedDay = OwlCalendarValues.findMarkedDay(date)
+    private fun setBackground(isSelected: Boolean, date: JDayOfMonth) {
+        val markedDay = CalendarValues.findMarkedDay(date)
 
         val markedDayDrawable = getDrawable(R.drawable.day_marked)?.mutate() as GradientDrawable
         val cornerRadius = markedDayDrawable.cornerRadius

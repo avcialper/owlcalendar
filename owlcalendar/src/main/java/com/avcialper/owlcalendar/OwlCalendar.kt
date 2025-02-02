@@ -8,11 +8,11 @@ import com.avcialper.jdatetime.JDateTime
 import com.avcialper.jdatetime.model.JDayOfMonth
 import com.avcialper.owlcalendar.adapter.calendar.CalendarAdapter
 import com.avcialper.owlcalendar.data.models.MarkedDay
-import com.avcialper.owlcalendar.data.models.OwlDate
+import com.avcialper.owlcalendar.data.models.MonthAndYear
 import com.avcialper.owlcalendar.helper.CalendarScrollListener
 import com.avcialper.owlcalendar.helper.CalendarSnapHelper
-import com.avcialper.owlcalendar.util.constants.OwlCalendarValues
-import com.avcialper.owlcalendar.util.constants.OwlCalendarValues.selectedDate
+import com.avcialper.owlcalendar.util.constants.CalendarValues
+import com.avcialper.owlcalendar.util.constants.CalendarValues.selectedDate
 
 class OwlCalendar @JvmOverloads constructor(
     context: Context,
@@ -32,7 +32,6 @@ class OwlCalendar @JvmOverloads constructor(
      */
     private fun initAdapter() {
         val dateList = initDateList()
-        setHasFixedSize(true)
         itemAnimator = null
 
         layoutManager = LinearLayoutManager(context, HORIZONTAL, false)
@@ -40,7 +39,7 @@ class OwlCalendar @JvmOverloads constructor(
 
         snapHelper.attachToRecyclerView(this)
 
-        val calendarScrollListener = CalendarScrollListener(snapHelper, ::onPositionChanged)
+        val calendarScrollListener = CalendarScrollListener(::onPositionChanged)
         addOnScrollListener(calendarScrollListener)
 
         scrollToPosition(1)
@@ -56,12 +55,12 @@ class OwlCalendar @JvmOverloads constructor(
      *
      * @return A list of dates in the order: yesterday, today, tomorrow.
      */
-    private fun initDateList(): List<OwlDate> {
+    private fun initDateList(): List<MonthAndYear> {
         val jDateTime = JDateTime.instance
         val currentYear = jDateTime.year
         val currentMonth = jDateTime.month
 
-        val today = OwlDate(currentYear, currentMonth)
+        val today = MonthAndYear(currentYear, currentMonth)
         val yesterday = today.prev()
         val tomorrow = today.next()
 
@@ -81,11 +80,11 @@ class OwlCalendar @JvmOverloads constructor(
      * the new item is added to the beginning of the date list. And when the calendar is shifted
      * to the last item, the new item is added at the end of the date list. In this way the calendar
      * data is automatically updated.
-     * @param position Current position of the calendar.
      */
-    private fun onPositionChanged(position: Int) {
+    private fun onPositionChanged() {
         adapter?.let {
             val adapter = it as CalendarAdapter
+            val position = CalendarValues.calendarPosition
             if (position == 0) {
                 handleFirstItemSwipe()
                 snapHelper.addedNewItemOnStart()
@@ -102,7 +101,7 @@ class OwlCalendar @JvmOverloads constructor(
         val adapter = adapter as CalendarAdapter
         val prevMonth = adapter.firstItem.prev()
         adapter.addItemToStart(prevMonth)
-        selectedDate.increasePosition()
+        selectedDate?.increasePosition()
     }
 
     /**
@@ -120,7 +119,7 @@ class OwlCalendar @JvmOverloads constructor(
      * @param newDays New marked days
      */
     fun addMarkedDays(newDays: List<MarkedDay>) {
-        OwlCalendarValues.addMarkedDays(newDays)
+        CalendarValues.addMarkedDays(newDays)
     }
 
     /**
@@ -128,6 +127,10 @@ class OwlCalendar @JvmOverloads constructor(
      * @param newDay New marked day
      */
     fun addMarkedDay(newDay: MarkedDay) {
-        OwlCalendarValues.addMarkedDay(newDay)
+        CalendarValues.addMarkedDay(newDay)
+    }
+
+    fun clear() {
+        CalendarValues.clear()
     }
 }

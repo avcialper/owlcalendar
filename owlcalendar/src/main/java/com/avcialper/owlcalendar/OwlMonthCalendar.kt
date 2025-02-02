@@ -7,7 +7,7 @@ import com.avcialper.jdatetime.JDateTime
 import com.avcialper.jdatetime.model.JDayOfMonth
 import com.avcialper.owlcalendar.adapter.calendardayname.CalendarDayNameAdapter
 import com.avcialper.owlcalendar.adapter.calendarmonth.CalendarMonthAdapter
-import com.avcialper.owlcalendar.data.models.OwlDate
+import com.avcialper.owlcalendar.data.models.MonthAndYear
 import com.avcialper.owlcalendar.databinding.CalendarBinding
 import com.avcialper.owlcalendar.helper.CalendarLayoutManager
 import com.avcialper.owlcalendar.util.constants.Constants
@@ -28,14 +28,14 @@ internal class OwlMonthCalendar(private val binding: CalendarBinding) {
 
     /**
      * Initialize calendar view.
-     * @param owlDate [OwlDate] object. It's use for get days of the month.
+     * @param monthAndYear [MonthAndYear] object. It's use for get days of the month.
      */
     fun init(
-        owlDate: OwlDate,
+        monthAndYear: MonthAndYear,
         onDayClickListener: (JDayOfMonth) -> Unit
     ) {
-        val year = owlDate.year
-        val month = owlDate.month
+        val year = monthAndYear.year
+        val month = monthAndYear.month
 
         initHeader(year, month)
         initCalendarDayNameAdapter()
@@ -62,7 +62,7 @@ internal class OwlMonthCalendar(private val binding: CalendarBinding) {
         calendarDayNameAdapter = CalendarDayNameAdapter(dayNames)
 
         binding.rvCalendarDayName.apply {
-            setHasFixedSize(true)
+            itemAnimator = null
             adapter = calendarDayNameAdapter
             layoutManager = calendarLayoutManager
         }
