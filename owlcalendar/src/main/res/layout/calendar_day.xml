@@ -4,6 +4,7 @@
     android:id="@+id/tvDay"
     android:layout_width="match_parent"
     android:layout_height="@dimen/height"
+    android:layout_marginVertical="@dimen/vertical_margin"
     android:gravity="center"
     android:textSize="@dimen/text_size"
     tools:text="1" />
