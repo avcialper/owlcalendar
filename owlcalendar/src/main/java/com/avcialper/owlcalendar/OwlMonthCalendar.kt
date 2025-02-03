@@ -7,11 +7,12 @@ import com.avcialper.jdatetime.JDateTime
 import com.avcialper.jdatetime.model.JDayOfMonth
 import com.avcialper.owlcalendar.adapter.calendardayname.CalendarDayNameAdapter
 import com.avcialper.owlcalendar.adapter.calendarmonth.CalendarMonthAdapter
+import com.avcialper.owlcalendar.data.models.CalendarData
 import com.avcialper.owlcalendar.data.models.MonthAndYear
+import com.avcialper.owlcalendar.data.repositories.DateRepository
 import com.avcialper.owlcalendar.databinding.CalendarBinding
 import com.avcialper.owlcalendar.helper.CalendarLayoutManager
 import com.avcialper.owlcalendar.util.constants.Constants
-import com.avcialper.owlcalendar.util.extensions.adjustDay
 import java.util.Locale
 
 internal class OwlMonthCalendar(private val binding: CalendarBinding) {
@@ -32,6 +33,7 @@ internal class OwlMonthCalendar(private val binding: CalendarBinding) {
      */
     fun init(
         monthAndYear: MonthAndYear,
+        calendarData: CalendarData,
         onDayClickListener: (JDayOfMonth) -> Unit
     ) {
         val year = monthAndYear.year
@@ -39,7 +41,7 @@ internal class OwlMonthCalendar(private val binding: CalendarBinding) {
 
         initHeader(year, month)
         initCalendarDayNameAdapter()
-        initCalendarAdapter(year, month, onDayClickListener)
+        initCalendarAdapter(year, month, calendarData, onDayClickListener)
     }
 
     /**
@@ -77,11 +79,12 @@ internal class OwlMonthCalendar(private val binding: CalendarBinding) {
     private fun initCalendarAdapter(
         year: Int,
         month: Int,
+        calendarData: CalendarData,
         onDayClickListener: (JDayOfMonth) -> Unit
     ) {
-        val days = getDays(year, month)
+        val days = DateRepository().getDays(year, month)
         val calendarLayoutManager = CalendarLayoutManager(context, VERTICAL)
-        calendarMonthAdapter = CalendarMonthAdapter(days, onDayClickListener)
+        calendarMonthAdapter = CalendarMonthAdapter(days, calendarData, onDayClickListener)
 
         binding.rvCalendar.apply {
             setHasFixedSize(true)
@@ -90,14 +93,4 @@ internal class OwlMonthCalendar(private val binding: CalendarBinding) {
         }
     }
 
-    /**
-     * Get days of the month.
-     * @param year Year of the calendar
-     * @param month Month of the calendar
-     * @return List of [JDayOfMonth] objects.
-     */
-    private fun getDays(year: Int, month: Int): List<JDayOfMonth?> {
-        val daysInMonth = jDateTime.getAllDaysOfMonth(year, month).adjustDay()
-        return daysInMonth
-    }
 }

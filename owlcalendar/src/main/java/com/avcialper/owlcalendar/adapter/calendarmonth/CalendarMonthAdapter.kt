@@ -4,19 +4,19 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.avcialper.jdatetime.model.JDayOfMonth
 import com.avcialper.owlcalendar.adapter.BaseAdapter
+import com.avcialper.owlcalendar.data.models.CalendarData
 import com.avcialper.owlcalendar.data.models.MarkedDay
 import com.avcialper.owlcalendar.databinding.CalendarDayBinding
-import com.avcialper.owlcalendar.util.constants.CalendarValues
-import com.avcialper.owlcalendar.util.constants.CalendarValues.selectedDate
 import com.avcialper.owlcalendar.util.extensions.findIndex
 
 internal class CalendarMonthAdapter(
     private val days: List<JDayOfMonth?>,
+    private val calendarData: CalendarData,
     private val onDayClickListener: (JDayOfMonth) -> Unit
 ) : BaseAdapter<CalendarMonthViewHolder>() {
 
     init {
-        CalendarValues.setOnDayUpdateListener(::onDayUpdateListener)
+        CalendarData.setOnDayUpdateListener(calendarData, ::onDayUpdateListener)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarMonthViewHolder {
@@ -27,10 +27,10 @@ internal class CalendarMonthAdapter(
 
     override fun onBindViewHolder(holder: CalendarMonthViewHolder, position: Int) {
         val day = days[position]
-        val isSelected = selectedDate?.isEqual(day) ?: false
+        val isSelected = calendarData.selectedDate.isEqual(day)
 
         if (day != null) {
-            holder.bind(day, isSelected) { jDayOfMonth ->
+            holder.bind(day, isSelected, calendarData) { jDayOfMonth ->
                 handleDayClick(jDayOfMonth)
                 onDayClickListener.invoke(jDayOfMonth)
             }
@@ -44,7 +44,8 @@ internal class CalendarMonthAdapter(
      * @param jDayOfMonth Clicked day instance
      */
     override fun handleDayClick(jDayOfMonth: JDayOfMonth) {
-        val oldPosition = days.findIndex(selectedDate!!)
+        val selectedDate = calendarData.selectedDate
+        val oldPosition = days.findIndex(selectedDate)
         val newPosition = days.findIndex(jDayOfMonth)
 
         if (oldPosition != newPosition) {

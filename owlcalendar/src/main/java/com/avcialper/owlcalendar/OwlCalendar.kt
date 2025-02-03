@@ -4,15 +4,13 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.avcialper.jdatetime.JDateTime
 import com.avcialper.jdatetime.model.JDayOfMonth
 import com.avcialper.owlcalendar.adapter.calendar.CalendarAdapter
+import com.avcialper.owlcalendar.data.models.CalendarData
 import com.avcialper.owlcalendar.data.models.MarkedDay
-import com.avcialper.owlcalendar.data.models.MonthAndYear
+import com.avcialper.owlcalendar.data.repositories.DateRepository
 import com.avcialper.owlcalendar.helper.CalendarScrollListener
 import com.avcialper.owlcalendar.helper.CalendarSnapHelper
-import com.avcialper.owlcalendar.util.constants.CalendarValues
-import com.avcialper.owlcalendar.util.constants.CalendarValues.selectedDate
 
 class OwlCalendar @JvmOverloads constructor(
     context: Context,
@@ -21,7 +19,10 @@ class OwlCalendar @JvmOverloads constructor(
 ) : RecyclerView(context, attrs, defStyleAttr) {
 
     // Custom PagerSnapHelper
-    private val snapHelper = CalendarSnapHelper()
+    private val snapHelper =
+        CalendarSnapHelper { position -> calendarData.calendarPosition = position }
+
+    private val calendarData = CalendarData()
 
     init {
         initAdapter()
@@ -31,11 +32,11 @@ class OwlCalendar @JvmOverloads constructor(
      * Initialize adapter.
      */
     private fun initAdapter() {
-        val dateList = initDateList()
+        val dateList = DateRepository().getStartValues()
         itemAnimator = null
 
         layoutManager = LinearLayoutManager(context, HORIZONTAL, false)
-        adapter = CalendarAdapter(dateList, ::onDayClickListener)
+        adapter = CalendarAdapter(dateList, calendarData, ::onDayClickListener)
 
         snapHelper.attachToRecyclerView(this)
 
@@ -43,28 +44,6 @@ class OwlCalendar @JvmOverloads constructor(
         addOnScrollListener(calendarScrollListener)
 
         scrollToPosition(1)
-    }
-
-    /**
-     * Initializes a date list containing the dates for yesterday, today, and tomorrow.
-     *
-     * The current date is determined using the `JDateTime` instance. Based on this:
-     * - `yesterday` is calculated as the previous date from today.
-     * - `today` represents the current date (year and month).
-     * - `tomorrow` is calculated as the next date from today.
-     *
-     * @return A list of dates in the order: yesterday, today, tomorrow.
-     */
-    private fun initDateList(): List<MonthAndYear> {
-        val jDateTime = JDateTime.instance
-        val currentYear = jDateTime.year
-        val currentMonth = jDateTime.month
-
-        val today = MonthAndYear(currentYear, currentMonth)
-        val yesterday = today.prev()
-        val tomorrow = today.next()
-
-        return listOf(yesterday, today, tomorrow)
     }
 
     /**
@@ -84,7 +63,7 @@ class OwlCalendar @JvmOverloads constructor(
     private fun onPositionChanged() {
         adapter?.let {
             val adapter = it as CalendarAdapter
-            val position = CalendarValues.calendarPosition
+            val position = calendarData.calendarPosition
             if (position == 0) {
                 handleFirstItemSwipe()
                 snapHelper.addedNewItemOnStart()
@@ -101,7 +80,7 @@ class OwlCalendar @JvmOverloads constructor(
         val adapter = adapter as CalendarAdapter
         val prevMonth = adapter.firstItem.prev()
         adapter.addItemToStart(prevMonth)
-        selectedDate?.increasePosition()
+        calendarData.selectedDate.increasePosition()
     }
 
     /**
@@ -119,7 +98,7 @@ class OwlCalendar @JvmOverloads constructor(
      * @param newDays New marked days
      */
     fun addMarkedDays(newDays: List<MarkedDay>) {
-        CalendarValues.addMarkedDays(newDays)
+        CalendarData.addMarkedDays(calendarData, newDays)
     }
 
     /**
@@ -127,10 +106,6 @@ class OwlCalendar @JvmOverloads constructor(
      * @param newDay New marked day
      */
     fun addMarkedDay(newDay: MarkedDay) {
-        CalendarValues.addMarkedDay(newDay)
-    }
-
-    fun clear() {
-        CalendarValues.clear()
+        CalendarData.addMarkedDay(calendarData, newDay)
     }
 }

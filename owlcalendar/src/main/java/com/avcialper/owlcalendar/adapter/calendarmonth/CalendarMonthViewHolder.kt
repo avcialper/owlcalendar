@@ -6,8 +6,8 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.avcialper.jdatetime.model.JDayOfMonth
 import com.avcialper.owlcalendar.R
+import com.avcialper.owlcalendar.data.models.CalendarData
 import com.avcialper.owlcalendar.databinding.CalendarDayBinding
-import com.avcialper.owlcalendar.util.constants.CalendarValues
 import com.avcialper.owlcalendar.util.extensions.convertToString
 
 internal class CalendarMonthViewHolder(
@@ -21,9 +21,14 @@ internal class CalendarMonthViewHolder(
     private val selectedTextColor = ContextCompat.getColor(context, R.color.orange)
     private val defaultTextColor = root.currentTextColor
 
-    fun bind(day: JDayOfMonth, isSelected: Boolean, onDayClickListener: (JDayOfMonth) -> Unit) {
+    fun bind(
+        day: JDayOfMonth,
+        isSelected: Boolean,
+        calendarData: CalendarData,
+        onDayClickListener: (JDayOfMonth) -> Unit
+    ) {
         setTextColor(day)
-        setBackground(isSelected, day)
+        setBackground(isSelected, day, calendarData)
 
         val dayOfMonth = day.dayOfMonth.convertToString()
         root.apply {
@@ -49,8 +54,8 @@ internal class CalendarMonthViewHolder(
      * Set background of the day. If it is selected, set orange background.
      * @param isSelected Day is selected or not
      */
-    private fun setBackground(isSelected: Boolean, date: JDayOfMonth) {
-        val markedDay = CalendarValues.findMarkedDay(date)
+    private fun setBackground(isSelected: Boolean, date: JDayOfMonth, calendarData: CalendarData) {
+        val markedDay = CalendarData.findMarkedDay(calendarData, date)
 
         val markedDayDrawable = getDrawable(R.drawable.day_marked)?.mutate() as GradientDrawable
         val cornerRadius = markedDayDrawable.cornerRadius
