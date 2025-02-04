@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.avcialper.jdatetime.model.JDayOfMonth
 import com.avcialper.owlcalendar.adapter.calendar.CalendarAdapter
 import com.avcialper.owlcalendar.data.models.CalendarData
+import com.avcialper.owlcalendar.data.models.LineDate
 import com.avcialper.owlcalendar.data.models.MarkedDay
 import com.avcialper.owlcalendar.data.repositories.DateRepository
 import com.avcialper.owlcalendar.helper.CalendarScrollListener
@@ -107,5 +108,13 @@ class OwlCalendar @JvmOverloads constructor(
      */
     fun addMarkedDay(newDay: MarkedDay) {
         CalendarData.addMarkedDay(calendarData, newDay)
+    }
+
+    /**
+     * Add new line date to the list.
+     * @param lineDate New line date
+     */
+    fun setLineDate(lineDate: LineDate) {
+        CalendarData.setLineDate(calendarData, lineDate)
     }
 }

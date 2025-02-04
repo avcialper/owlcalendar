@@ -5,10 +5,13 @@ import android.view.ViewGroup
 import com.avcialper.jdatetime.model.JDayOfMonth
 import com.avcialper.owlcalendar.adapter.BaseAdapter
 import com.avcialper.owlcalendar.data.models.CalendarData
+import com.avcialper.owlcalendar.data.models.LineDate
 import com.avcialper.owlcalendar.data.models.MarkedDay
 import com.avcialper.owlcalendar.data.models.MonthAndYear
 import com.avcialper.owlcalendar.data.models.SelectedDate
+import com.avcialper.owlcalendar.data.models.findEndIndex
 import com.avcialper.owlcalendar.data.models.findIndex
+import com.avcialper.owlcalendar.data.models.findStartIndex
 import com.avcialper.owlcalendar.databinding.CalendarBinding
 
 internal class CalendarAdapter(
@@ -19,6 +22,7 @@ internal class CalendarAdapter(
 
     init {
         CalendarData.setOnMarkedDayAddedListener(calendarData, ::onMarkedDayAddedListener)
+        CalendarData.setOnLineDateChangeListener(calendarData, ::onLineDateChangeListener)
     }
 
     private val months: MutableList<MonthAndYear> = dateLists.toMutableList()
@@ -101,5 +105,13 @@ internal class CalendarAdapter(
             CalendarData.onDayUpdate(calendarData, markedDay)
         else
             notifyItemChanged(markedDayMonthIndex)
+    }
+
+    private fun onLineDateChangeListener(lineDate: LineDate) {
+        val startIndex = months.findStartIndex(lineDate)
+        val endIndex = months.findEndIndex(lineDate)
+
+        for (i in startIndex..endIndex)
+            notifyItemChanged(i)
     }
 }

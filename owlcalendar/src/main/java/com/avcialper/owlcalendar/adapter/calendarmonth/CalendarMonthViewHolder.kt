@@ -21,6 +21,14 @@ internal class CalendarMonthViewHolder(
     private val selectedTextColor = ContextCompat.getColor(context, R.color.orange)
     private val defaultTextColor = root.currentTextColor
 
+    private val markedDayDrawable = getDrawable(R.drawable.day_marked)?.mutate() as GradientDrawable
+    private val markedDayCornerRadius = markedDayDrawable.cornerRadius
+
+    private var lineDrawable: Drawable? = null
+    private val lineStartDrawable = getDrawable(R.drawable.day_linear_start)
+    private val lineEndDrawable = getDrawable(R.drawable.day_linear_end)
+    private val lineInRangeDrawable = getDrawable(R.drawable.day_linear_in_range)
+
     fun bind(
         day: JDayOfMonth,
         isSelected: Boolean,
@@ -56,19 +64,26 @@ internal class CalendarMonthViewHolder(
      */
     private fun setBackground(isSelected: Boolean, date: JDayOfMonth, calendarData: CalendarData) {
         val markedDay = CalendarData.findMarkedDay(calendarData, date)
+        val lineDate = calendarData.lineDate
 
-        val markedDayDrawable = getDrawable(R.drawable.day_marked)?.mutate() as GradientDrawable
-        val cornerRadius = markedDayDrawable.cornerRadius
-
+        if (lineDate != null) {
+            lineDrawable = when {
+                lineDate.isStart(date) -> lineStartDrawable
+                lineDate.isEnd(date) -> lineEndDrawable
+                lineDate.isInRange(date) -> lineInRangeDrawable
+                else -> null
+            }
+        }
 
         if (markedDay != null) {
             markedDayDrawable.setColor(markedDay.color)
-            markedDayDrawable.cornerRadius = cornerRadius
+            markedDayDrawable.cornerRadius = markedDayCornerRadius
         }
 
         val drawable = when {
             isSelected -> getDrawable(R.drawable.day_focused)
             markedDay != null -> markedDayDrawable
+            lineDrawable != null -> lineDrawable
             else -> null
         }
 

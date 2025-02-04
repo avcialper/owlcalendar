@@ -40,3 +40,11 @@ internal data class MonthAndYear(
 internal fun List<MonthAndYear>.findIndex(date: MarkedDay): Int = this.indexOfFirst {
     it.year == date.year && it.month == date.month
 }
+
+internal fun List<MonthAndYear>.findStartIndex(lineDate: LineDate): Int = this.indexOfFirst {
+    it.year == lineDate.startDate.year && it.month == lineDate.startDate.month
+}
+
+internal fun List<MonthAndYear>.findEndIndex(lineDate: LineDate): Int = this.indexOfFirst {
+    it.year == lineDate.endDate.year && it.month == lineDate.endDate.month
+}
