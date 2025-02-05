@@ -3,7 +3,6 @@ package com.avcialper.owlcalendar
 import android.content.Context
 import android.widget.LinearLayout.VERTICAL
 import androidx.recyclerview.widget.RecyclerView
-import com.avcialper.jdatetime.JDateTime
 import com.avcialper.jdatetime.model.JDayOfMonth
 import com.avcialper.owlcalendar.adapter.calendardayname.CalendarDayNameAdapter
 import com.avcialper.owlcalendar.adapter.calendarmonth.CalendarMonthAdapter
@@ -18,7 +17,7 @@ import java.util.Locale
 internal class OwlMonthCalendar(private val binding: CalendarBinding) {
 
     private val context: Context = binding.root.context
-    private val jDateTime = JDateTime.instance
+    private val defaultTextColor = binding.tvCalendarHeader.currentTextColor
 
     // Adapters
     private var calendarDayNameAdapter: CalendarDayNameAdapter? = null
@@ -39,8 +38,8 @@ internal class OwlMonthCalendar(private val binding: CalendarBinding) {
         val year = monthAndYear.year
         val month = monthAndYear.month
 
-        initHeader(year, month)
-        initCalendarDayNameAdapter()
+        initHeader(year, month, calendarData)
+        initCalendarDayNameAdapter(calendarData)
         initCalendarAdapter(year, month, calendarData, onDayClickListener)
     }
 
@@ -49,19 +48,27 @@ internal class OwlMonthCalendar(private val binding: CalendarBinding) {
      * @param year Year of the calendar
      * @param month Month of the calendar
      */
-    private fun initHeader(year: Int, month: Int) {
+    private fun initHeader(year: Int, month: Int, calendarData: CalendarData) {
         val monthName = Constants.monthNames[month]
         val locale = Locale.getDefault()
-        binding.tvCalendarHeader.text = String.format(locale, "%s %d", monthName, year)
+        val label = String.format(locale, "%s %d", monthName, year)
+
+        val textColor =
+            if (calendarData.dateTextColor == 0) defaultTextColor else calendarData.dateTextColor
+
+        binding.tvCalendarHeader.apply {
+            text = label
+            setTextColor(textColor)
+        }
     }
 
     /**
      * Initialize adapter for calendar day name. It's name of the days.
      */
-    private fun initCalendarDayNameAdapter() {
+    private fun initCalendarDayNameAdapter(calendarData: CalendarData) {
         val dayNames = Constants.dayNames
         calendarLayoutManager = CalendarLayoutManager(context, RecyclerView.VERTICAL)
-        calendarDayNameAdapter = CalendarDayNameAdapter(dayNames)
+        calendarDayNameAdapter = CalendarDayNameAdapter(dayNames, calendarData)
 
         binding.rvCalendarDayName.apply {
             itemAnimator = null

@@ -17,6 +17,27 @@ internal class CalendarData {
 
     var calendarPosition = 1
 
+    // attrs
+    var selectedDateBackgroundColor: Int = 0
+    var todayTextColor: Int = 0
+    var dayTextColor: Int = 0
+    var dayNameTextColor: Int = 0
+    var dateTextColor: Int = 0
+
+    fun setAttrs(
+        selectedDateBackgroundColor: Int,
+        todayTextColor: Int,
+        dayTextColor: Int,
+        dayNameTextColor: Int,
+        dateTextColor: Int
+    ) {
+        this.selectedDateBackgroundColor = selectedDateBackgroundColor
+        this.todayTextColor = todayTextColor
+        this.dayTextColor = dayTextColor
+        this.dayNameTextColor = dayNameTextColor
+        this.dateTextColor = dateTextColor
+    }
+
     companion object {
 
         /**

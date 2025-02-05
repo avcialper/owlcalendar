@@ -1,6 +1,7 @@
 package com.avcialper.owlcalendar
 
 import android.content.Context
+import android.content.res.TypedArray
 import android.util.AttributeSet
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,15 +20,58 @@ class OwlCalendar @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : RecyclerView(context, attrs, defStyleAttr) {
 
+    private var typedArray: TypedArray =
+        context.obtainStyledAttributes(attrs, R.styleable.OwlCalendar, defStyleAttr, 0)
+
+    private val calendarData = CalendarData()
+
     // Custom PagerSnapHelper
     private val snapHelper =
         CalendarSnapHelper { position -> calendarData.calendarPosition = position }
 
-    private val calendarData = CalendarData()
 
     init {
+        val defBackgroundColor = getColor(R.color.orange_transparent)
+        val defTodayTextColor = getColor(R.color.orange)
+        val defTextColor = 0
+
+        val selectedBackgroundColor = getAttrColor(
+            R.styleable.OwlCalendar_selected_date_background_color,
+            defBackgroundColor
+        )
+        val todayTextColor = getAttrColor(
+            R.styleable.OwlCalendar_today_text_color,
+            defTodayTextColor
+        )
+        val dayTextColor = getAttrColor(
+            R.styleable.OwlCalendar_day_text_color,
+            defTextColor
+        )
+        val dayNameTextColor = getAttrColor(
+            R.styleable.OwlCalendar_day_name_text_color,
+            defTextColor
+        )
+        val dateTextColor = getAttrColor(
+            R.styleable.OwlCalendar_date_text_color,
+            defTextColor
+        )
+
+        typedArray.recycle()
+
+        calendarData.setAttrs(
+            selectedBackgroundColor,
+            todayTextColor,
+            dayTextColor,
+            dayNameTextColor,
+            dateTextColor
+        )
+
         initAdapter()
     }
+
+    private fun getAttrColor(id: Int, defVal: Int): Int = typedArray.getColor(id, defVal)
+
+    private fun getColor(id: Int): Int = context.getColor(id)
 
     /**
      * Initialize adapter.

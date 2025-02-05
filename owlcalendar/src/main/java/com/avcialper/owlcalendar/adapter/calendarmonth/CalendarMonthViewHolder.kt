@@ -1,6 +1,5 @@
 package com.avcialper.owlcalendar.adapter.calendarmonth
 
-import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -17,17 +16,15 @@ internal class CalendarMonthViewHolder(
     private val root = binding.root
     private val context = root.context
 
-    // Text colors
-    private val selectedTextColor = ContextCompat.getColor(context, R.color.orange)
     private val defaultTextColor = root.currentTextColor
 
-    private val markedDayDrawable = getDrawable(R.drawable.day_marked)?.mutate() as GradientDrawable
-    private val markedDayCornerRadius = markedDayDrawable.cornerRadius
+    private val selectedDrawable = getDrawableAsGradientDrawable(R.drawable.day_focused)
+    private val markedDayDrawable = getDrawableAsGradientDrawable(R.drawable.day_marked)
 
-    private var lineDrawable: Drawable? = null
-    private val lineStartDrawable = getDrawable(R.drawable.day_linear_start)
-    private val lineEndDrawable = getDrawable(R.drawable.day_linear_end)
-    private val lineInRangeDrawable = getDrawable(R.drawable.day_linear_in_range)
+    private var lineDrawable: GradientDrawable? = null
+    private val lineStartDrawable = getDrawableAsGradientDrawable(R.drawable.day_linear_start)
+    private val lineEndDrawable = getDrawableAsGradientDrawable(R.drawable.day_linear_end)
+    private val lineInRangeDrawable = getDrawableAsGradientDrawable(R.drawable.day_linear_in_range)
 
     fun bind(
         day: JDayOfMonth,
@@ -35,7 +32,7 @@ internal class CalendarMonthViewHolder(
         calendarData: CalendarData,
         onDayClickListener: (JDayOfMonth) -> Unit
     ) {
-        setTextColor(day)
+        setTextColor(day, calendarData)
         setBackground(isSelected, day, calendarData)
 
         val dayOfMonth = day.dayOfMonth.convertToString()
@@ -52,9 +49,13 @@ internal class CalendarMonthViewHolder(
      * Set text color of the day. If it is today, set orange color.
      * @param day [JDayOfMonth] object
      */
-    private fun setTextColor(day: JDayOfMonth) {
+    private fun setTextColor(day: JDayOfMonth, calendarData: CalendarData) {
+        val todayTextColor = calendarData.todayTextColor
+        val defaultTextColor =
+            if (calendarData.dayTextColor == 0) defaultTextColor else calendarData.dayTextColor
+
         val isToday = day.isToday()
-        val textColor = if (isToday) selectedTextColor else defaultTextColor
+        val textColor = if (isToday) todayTextColor else defaultTextColor
         root.setTextColor(textColor)
     }
 
@@ -66,6 +67,9 @@ internal class CalendarMonthViewHolder(
         val markedDay = CalendarData.findMarkedDay(calendarData, date)
         val lineDate = calendarData.lineDate
 
+        if (markedDay != null)
+            markedDayDrawable.setColor(markedDay.color)
+
         if (lineDate != null) {
             lineDrawable = when {
                 lineDate.isStart(date) -> lineStartDrawable
@@ -73,15 +77,14 @@ internal class CalendarMonthViewHolder(
                 lineDate.isInRange(date) -> lineInRangeDrawable
                 else -> null
             }
+            lineDrawable?.setColor(lineDate.color)
         }
 
-        if (markedDay != null) {
-            markedDayDrawable.setColor(markedDay.color)
-            markedDayDrawable.cornerRadius = markedDayCornerRadius
-        }
+        val selectedBackgroundColor = calendarData.selectedDateBackgroundColor
+        selectedDrawable.setColor(selectedBackgroundColor)
 
         val drawable = when {
-            isSelected -> getDrawable(R.drawable.day_focused)
+            isSelected -> selectedDrawable
             markedDay != null -> markedDayDrawable
             lineDrawable != null -> lineDrawable
             else -> null
@@ -90,5 +93,7 @@ internal class CalendarMonthViewHolder(
         root.background = drawable
     }
 
-    private fun getDrawable(id: Int): Drawable? = ContextCompat.getDrawable(context, id)
+    private fun getDrawableAsGradientDrawable(id: Int): GradientDrawable {
+        return ContextCompat.getDrawable(context, id)?.mutate() as GradientDrawable
+    }
 }

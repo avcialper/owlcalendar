@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="OwlCalendar">
+        <attr name="selected_date_background_color" format="color" />
+        <attr name="today_text_color" format="color" />
+        <attr name="day_text_color" format="color" />
+        <attr name="day_name_text_color" format="color" />
+        <attr name="date_text_color" format="color" />
+    </declare-styleable>
+</resources>
