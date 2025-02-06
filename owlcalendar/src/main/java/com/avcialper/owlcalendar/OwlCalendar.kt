@@ -5,7 +5,7 @@ import android.content.res.TypedArray
 import android.util.AttributeSet
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.avcialper.jdatetime.model.JDayOfMonth
+import com.avcialper.jdatetime.model.JDate
 import com.avcialper.owlcalendar.adapter.calendar.CalendarAdapter
 import com.avcialper.owlcalendar.data.models.CalendarData
 import com.avcialper.owlcalendar.data.models.LineDate
@@ -13,6 +13,7 @@ import com.avcialper.owlcalendar.data.models.MarkedDay
 import com.avcialper.owlcalendar.data.repositories.DateRepository
 import com.avcialper.owlcalendar.helper.CalendarScrollListener
 import com.avcialper.owlcalendar.helper.CalendarSnapHelper
+import com.avcialper.owlcalendar.util.constants.CalendarType
 
 class OwlCalendar @JvmOverloads constructor(
     context: Context,
@@ -34,6 +35,7 @@ class OwlCalendar @JvmOverloads constructor(
         val defBackgroundColor = getColor(R.color.orange_transparent)
         val defTodayTextColor = getColor(R.color.orange)
         val defTextColor = 0
+        val defCalendarType = CalendarType.NORMAL
 
         val selectedBackgroundColor = getAttrColor(
             R.styleable.OwlCalendar_selected_date_background_color,
@@ -55,6 +57,9 @@ class OwlCalendar @JvmOverloads constructor(
             R.styleable.OwlCalendar_date_text_color,
             defTextColor
         )
+        val calendarTypeValue = getAttrInt(R.styleable.OwlCalendar_type, defCalendarType.value)
+        val calendarType = CalendarType.fromValue(calendarTypeValue)
+
 
         typedArray.recycle()
 
@@ -63,13 +68,16 @@ class OwlCalendar @JvmOverloads constructor(
             todayTextColor,
             dayTextColor,
             dayNameTextColor,
-            dateTextColor
+            dateTextColor,
+            calendarType
         )
 
         initAdapter()
     }
 
     private fun getAttrColor(id: Int, defVal: Int): Int = typedArray.getColor(id, defVal)
+
+    private fun getAttrInt(id: Int, defVal: Int): Int = typedArray.getInt(id, defVal)
 
     private fun getColor(id: Int): Int = context.getColor(id)
 
@@ -93,9 +101,9 @@ class OwlCalendar @JvmOverloads constructor(
 
     /**
      * To handle click of the day.
-     * @param jDayOfMonth Clicked day instance.
+     * @param jDate Clicked day instance.
      */
-    private fun onDayClickListener(jDayOfMonth: JDayOfMonth) {
+    private fun onDayClickListener(jDate: JDate) {
 //        context.pushToastMessage(selectedDate.date)
     }
 

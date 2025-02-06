@@ -1,10 +1,10 @@
 package com.avcialper.owlcalendar.adapter
 
 import androidx.recyclerview.widget.RecyclerView
-import com.avcialper.jdatetime.model.JDayOfMonth
+import com.avcialper.jdatetime.model.JDate
 
 internal abstract class BaseAdapter<VH : RecyclerView.ViewHolder> : RecyclerView.Adapter<VH>() {
 
-    abstract fun handleDayClick(jDayOfMonth: JDayOfMonth)
+    abstract fun handleDayClick(jDate: JDate)
 
 }

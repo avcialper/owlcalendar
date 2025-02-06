@@ -1,7 +1,7 @@
 package com.avcialper.owlcalendar.data.repositories
 
 import com.avcialper.jdatetime.JDateTime
-import com.avcialper.jdatetime.model.JDayOfMonth
+import com.avcialper.jdatetime.model.JDate
 import com.avcialper.owlcalendar.data.models.MonthAndYear
 import com.avcialper.owlcalendar.util.extensions.adjustDay
 
@@ -37,7 +37,7 @@ internal class DateRepository {
      * @param month Month of the calendar
      * @return List of [JDayOfMonth] objects.
      */
-    fun getDays(year: Int, month: Int): List<JDayOfMonth?> {
+    fun getDays(year: Int, month: Int): List<JDate?> {
         val daysInMonth = jDateTime.getAllDaysOfMonth(year, month).adjustDay()
         return daysInMonth
     }

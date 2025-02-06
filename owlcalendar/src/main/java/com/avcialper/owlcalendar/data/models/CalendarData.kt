@@ -1,7 +1,8 @@
 package com.avcialper.owlcalendar.data.models
 
 import com.avcialper.jdatetime.JDateTime
-import com.avcialper.jdatetime.model.JDayOfMonth
+import com.avcialper.jdatetime.model.JDate
+import com.avcialper.owlcalendar.util.constants.CalendarType
 
 internal class CalendarData {
 
@@ -23,19 +24,22 @@ internal class CalendarData {
     var dayTextColor: Int = 0
     var dayNameTextColor: Int = 0
     var dateTextColor: Int = 0
+    var calendarType: CalendarType = CalendarType.NORMAL
 
     fun setAttrs(
         selectedDateBackgroundColor: Int,
         todayTextColor: Int,
         dayTextColor: Int,
         dayNameTextColor: Int,
-        dateTextColor: Int
+        dateTextColor: Int,
+        calendarType: CalendarType
     ) {
         this.selectedDateBackgroundColor = selectedDateBackgroundColor
         this.todayTextColor = todayTextColor
         this.dayTextColor = dayTextColor
         this.dayNameTextColor = dayNameTextColor
         this.dateTextColor = dateTextColor
+        this.calendarType = calendarType
     }
 
     companion object {
@@ -77,10 +81,10 @@ internal class CalendarData {
         /**
          * Find marked day by date.
          * @param instance Instance of the calendar
-         * @param jDayOfMonth Date of the marked day
+         * @param jDate Date of the marked day
          */
-        fun findMarkedDay(instance: CalendarData, jDayOfMonth: JDayOfMonth): MarkedDay? =
-            instance.markedDays.findMarkedDay(jDayOfMonth)
+        fun findMarkedDay(instance: CalendarData, jDate: JDate): MarkedDay? =
+            instance.markedDays.findMarkedDay(jDate)
 
         /**
          * Set listener for new marked day.

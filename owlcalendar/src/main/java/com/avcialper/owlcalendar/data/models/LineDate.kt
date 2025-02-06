@@ -1,6 +1,6 @@
 package com.avcialper.owlcalendar.data.models
 
-import com.avcialper.jdatetime.model.JDayOfMonth
+import com.avcialper.jdatetime.model.JDate
 
 data class LineSelectedDate(
     val year: Int,
@@ -14,27 +14,27 @@ data class LineDate(
     val color: Int
 ) {
 
-    fun isStart(date: JDayOfMonth): Boolean {
+    fun isStart(date: JDate): Boolean {
         return startDate.year == date.year && startDate.month == date.month && startDate.dayOfMonth == date.dayOfMonth
     }
 
-    fun isEnd(date: JDayOfMonth): Boolean {
+    fun isEnd(date: JDate): Boolean {
         return endDate.year == date.year && endDate.month == date.month && endDate.dayOfMonth == date.dayOfMonth
     }
 
-    fun isInRange(date: JDayOfMonth): Boolean {
+    fun isInRange(date: JDate): Boolean {
         val isAfter = isAfter(date)
         val isBefore = isBefore(date)
         return isAfter && isBefore
     }
 
-    private fun isAfter(date: JDayOfMonth): Boolean {
+    private fun isAfter(date: JDate): Boolean {
         val (year, month, dayOfMonth) = startDate
         return date.year > year || (date.year == year && date.month > month) ||
                 (date.year == year && date.month == month && date.dayOfMonth > dayOfMonth)
     }
 
-    private fun isBefore(date: JDayOfMonth): Boolean {
+    private fun isBefore(date: JDate): Boolean {
         val (year, month, dayOfMonth) = endDate
         return date.year < year || (date.year == year && date.month < month) ||
                 (date.year == year && date.month == month && date.dayOfMonth < dayOfMonth)

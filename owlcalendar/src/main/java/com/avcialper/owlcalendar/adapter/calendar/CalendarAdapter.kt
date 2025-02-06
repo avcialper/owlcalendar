@@ -2,7 +2,7 @@ package com.avcialper.owlcalendar.adapter.calendar
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.avcialper.jdatetime.model.JDayOfMonth
+import com.avcialper.jdatetime.model.JDate
 import com.avcialper.owlcalendar.adapter.BaseAdapter
 import com.avcialper.owlcalendar.data.models.CalendarData
 import com.avcialper.owlcalendar.data.models.LineDate
@@ -17,7 +17,7 @@ import com.avcialper.owlcalendar.databinding.CalendarBinding
 internal class CalendarAdapter(
     dateLists: List<MonthAndYear>,
     private val calendarData: CalendarData,
-    private val onDayClickListener: (JDayOfMonth) -> Unit
+    private val onDayClickListener: (JDate) -> Unit
 ) : BaseAdapter<CalendarViewHolder>() {
 
     init {
@@ -48,10 +48,10 @@ internal class CalendarAdapter(
 
     override fun onBindViewHolder(holder: CalendarViewHolder, position: Int) {
         val date = months[position]
-        holder.bind(date, calendarData) { jDayOfMonth ->
+        holder.bind(date, calendarData) { jDate ->
             clickedDatePosition = date.findIndex(months)
-            handleDayClick(jDayOfMonth)
-            onDayClickListener.invoke(jDayOfMonth)
+            handleDayClick(jDate)
+            onDayClickListener.invoke(jDate)
         }
     }
 
@@ -77,9 +77,9 @@ internal class CalendarAdapter(
 
     /**
      * Handle click of the day.
-     * @param jDayOfMonth Clicked day instance
+     * @param jDate Clicked day instance
      */
-    override fun handleDayClick(jDayOfMonth: JDayOfMonth) {
+    override fun handleDayClick(jDate: JDate) {
         val oldPosition = calendarData.selectedDate.calendarPosition
 
         if (oldPosition != clickedDatePosition) {
@@ -88,9 +88,9 @@ internal class CalendarAdapter(
         }
 
         val selectedDate = SelectedDate(
-            jDayOfMonth.year,
-            jDayOfMonth.month,
-            jDayOfMonth.dayOfMonth,
+            jDate.year,
+            jDate.month,
+            jDate.dayOfMonth,
             clickedDatePosition
         )
 
