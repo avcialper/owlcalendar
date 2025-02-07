@@ -8,6 +8,8 @@ internal enum class CalendarMode(val value: Int) {
 
         fun isNormal(mode: CalendarMode): Boolean = NORMAL.value == mode.value
 
+        fun isRangeSelectable(mode: CalendarMode): Boolean = RANGE_SELECTABLE.value == mode.value
+
         fun isSelectable(mode: CalendarMode): Boolean {
             return when (mode) {
                 SINGLE_SELECTABLE, RANGE_SELECTABLE -> true

@@ -9,7 +9,9 @@ import com.avcialper.owlcalendar.adapter.calendar.CalendarAdapter
 import com.avcialper.owlcalendar.data.models.CalendarData
 import com.avcialper.owlcalendar.data.models.Date
 import com.avcialper.owlcalendar.data.models.LineDate
+import com.avcialper.owlcalendar.data.models.LineSelectedDate
 import com.avcialper.owlcalendar.data.models.MarkedDay
+import com.avcialper.owlcalendar.data.models.SelectedDate
 import com.avcialper.owlcalendar.data.repositories.DateRepository
 import com.avcialper.owlcalendar.helper.CalendarScrollListener
 import com.avcialper.owlcalendar.helper.CalendarSnapHelper
@@ -31,7 +33,8 @@ class OwlCalendar @JvmOverloads constructor(
         CalendarSnapHelper { position -> calendarData.calendarPosition = position }
 
     private var onDayClickListener: ((Date) -> Unit) = { _ -> }
-
+    private var onLineDateChangeListener: ((LineSelectedDate, LineSelectedDate) -> Unit) =
+        { _, _ -> }
 
     init {
         val defBackgroundColor = getColor(R.color.orange_transparent)
@@ -59,8 +62,8 @@ class OwlCalendar @JvmOverloads constructor(
             R.styleable.OwlCalendar_date_text_color,
             defTextColor
         )
-        val calendarTypeValue = getAttrInt(R.styleable.OwlCalendar_mode, defCalendarMode.value)
-        val calendarMode = CalendarMode.fromValue(calendarTypeValue)
+        val calendarModeValue = getAttrInt(R.styleable.OwlCalendar_mode, defCalendarMode.value)
+        val calendarMode = CalendarMode.fromValue(calendarModeValue)
 
         typedArray.recycle()
 
@@ -90,9 +93,8 @@ class OwlCalendar @JvmOverloads constructor(
         itemAnimator = null
 
         layoutManager = LinearLayoutManager(context, HORIZONTAL, false)
-        adapter = CalendarAdapter(dateList, calendarData) { day ->
-            onDayClickListener.invoke(day)
-        }
+        adapter =
+            CalendarAdapter(dateList, calendarData, ::handleDayClick, ::handleRangeSelection)
 
         snapHelper.attachToRecyclerView(this)
 
@@ -100,14 +102,6 @@ class OwlCalendar @JvmOverloads constructor(
         addOnScrollListener(calendarScrollListener)
 
         scrollToPosition(1)
-    }
-
-    /**
-     * To handle click of the day.
-     * @param listener Click listener.
-     */
-    fun setOnDayClickListener(listener: (Date) -> Unit) {
-        onDayClickListener = listener
     }
 
     /**
@@ -151,16 +145,18 @@ class OwlCalendar @JvmOverloads constructor(
 
     /**
      * Add new marked days to the list.
+     * This function is only for normal mode.
      * @param newDays New marked days
      */
     fun addMarkedDays(newDays: List<MarkedDay>) {
-        val isSelectableType = CalendarMode.isNormal(calendarData.calendarMode)
+        val isSelectableType = CalendarMode.isSelectable(calendarData.calendarMode)
         if (isSelectableType) return
         CalendarData.addMarkedDays(calendarData, newDays)
     }
 
     /**
      * Add new marked day to the list.
+     * This function is only for normal mode.
      * @param newDay New marked day
      */
     fun addMarkedDay(newDay: MarkedDay) {
@@ -175,5 +171,61 @@ class OwlCalendar @JvmOverloads constructor(
      */
     fun setLineDate(lineDate: LineDate) {
         CalendarData.setLineDate(calendarData, lineDate)
+    }
+
+    /**
+     * Handle click of the day.
+     * @param date Clicked day instance
+     */
+    private fun handleDayClick(date: Date) {
+        onDayClickListener.invoke(date)
+    }
+
+    /**
+     * Handle range selection.
+     * @param date Selected date
+     */
+    private fun handleRangeSelection(date: SelectedDate) {
+        val oldSelectedDate = calendarData.selectedDate
+        val isEqual = oldSelectedDate.isEqual(date)
+
+        if (isEqual || calendarData.lineDate != null) {
+            CalendarData.clearLineDate(calendarData)
+            return
+        }
+
+        val isBefore = oldSelectedDate.isBefore(date)
+        val startDate = if (isBefore) oldSelectedDate else date
+        val endDate = if (isBefore) date else oldSelectedDate
+
+        val start = LineSelectedDate(
+            startDate.year,
+            startDate.month,
+            startDate.dayOfMonth
+        )
+        val end = LineSelectedDate(
+            endDate.year,
+            endDate.month,
+            endDate.dayOfMonth
+        )
+        val lineDate = LineDate(start, end, calendarData.selectedDateBackgroundColor)
+        setLineDate(lineDate)
+        onLineDateChangeListener.invoke(start, end)
+    }
+
+    /**
+     * To handle click of the day.
+     * @param listener Click listener.
+     */
+    fun setOnDayClickListener(listener: (Date) -> Unit) {
+        onDayClickListener = listener
+    }
+
+    /**
+     * Set listener for day update.
+     * @param listener Listener
+     */
+    fun setOnLineDateChangeListener(listener: (LineSelectedDate, LineSelectedDate) -> Unit) {
+        onLineDateChangeListener = listener
     }
 }

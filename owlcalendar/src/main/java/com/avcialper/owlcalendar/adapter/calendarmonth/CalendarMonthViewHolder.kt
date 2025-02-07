@@ -7,7 +7,6 @@ import com.avcialper.owlcalendar.R
 import com.avcialper.owlcalendar.data.models.CalendarData
 import com.avcialper.owlcalendar.data.models.Date
 import com.avcialper.owlcalendar.databinding.CalendarDayBinding
-import com.avcialper.owlcalendar.util.constants.CalendarMode
 import com.avcialper.owlcalendar.util.extensions.convertToString
 
 internal class CalendarMonthViewHolder(
@@ -35,7 +34,6 @@ internal class CalendarMonthViewHolder(
     ) {
         setTextColor(day, calendarData)
         setBackground(day, calendarData)
-        setClickBehaviour(day, calendarData)
 
         val dayOfMonth = day.dayOfMonth.convertToString()
         root.apply {
@@ -45,18 +43,6 @@ internal class CalendarMonthViewHolder(
             }
         }
 
-    }
-
-    /**
-     * Set click behaviour of the day.
-     * @param day [Date] object
-     * @param calendarData [CalendarData] object
-     */
-    private fun setClickBehaviour(day: Date, calendarData: CalendarData) {
-        val isBeforeAndUnselectable = isBeforeTodayAndUnselectable(day, calendarData)
-
-        if (isBeforeAndUnselectable)
-            root.isEnabled = false
     }
 
     /**
@@ -70,10 +56,12 @@ internal class CalendarMonthViewHolder(
             if (calendarData.dayTextColor == 0) defaultTextColor else calendarData.dayTextColor
 
         val isToday = day.isToday()
-        val isBeforeAndUnselectable = isBeforeTodayAndUnselectable(day, calendarData)
 
-        val textColor =
-            if (isToday) todayTextColor else if (isBeforeAndUnselectable) unselectableTextColor else defaultTextColor
+        val textColor = when {
+            isToday -> todayTextColor
+            else -> defaultTextColor
+        }
+
         root.setTextColor(textColor)
     }
 
@@ -84,7 +72,6 @@ internal class CalendarMonthViewHolder(
      */
     private fun setBackground(day: Date, calendarData: CalendarData) {
         val isSelected = calendarData.selectedDate.isEqual(day)
-
         val markedDay = CalendarData.findMarkedDay(calendarData, day)
         val lineDate = calendarData.lineDate
 
@@ -105,9 +92,9 @@ internal class CalendarMonthViewHolder(
         selectedDrawable.setColor(selectedBackgroundColor)
 
         val drawable = when {
+            lineDrawable != null -> lineDrawable
             isSelected -> selectedDrawable
             markedDay != null -> markedDayDrawable
-            lineDrawable != null -> lineDrawable
             else -> null
         }
 
@@ -118,9 +105,4 @@ internal class CalendarMonthViewHolder(
         return ContextCompat.getDrawable(context, id)?.mutate() as GradientDrawable
     }
 
-    private fun isBeforeTodayAndUnselectable(day: Date, calendarData: CalendarData): Boolean {
-        val isBeforeToday = day.isBeforeToday()
-        val isSelectable = CalendarMode.isSelectable(calendarData.calendarMode)
-        return isBeforeToday && isSelectable
-    }
 }

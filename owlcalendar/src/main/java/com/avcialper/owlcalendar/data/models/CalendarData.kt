@@ -129,8 +129,21 @@ internal class CalendarData {
             instance.onLineDateChangeListener?.invoke(lineDate)
         }
 
+        /**
+         * Set listener for new line date.
+         * @param instance Instance of the calendar
+         * @param listener Listener for new line date
+         */
         fun setOnLineDateChangeListener(instance: CalendarData, listener: (LineDate) -> Unit) {
             instance.onLineDateChangeListener = listener
+        }
+
+        fun clearLineDate(instance: CalendarData) {
+            val oldLineDate = instance.lineDate
+            instance.lineDate = null
+
+            if (oldLineDate != null)
+                instance.onLineDateChangeListener?.invoke(oldLineDate)
         }
 
     }

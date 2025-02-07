@@ -6,4 +6,5 @@
     <dimen name="width">40dp</dimen>
     <dimen name="border_radius">8dp</dimen>
     <dimen name="vertical_margin">2dp</dimen>
+    <dimen name="horizontal_margin">4dp</dimen>
 </resources>

@@ -29,9 +29,9 @@ internal class CalendarMonthAdapter(
         val day = days[position]
 
         if (day != null) {
-            holder.bind(day, calendarData) { jDate ->
-                handleDayClick(jDate)
-                onDayClickListener.invoke(jDate)
+            holder.bind(day, calendarData) { date ->
+                handleDayClick(date)
+                onDayClickListener.invoke(date)
             }
         }
     }

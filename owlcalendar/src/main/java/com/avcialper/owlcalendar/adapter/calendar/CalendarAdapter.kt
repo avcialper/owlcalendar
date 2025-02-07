@@ -2,7 +2,6 @@ package com.avcialper.owlcalendar.adapter.calendar
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.avcialper.jdatetime.model.JDate
 import com.avcialper.owlcalendar.adapter.BaseAdapter
 import com.avcialper.owlcalendar.data.models.CalendarData
 import com.avcialper.owlcalendar.data.models.Date
@@ -14,11 +13,13 @@ import com.avcialper.owlcalendar.data.models.findEndIndex
 import com.avcialper.owlcalendar.data.models.findIndex
 import com.avcialper.owlcalendar.data.models.findStartIndex
 import com.avcialper.owlcalendar.databinding.CalendarBinding
+import com.avcialper.owlcalendar.util.constants.CalendarMode
 
 internal class CalendarAdapter(
     dateLists: List<MonthAndYear>,
     private val calendarData: CalendarData,
-    private val onDayClickListener: (Date) -> Unit
+    private val onDayClickListener: (Date) -> Unit,
+    private val handleRangeSelection: (SelectedDate) -> Unit
 ) : BaseAdapter<CalendarViewHolder>() {
 
     init {
@@ -94,6 +95,11 @@ internal class CalendarAdapter(
             date.dayOfMonth,
             clickedDatePosition
         )
+
+        val isSelectable = CalendarMode.isRangeSelectable(calendarData.calendarMode)
+        if (isSelectable) {
+            handleRangeSelection.invoke(selectedDate)
+        }
 
         CalendarData.updateSelectedDate(calendarData, selectedDate)
     }
