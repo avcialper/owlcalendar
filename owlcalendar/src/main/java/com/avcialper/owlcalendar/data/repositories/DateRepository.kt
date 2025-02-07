@@ -35,7 +35,7 @@ internal class DateRepository {
      * Get days of the month.
      * @param year Year of the calendar
      * @param month Month of the calendar
-     * @return List of [JDayOfMonth] objects.
+     * @return List of [JDate] objects.
      */
     fun getDays(year: Int, month: Int): List<JDate?> {
         val daysInMonth = jDateTime.getAllDaysOfMonth(year, month).adjustDay()

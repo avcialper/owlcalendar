@@ -13,7 +13,7 @@ import com.avcialper.owlcalendar.data.models.MarkedDay
 import com.avcialper.owlcalendar.data.repositories.DateRepository
 import com.avcialper.owlcalendar.helper.CalendarScrollListener
 import com.avcialper.owlcalendar.helper.CalendarSnapHelper
-import com.avcialper.owlcalendar.util.constants.CalendarType
+import com.avcialper.owlcalendar.util.constants.CalendarMode
 
 class OwlCalendar @JvmOverloads constructor(
     context: Context,
@@ -35,7 +35,7 @@ class OwlCalendar @JvmOverloads constructor(
         val defBackgroundColor = getColor(R.color.orange_transparent)
         val defTodayTextColor = getColor(R.color.orange)
         val defTextColor = 0
-        val defCalendarType = CalendarType.NORMAL
+        val defCalendarMode = CalendarMode.NORMAL
 
         val selectedBackgroundColor = getAttrColor(
             R.styleable.OwlCalendar_selected_date_background_color,
@@ -57,8 +57,8 @@ class OwlCalendar @JvmOverloads constructor(
             R.styleable.OwlCalendar_date_text_color,
             defTextColor
         )
-        val calendarTypeValue = getAttrInt(R.styleable.OwlCalendar_type, defCalendarType.value)
-        val calendarType = CalendarType.fromValue(calendarTypeValue)
+        val calendarTypeValue = getAttrInt(R.styleable.OwlCalendar_mode, defCalendarMode.value)
+        val calendarMode = CalendarMode.fromValue(calendarTypeValue)
 
 
         typedArray.recycle()
@@ -69,7 +69,7 @@ class OwlCalendar @JvmOverloads constructor(
             dayTextColor,
             dayNameTextColor,
             dateTextColor,
-            calendarType
+            calendarMode
         )
 
         initAdapter()
@@ -151,6 +151,8 @@ class OwlCalendar @JvmOverloads constructor(
      * @param newDays New marked days
      */
     fun addMarkedDays(newDays: List<MarkedDay>) {
+        val isSelectableType = CalendarMode.isNormal(calendarData.calendarMode)
+        if (isSelectableType) return
         CalendarData.addMarkedDays(calendarData, newDays)
     }
 
@@ -159,6 +161,8 @@ class OwlCalendar @JvmOverloads constructor(
      * @param newDay New marked day
      */
     fun addMarkedDay(newDay: MarkedDay) {
+        val isSelectableType = CalendarMode.isSelectable(calendarData.calendarMode)
+        if (isSelectableType) return
         CalendarData.addMarkedDay(calendarData, newDay)
     }
 

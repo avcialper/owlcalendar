@@ -2,7 +2,7 @@ package com.avcialper.owlcalendar.data.models
 
 import com.avcialper.jdatetime.JDateTime
 import com.avcialper.jdatetime.model.JDate
-import com.avcialper.owlcalendar.util.constants.CalendarType
+import com.avcialper.owlcalendar.util.constants.CalendarMode
 
 internal class CalendarData {
 
@@ -24,7 +24,7 @@ internal class CalendarData {
     var dayTextColor: Int = 0
     var dayNameTextColor: Int = 0
     var dateTextColor: Int = 0
-    var calendarType: CalendarType = CalendarType.NORMAL
+    var calendarMode: CalendarMode = CalendarMode.NORMAL
 
     fun setAttrs(
         selectedDateBackgroundColor: Int,
@@ -32,14 +32,14 @@ internal class CalendarData {
         dayTextColor: Int,
         dayNameTextColor: Int,
         dateTextColor: Int,
-        calendarType: CalendarType
+        calendarMode: CalendarMode
     ) {
         this.selectedDateBackgroundColor = selectedDateBackgroundColor
         this.todayTextColor = todayTextColor
         this.dayTextColor = dayTextColor
         this.dayNameTextColor = dayNameTextColor
         this.dateTextColor = dateTextColor
-        this.calendarType = calendarType
+        this.calendarMode = calendarMode
     }
 
     companion object {
@@ -63,6 +63,7 @@ internal class CalendarData {
         fun addMarkedDay(instance: CalendarData, date: MarkedDay) {
             val existingDay = findMarkedDay(instance, date)
             if (existingDay != null) {
+                if (existingDay.color == date.color) return
                 existingDay.color = date.color
             } else {
                 instance.markedDays.add(date)

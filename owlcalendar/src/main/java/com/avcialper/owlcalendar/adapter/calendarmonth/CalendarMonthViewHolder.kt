@@ -7,7 +7,7 @@ import com.avcialper.jdatetime.model.JDate
 import com.avcialper.owlcalendar.R
 import com.avcialper.owlcalendar.data.models.CalendarData
 import com.avcialper.owlcalendar.databinding.CalendarDayBinding
-import com.avcialper.owlcalendar.util.constants.CalendarType
+import com.avcialper.owlcalendar.util.constants.CalendarMode
 import com.avcialper.owlcalendar.util.extensions.convertToString
 
 internal class CalendarMonthViewHolder(
@@ -120,7 +120,7 @@ internal class CalendarMonthViewHolder(
 
     private fun isBeforeTodayAndUnselectable(day: JDate, calendarData: CalendarData): Boolean {
         val isBeforeToday = day.isBeforeToday()
-        val isNormalType = calendarData.calendarType == CalendarType.NORMAL
-        return isBeforeToday && !isNormalType
+        val isSelectable = CalendarMode.isSelectable(calendarData.calendarMode)
+        return isBeforeToday && isSelectable
     }
 }
