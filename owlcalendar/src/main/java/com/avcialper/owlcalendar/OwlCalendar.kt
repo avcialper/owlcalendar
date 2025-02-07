@@ -62,6 +62,10 @@ class OwlCalendar @JvmOverloads constructor(
             R.styleable.OwlCalendar_date_text_color,
             defTextColor
         )
+        val lineBackgroundColor = getAttrColor(
+            R.styleable.OwlCalendar_line_background_color,
+            defBackgroundColor
+        )
         val calendarModeValue = getAttrInt(R.styleable.OwlCalendar_mode, defCalendarMode.value)
         val calendarMode = CalendarMode.fromValue(calendarModeValue)
 
@@ -73,6 +77,7 @@ class OwlCalendar @JvmOverloads constructor(
             dayTextColor,
             dayNameTextColor,
             dateTextColor,
+            lineBackgroundColor,
             calendarMode
         )
 
@@ -170,12 +175,22 @@ class OwlCalendar @JvmOverloads constructor(
      * @param lineDate New line date
      */
     fun setLineDate(lineDate: LineDate) {
+        val isSingleSelectable = CalendarMode.isSingleSelectable(calendarData.calendarMode)
+        if (isSingleSelectable) return
+
+        val isRangeSelectable = CalendarMode.isRangeSelectable(calendarData.calendarMode)
+        if (isRangeSelectable) {
+            val (year, month, dayOfMonth) = lineDate.startDate
+            val selectedDate = SelectedDate(year, month, dayOfMonth, calendarData.calendarPosition)
+            calendarData.selectedDate = selectedDate
+        }
+
         CalendarData.setLineDate(calendarData, lineDate)
     }
 
     /**
      * Handle click of the day.
-     * @param date Clicked day instance
+     * @param date Clicked day instancenot
      */
     private fun handleDayClick(date: Date) {
         onDayClickListener.invoke(date)
@@ -208,7 +223,7 @@ class OwlCalendar @JvmOverloads constructor(
             endDate.month,
             endDate.dayOfMonth
         )
-        val lineDate = LineDate(start, end, calendarData.selectedDateBackgroundColor)
+        val lineDate = LineDate(start, end)
         setLineDate(lineDate)
         onLineDateChangeListener.invoke(start, end)
     }

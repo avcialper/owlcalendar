@@ -23,6 +23,7 @@ internal class CalendarData {
     var dayTextColor: Int = 0
     var dayNameTextColor: Int = 0
     var dateTextColor: Int = 0
+    var lineBackgroundColor: Int = 0
     var calendarMode: CalendarMode = CalendarMode.NORMAL
 
     fun setAttrs(
@@ -31,6 +32,7 @@ internal class CalendarData {
         dayTextColor: Int,
         dayNameTextColor: Int,
         dateTextColor: Int,
+        lineBackgroundColor: Int,
         calendarMode: CalendarMode
     ) {
         this.selectedDateBackgroundColor = selectedDateBackgroundColor
@@ -38,6 +40,7 @@ internal class CalendarData {
         this.dayTextColor = dayTextColor
         this.dayNameTextColor = dayNameTextColor
         this.dateTextColor = dateTextColor
+        this.lineBackgroundColor = lineBackgroundColor
         this.calendarMode = calendarMode
     }
 

@@ -17,7 +17,6 @@ internal class CalendarMonthViewHolder(
     private val context = root.context
 
     private val defaultTextColor = root.currentTextColor
-    private val unselectableTextColor = ContextCompat.getColor(context, R.color.grey)
 
     private val selectedDrawable = getDrawableAsGradientDrawable(R.drawable.day_focused)
     private val markedDayDrawable = getDrawableAsGradientDrawable(R.drawable.day_marked)
@@ -85,7 +84,7 @@ internal class CalendarMonthViewHolder(
                 lineDate.isInRange(day) -> lineInRangeDrawable
                 else -> null
             }
-            lineDrawable?.setColor(lineDate.color)
+            lineDrawable?.setColor(calendarData.lineBackgroundColor)
         }
 
         val selectedBackgroundColor = calendarData.selectedDateBackgroundColor

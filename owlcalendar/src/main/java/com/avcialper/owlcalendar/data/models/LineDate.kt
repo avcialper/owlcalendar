@@ -9,7 +9,6 @@ data class LineSelectedDate(
 data class LineDate(
     val startDate: LineSelectedDate,
     val endDate: LineSelectedDate,
-    val color: Int
 ) {
 
     fun isStart(date: Date): Boolean {
