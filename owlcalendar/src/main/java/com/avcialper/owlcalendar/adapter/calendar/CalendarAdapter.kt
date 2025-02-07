@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import com.avcialper.jdatetime.model.JDate
 import com.avcialper.owlcalendar.adapter.BaseAdapter
 import com.avcialper.owlcalendar.data.models.CalendarData
+import com.avcialper.owlcalendar.data.models.Date
 import com.avcialper.owlcalendar.data.models.LineDate
 import com.avcialper.owlcalendar.data.models.MarkedDay
 import com.avcialper.owlcalendar.data.models.MonthAndYear
@@ -17,7 +18,7 @@ import com.avcialper.owlcalendar.databinding.CalendarBinding
 internal class CalendarAdapter(
     dateLists: List<MonthAndYear>,
     private val calendarData: CalendarData,
-    private val onDayClickListener: (JDate) -> Unit
+    private val onDayClickListener: (Date) -> Unit
 ) : BaseAdapter<CalendarViewHolder>() {
 
     init {
@@ -48,10 +49,10 @@ internal class CalendarAdapter(
 
     override fun onBindViewHolder(holder: CalendarViewHolder, position: Int) {
         val date = months[position]
-        holder.bind(date, calendarData) { jDate ->
+        holder.bind(date, calendarData) {
             clickedDatePosition = date.findIndex(months)
-            handleDayClick(jDate)
-            onDayClickListener.invoke(jDate)
+            handleDayClick(it)
+            onDayClickListener.invoke(it)
         }
     }
 
@@ -77,9 +78,9 @@ internal class CalendarAdapter(
 
     /**
      * Handle click of the day.
-     * @param jDate Clicked day instance
+     * @param date Clicked day instance
      */
-    override fun handleDayClick(jDate: JDate) {
+    override fun handleDayClick(date: Date) {
         val oldPosition = calendarData.selectedDate.calendarPosition
 
         if (oldPosition != clickedDatePosition) {
@@ -88,9 +89,9 @@ internal class CalendarAdapter(
         }
 
         val selectedDate = SelectedDate(
-            jDate.year,
-            jDate.month,
-            jDate.dayOfMonth,
+            date.year,
+            date.month,
+            date.dayOfMonth,
             clickedDatePosition
         )
 

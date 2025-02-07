@@ -1,7 +1,5 @@
 package com.avcialper.owlcalendar.data.models
 
-import com.avcialper.jdatetime.model.JDate
-
 /**
  * Data class for marked days.
  * @param year Year of the marked day
@@ -20,6 +18,6 @@ internal fun List<MarkedDay>.findMarkedDay(markedDay: MarkedDay): MarkedDay? = t
     it.year == markedDay.year && it.month == markedDay.month && it.dayOfMonth == markedDay.dayOfMonth
 }
 
-internal fun List<MarkedDay>.findMarkedDay(jDate: JDate): MarkedDay? = this.find {
-    it.year == jDate.year && it.month == jDate.month && it.dayOfMonth == jDate.dayOfMonth
+internal fun List<MarkedDay>.findMarkedDay(date: Date): MarkedDay? = this.find {
+    it.year == date.year && it.month == date.month && it.dayOfMonth == date.dayOfMonth
 }

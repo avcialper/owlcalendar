@@ -3,10 +3,10 @@ package com.avcialper.owlcalendar
 import android.content.Context
 import android.widget.LinearLayout.VERTICAL
 import androidx.recyclerview.widget.RecyclerView
-import com.avcialper.jdatetime.model.JDate
 import com.avcialper.owlcalendar.adapter.calendardayname.CalendarDayNameAdapter
 import com.avcialper.owlcalendar.adapter.calendarmonth.CalendarMonthAdapter
 import com.avcialper.owlcalendar.data.models.CalendarData
+import com.avcialper.owlcalendar.data.models.Date
 import com.avcialper.owlcalendar.data.models.MonthAndYear
 import com.avcialper.owlcalendar.data.repositories.DateRepository
 import com.avcialper.owlcalendar.databinding.CalendarBinding
@@ -33,7 +33,7 @@ internal class OwlMonthCalendar(private val binding: CalendarBinding) {
     fun init(
         monthAndYear: MonthAndYear,
         calendarData: CalendarData,
-        onDayClickListener: (JDate) -> Unit
+        onDayClickListener: (Date) -> Unit
     ) {
         val year = monthAndYear.year
         val month = monthAndYear.month
@@ -87,7 +87,7 @@ internal class OwlMonthCalendar(private val binding: CalendarBinding) {
         year: Int,
         month: Int,
         calendarData: CalendarData,
-        onDayClickListener: (JDate) -> Unit
+        onDayClickListener: (Date) -> Unit
     ) {
         val days = DateRepository().getDays(year, month)
         val calendarLayoutManager = CalendarLayoutManager(context, VERTICAL)

@@ -2,17 +2,17 @@ package com.avcialper.owlcalendar.adapter.calendarmonth
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.avcialper.jdatetime.model.JDate
 import com.avcialper.owlcalendar.adapter.BaseAdapter
 import com.avcialper.owlcalendar.data.models.CalendarData
+import com.avcialper.owlcalendar.data.models.Date
 import com.avcialper.owlcalendar.data.models.MarkedDay
+import com.avcialper.owlcalendar.data.models.findIndex
 import com.avcialper.owlcalendar.databinding.CalendarDayBinding
-import com.avcialper.owlcalendar.util.extensions.findIndex
 
 internal class CalendarMonthAdapter(
-    private val days: List<JDate?>,
+    private val days: List<Date?>,
     private val calendarData: CalendarData,
-    private val onDayClickListener: (JDate) -> Unit
+    private val onDayClickListener: (Date) -> Unit
 ) : BaseAdapter<CalendarMonthViewHolder>() {
 
     init {
@@ -40,12 +40,12 @@ internal class CalendarMonthAdapter(
 
     /**
      * Handle click of the day.
-     * @param jDate Clicked day instance
+     * @param date Clicked day instance
      */
-    override fun handleDayClick(jDate: JDate) {
+    override fun handleDayClick(date: Date) {
         val selectedDate = calendarData.selectedDate
         val oldPosition = days.findIndex(selectedDate)
-        val newPosition = days.findIndex(jDate)
+        val newPosition = days.findIndex(date)
 
         if (oldPosition != newPosition) {
             notifyItemChanged(oldPosition)

@@ -3,9 +3,9 @@ package com.avcialper.owlcalendar.adapter.calendarmonth
 import android.graphics.drawable.GradientDrawable
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.avcialper.jdatetime.model.JDate
 import com.avcialper.owlcalendar.R
 import com.avcialper.owlcalendar.data.models.CalendarData
+import com.avcialper.owlcalendar.data.models.Date
 import com.avcialper.owlcalendar.databinding.CalendarDayBinding
 import com.avcialper.owlcalendar.util.constants.CalendarMode
 import com.avcialper.owlcalendar.util.extensions.convertToString
@@ -29,9 +29,9 @@ internal class CalendarMonthViewHolder(
     private val lineInRangeDrawable = getDrawableAsGradientDrawable(R.drawable.day_linear_in_range)
 
     fun bind(
-        day: JDate,
+        day: Date,
         calendarData: CalendarData,
-        onDayClickListener: (JDate) -> Unit
+        onDayClickListener: (Date) -> Unit
     ) {
         setTextColor(day, calendarData)
         setBackground(day, calendarData)
@@ -49,10 +49,10 @@ internal class CalendarMonthViewHolder(
 
     /**
      * Set click behaviour of the day.
-     * @param day [JDate] object
+     * @param day [Date] object
      * @param calendarData [CalendarData] object
      */
-    private fun setClickBehaviour(day: JDate, calendarData: CalendarData) {
+    private fun setClickBehaviour(day: Date, calendarData: CalendarData) {
         val isBeforeAndUnselectable = isBeforeTodayAndUnselectable(day, calendarData)
 
         if (isBeforeAndUnselectable)
@@ -61,10 +61,10 @@ internal class CalendarMonthViewHolder(
 
     /**
      * Set text color of the day. If it is today, set orange color.
-     * @param day [JDate] object
+     * @param day [Date] object
      * @param calendarData [CalendarData] object
      */
-    private fun setTextColor(day: JDate, calendarData: CalendarData) {
+    private fun setTextColor(day: Date, calendarData: CalendarData) {
         val todayTextColor = calendarData.todayTextColor
         val defaultTextColor =
             if (calendarData.dayTextColor == 0) defaultTextColor else calendarData.dayTextColor
@@ -79,10 +79,10 @@ internal class CalendarMonthViewHolder(
 
     /**
      * Set background of the day. If it is selected, set orange background.
-     * @param day [JDate] object
+     * @param day [Date] object
      * @param calendarData [CalendarData] object
      */
-    private fun setBackground(day: JDate, calendarData: CalendarData) {
+    private fun setBackground(day: Date, calendarData: CalendarData) {
         val isSelected = calendarData.selectedDate.isEqual(day)
 
         val markedDay = CalendarData.findMarkedDay(calendarData, day)
@@ -118,7 +118,7 @@ internal class CalendarMonthViewHolder(
         return ContextCompat.getDrawable(context, id)?.mutate() as GradientDrawable
     }
 
-    private fun isBeforeTodayAndUnselectable(day: JDate, calendarData: CalendarData): Boolean {
+    private fun isBeforeTodayAndUnselectable(day: Date, calendarData: CalendarData): Boolean {
         val isBeforeToday = day.isBeforeToday()
         val isSelectable = CalendarMode.isSelectable(calendarData.calendarMode)
         return isBeforeToday && isSelectable

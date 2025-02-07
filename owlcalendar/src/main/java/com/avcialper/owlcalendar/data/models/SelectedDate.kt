@@ -1,7 +1,5 @@
 package com.avcialper.owlcalendar.data.models
 
-import com.avcialper.jdatetime.model.JDate
-
 internal data class SelectedDate(
     val year: Int,
     val month: Int,
@@ -15,7 +13,7 @@ internal data class SelectedDate(
         calendarPosition++
     }
 
-    fun isEqual(other: JDate?): Boolean {
+    fun isEqual(other: Date?): Boolean {
         return year == other?.year && month == other.month && dayOfMonth == other.dayOfMonth
     }
 }

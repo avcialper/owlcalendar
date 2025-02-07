@@ -1,7 +1,6 @@
 package com.avcialper.owlcalendar.data.models
 
 import com.avcialper.jdatetime.JDateTime
-import com.avcialper.jdatetime.model.JDate
 import com.avcialper.owlcalendar.util.constants.CalendarMode
 
 internal class CalendarData {
@@ -82,10 +81,10 @@ internal class CalendarData {
         /**
          * Find marked day by date.
          * @param instance Instance of the calendar
-         * @param jDate Date of the marked day
+         * @param date Date of the marked day
          */
-        fun findMarkedDay(instance: CalendarData, jDate: JDate): MarkedDay? =
-            instance.markedDays.findMarkedDay(jDate)
+        fun findMarkedDay(instance: CalendarData, date: Date): MarkedDay? =
+            instance.markedDays.findMarkedDay(date)
 
         /**
          * Set listener for new marked day.

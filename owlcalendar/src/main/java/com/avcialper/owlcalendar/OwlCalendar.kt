@@ -5,9 +5,9 @@ import android.content.res.TypedArray
 import android.util.AttributeSet
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.avcialper.jdatetime.model.JDate
 import com.avcialper.owlcalendar.adapter.calendar.CalendarAdapter
 import com.avcialper.owlcalendar.data.models.CalendarData
+import com.avcialper.owlcalendar.data.models.Date
 import com.avcialper.owlcalendar.data.models.LineDate
 import com.avcialper.owlcalendar.data.models.MarkedDay
 import com.avcialper.owlcalendar.data.repositories.DateRepository
@@ -29,6 +29,8 @@ class OwlCalendar @JvmOverloads constructor(
     // Custom PagerSnapHelper
     private val snapHelper =
         CalendarSnapHelper { position -> calendarData.calendarPosition = position }
+
+    private var onDayClickListener: ((Date) -> Unit) = { _ -> }
 
 
     init {
@@ -60,7 +62,6 @@ class OwlCalendar @JvmOverloads constructor(
         val calendarTypeValue = getAttrInt(R.styleable.OwlCalendar_mode, defCalendarMode.value)
         val calendarMode = CalendarMode.fromValue(calendarTypeValue)
 
-
         typedArray.recycle()
 
         calendarData.setAttrs(
@@ -89,7 +90,9 @@ class OwlCalendar @JvmOverloads constructor(
         itemAnimator = null
 
         layoutManager = LinearLayoutManager(context, HORIZONTAL, false)
-        adapter = CalendarAdapter(dateList, calendarData, ::onDayClickListener)
+        adapter = CalendarAdapter(dateList, calendarData) { day ->
+            onDayClickListener.invoke(day)
+        }
 
         snapHelper.attachToRecyclerView(this)
 
@@ -101,10 +104,10 @@ class OwlCalendar @JvmOverloads constructor(
 
     /**
      * To handle click of the day.
-     * @param jDate Clicked day instance.
+     * @param listener Click listener.
      */
-    private fun onDayClickListener(jDate: JDate) {
-//        context.pushToastMessage(selectedDate.date)
+    fun setOnDayClickListener(listener: (Date) -> Unit) {
+        onDayClickListener = listener
     }
 
     /**
