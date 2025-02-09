@@ -42,7 +42,7 @@ class OwlCalendar @JvmOverloads constructor(
         val defTextColor = 0
         val defCalendarMode = CalendarMode.NORMAL
 
-        val selectedBackgroundColor = getAttrColor(
+        var selectedBackgroundColor = getAttrColor(
             R.styleable.OwlCalendar_selected_date_background_color,
             defBackgroundColor
         )
@@ -68,6 +68,10 @@ class OwlCalendar @JvmOverloads constructor(
         )
         val calendarModeValue = getAttrInt(R.styleable.OwlCalendar_mode, defCalendarMode.value)
         val calendarMode = CalendarMode.fromValue(calendarModeValue)
+
+        if (CalendarMode.isRangeSelectable(calendarMode) && lineBackgroundColor != selectedBackgroundColor)
+            selectedBackgroundColor = lineBackgroundColor
+
 
         typedArray.recycle()
 
