@@ -4,9 +4,9 @@ import android.graphics.drawable.GradientDrawable
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.avcialper.owlcalendar.R
-import com.avcialper.owlcalendar.data.models.CalendarData
 import com.avcialper.owlcalendar.data.models.Date
 import com.avcialper.owlcalendar.databinding.CalendarDayBinding
+import com.avcialper.owlcalendar.helper.CalendarManager
 import com.avcialper.owlcalendar.util.extensions.convertToString
 
 internal class CalendarMonthViewHolder(
@@ -28,11 +28,10 @@ internal class CalendarMonthViewHolder(
 
     fun bind(
         day: Date,
-        calendarData: CalendarData,
         onDayClickListener: (Date) -> Unit
     ) {
-        setTextColor(day, calendarData)
-        setBackground(day, calendarData)
+        setTextColor(day)
+        setBackground(day)
 
         val dayOfMonth = day.dayOfMonth.convertToString()
         root.apply {
@@ -47,12 +46,12 @@ internal class CalendarMonthViewHolder(
     /**
      * Set text color of the day. If it is today, set orange color.
      * @param day [Date] object
-     * @param calendarData [CalendarData] object
      */
-    private fun setTextColor(day: Date, calendarData: CalendarData) {
-        val todayTextColor = calendarData.todayTextColor
+    private fun setTextColor(day: Date) {
+        val todayTextColor = CalendarManager.data.todayTextColor
+        val calendarDayTextColor = CalendarManager.data.dayTextColor
         val defaultTextColor =
-            if (calendarData.dayTextColor == 0) defaultTextColor else calendarData.dayTextColor
+            if (calendarDayTextColor == 0) defaultTextColor else calendarDayTextColor
 
         val isToday = day.isToday()
 
@@ -67,11 +66,11 @@ internal class CalendarMonthViewHolder(
     /**
      * Set background of the day. If it is selected, set orange background.
      * @param day [Date] object
-     * @param calendarData [CalendarData] object
      */
-    private fun setBackground(day: Date, calendarData: CalendarData) {
+    private fun setBackground(day: Date) {
+        val calendarData = CalendarManager.data
         val isSelected = calendarData.selectedDate.isEqual(day)
-        val markedDay = CalendarData.findMarkedDay(calendarData, day)
+        val markedDay = CalendarManager.findMarkedDay(day)
         val lineDate = calendarData.lineDate
 
         if (markedDay != null)
@@ -84,7 +83,11 @@ internal class CalendarMonthViewHolder(
                 lineDate.isInRange(day) -> lineInRangeDrawable
                 else -> null
             }
-            lineDrawable?.setColor(calendarData.lineBackgroundColor)
+            val color =
+                if (isSelected) calendarData.selectedDateBackgroundColor
+                else markedDay?.color ?: calendarData.lineBackgroundColor
+
+            lineDrawable?.setColor(color)
         }
 
         val selectedBackgroundColor = calendarData.selectedDateBackgroundColor

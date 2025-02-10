@@ -2,21 +2,20 @@ package com.avcialper.owlcalendar.adapter.calendarmonth
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.avcialper.owlcalendar.adapter.BaseAdapter
-import com.avcialper.owlcalendar.data.models.CalendarData
+import androidx.recyclerview.widget.RecyclerView
 import com.avcialper.owlcalendar.data.models.Date
 import com.avcialper.owlcalendar.data.models.MarkedDay
 import com.avcialper.owlcalendar.data.models.findIndex
 import com.avcialper.owlcalendar.databinding.CalendarDayBinding
+import com.avcialper.owlcalendar.helper.CalendarManager
 
 internal class CalendarMonthAdapter(
     private val days: List<Date?>,
-    private val calendarData: CalendarData,
     private val onDayClickListener: (Date) -> Unit
-) : BaseAdapter<CalendarMonthViewHolder>() {
+) : RecyclerView.Adapter<CalendarMonthViewHolder>() {
 
     init {
-        CalendarData.setOnDayUpdateListener(calendarData, ::onDayUpdateListener)
+        CalendarManager.setOnDayUpdateListener(::onDayUpdateListener)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarMonthViewHolder {
@@ -29,7 +28,7 @@ internal class CalendarMonthAdapter(
         val day = days[position]
 
         if (day != null) {
-            holder.bind(day, calendarData) { date ->
+            holder.bind(day) { date ->
                 handleDayClick(date)
                 onDayClickListener.invoke(date)
             }
@@ -42,8 +41,8 @@ internal class CalendarMonthAdapter(
      * Handle click of the day.
      * @param date Clicked day instance
      */
-    override fun handleDayClick(date: Date) {
-        val selectedDate = calendarData.selectedDate
+    private fun handleDayClick(date: Date) {
+        val selectedDate = CalendarManager.data.selectedDate
         val oldPosition = days.findIndex(selectedDate)
         val newPosition = days.findIndex(date)
 

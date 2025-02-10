@@ -44,111 +44,95 @@ internal class CalendarData {
         this.calendarMode = calendarMode
     }
 
-    companion object {
 
-        /**
-         * Add new marked days to the list.
-         * @param instance Instance of the calendar
-         * @param newDays New marked days
-         */
-        fun addMarkedDays(instance: CalendarData, newDays: List<MarkedDay>) {
-            newDays.forEach { date ->
-                addMarkedDay(instance, date)
-            }
+    /**
+     * Add new marked days to the list.
+     * @param newDays New marked days
+     */
+    fun addMarkedDays(newDays: List<MarkedDay>) {
+        newDays.forEach { date ->
+            addMarkedDay(date)
         }
-
-        /**
-         * Add new marked day to the list.
-         * @param instance Instance of the calendar
-         * @param date New marked day
-         */
-        fun addMarkedDay(instance: CalendarData, date: MarkedDay) {
-            val existingDay = findMarkedDay(instance, date)
-            if (existingDay != null) {
-                if (existingDay.color == date.color) return
-                existingDay.color = date.color
-            } else {
-                instance.markedDays.add(date)
-            }
-            instance.onMarkedDayAddedListener?.invoke(date)
-        }
-
-        /**
-         * Find marked day by date.
-         * @param instance Instance of the calendar
-         * @param date Date of the marked day
-         */
-        fun findMarkedDay(instance: CalendarData, date: MarkedDay): MarkedDay? =
-            instance.markedDays.findMarkedDay(date)
-
-        /**
-         * Find marked day by date.
-         * @param instance Instance of the calendar
-         * @param date Date of the marked day
-         */
-        fun findMarkedDay(instance: CalendarData, date: Date): MarkedDay? =
-            instance.markedDays.findMarkedDay(date)
-
-        /**
-         * Set listener for new marked day.
-         * @param instance Instance of the calendar
-         */
-        fun setOnMarkedDayAddedListener(instance: CalendarData, listener: (MarkedDay) -> Unit) {
-            instance.onMarkedDayAddedListener = listener
-        }
-
-        /**
-         * Set listener for day update.
-         * @param instance Instance of the calendar
-         */
-        fun setOnDayUpdateListener(instance: CalendarData, listener: (MarkedDay) -> Unit) {
-            instance.onDayUpdateListener = listener
-        }
-
-        /**
-         * Update marked day.
-         * @param instance Instance of the calendar
-         * @param markedDay Marked day
-         */
-        fun onDayUpdate(instance: CalendarData, markedDay: MarkedDay) {
-            instance.onDayUpdateListener?.invoke(markedDay)
-        }
-
-        /**
-         * Update selected date.
-         * @param instance Instance of the calendar
-         */
-        fun updateSelectedDate(instance: CalendarData, selectedDate: SelectedDate) {
-            instance.selectedDate = selectedDate
-        }
-
-        /**
-         * Add new line date to the list.
-         * @param instance Instance of the calendar
-         * @param lineDate New line date
-         */
-        fun setLineDate(instance: CalendarData, lineDate: LineDate) {
-            instance.lineDate = lineDate
-            instance.onLineDateChangeListener?.invoke(lineDate)
-        }
-
-        /**
-         * Set listener for new line date.
-         * @param instance Instance of the calendar
-         * @param listener Listener for new line date
-         */
-        fun setOnLineDateChangeListener(instance: CalendarData, listener: (LineDate) -> Unit) {
-            instance.onLineDateChangeListener = listener
-        }
-
-        fun clearLineDate(instance: CalendarData) {
-            val oldLineDate = instance.lineDate
-            instance.lineDate = null
-
-            if (oldLineDate != null)
-                instance.onLineDateChangeListener?.invoke(oldLineDate)
-        }
-
     }
 
+    /**
+     * Add new marked day to the list.
+     * @param date New marked day
+     */
+    fun addMarkedDay(date: MarkedDay) {
+        val existingDay = findMarkedDay(date)
+        if (existingDay != null) {
+            if (existingDay.color == date.color) return
+            existingDay.color = date.color
+        } else {
+            markedDays.add(date)
+        }
+        onMarkedDayAddedListener?.invoke(date)
+    }
+
+    /**
+     * Find marked day by date.
+     * @param date Date of the marked day
+     */
+    fun findMarkedDay(date: MarkedDay): MarkedDay? = markedDays.findMarkedDay(date)
+
+    /**
+     * Find marked day by date.
+     * @param date Date of the marked day
+     */
+    fun findMarkedDay(date: Date): MarkedDay? = markedDays.findMarkedDay(date)
+
+    /**
+     * Set listener for new marked day.
+     */
+    fun setOnMarkedDayAddedListener(listener: (MarkedDay) -> Unit) {
+        onMarkedDayAddedListener = listener
+    }
+
+    /**
+     * Set listener for day update.
+     */
+    fun setOnDayUpdateListener(listener: (MarkedDay) -> Unit) {
+        onDayUpdateListener = listener
+    }
+
+    /**
+     * Update marked day.
+     * @param markedDay Marked day
+     */
+    fun onDayUpdate(markedDay: MarkedDay) {
+        onDayUpdateListener?.invoke(markedDay)
+    }
+
+    /**
+     * Set listener for new line date.
+     * @param listener Listener for new line date
+     */
+    fun setOnLineDateChangeListener(listener: (LineDate) -> Unit) {
+        onLineDateChangeListener = listener
+    }
+
+    /**
+     * Clear line date.
+     */
+    fun clearLineDate() {
+        val oldLineDate = lineDate
+        lineDate = null
+
+        if (oldLineDate != null)
+            onLineDateChangeListener?.invoke(oldLineDate)
+    }
+
+    /**
+     * Clear marked days.
+     */
+    fun clearMarkedDays() {
+        val oldMarkedDays = markedDays
+        markedDays.clear()
+
+        if (oldMarkedDays.isNotEmpty())
+            oldMarkedDays.forEach {
+                onMarkedDayAddedListener?.invoke(it)
+            }
+    }
 }

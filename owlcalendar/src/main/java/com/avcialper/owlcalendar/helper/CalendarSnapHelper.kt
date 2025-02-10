@@ -3,12 +3,14 @@ package com.avcialper.owlcalendar.helper
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 
-internal class CalendarSnapHelper(
-    private val onPositionChanged: (Int) -> Unit
-) : PagerSnapHelper() {
+internal class CalendarSnapHelper : PagerSnapHelper() {
 
     private var recyclerView: RecyclerView? = null
-    private var position = 1
+    private var position: Int
+        get() = CalendarManager.data.calendarPosition
+        set(value) {
+            CalendarManager.data.calendarPosition = value
+        }
 
     override fun attachToRecyclerView(recyclerView: RecyclerView?) {
         super.attachToRecyclerView(recyclerView)
@@ -25,17 +27,7 @@ internal class CalendarSnapHelper(
         else
             position--
 
-        onPositionChanged(position)
-
         return position
-    }
-
-    /**
-     * Set current position to 1.
-     */
-    fun addedNewItemOnStart() {
-        onPositionChanged(1)
-        position = 1
     }
 
 }

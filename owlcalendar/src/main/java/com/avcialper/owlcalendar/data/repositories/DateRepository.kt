@@ -12,20 +12,12 @@ internal class DateRepository {
 
     /**
      * Initializes a date list containing the dates for yesterday, today, and tomorrow.
-     *
-     * The current date is determined using the `JDateTime` instance. Based on this:
-     * - `yesterday` is calculated as the previous date from today.
-     * - `today` represents the current date (year and month).
-     * - `tomorrow` is calculated as the next date from today.
-     *
+     * @param year The year of the calendar.
+     * @param month The month of the calendar.
      * @return A list of dates in the order: yesterday, today, tomorrow.
      */
-    fun getStartValues(): List<MonthAndYear> {
-        val jDateTime = JDateTime.instance
-        val currentYear = jDateTime.year
-        val currentMonth = jDateTime.month
-
-        val today = MonthAndYear(currentYear, currentMonth)
+    fun getStartValues(year: Int, month: Int): List<MonthAndYear> {
+        val today = MonthAndYear(year, month)
         val yesterday = today.prev()
         val tomorrow = today.next()
 

@@ -3,10 +3,8 @@ package com.avcialper.owlcalendar.helper
 import android.content.Context
 import androidx.recyclerview.widget.GridLayoutManager
 
-internal class CalendarLayoutManager(
-    private val context: Context,
-    orientation: Int
-) : GridLayoutManager(context, 7, orientation, false) {
+internal class CalendarLayoutManager(context: Context, orientation: Int) :
+    GridLayoutManager(context, 7, orientation, false) {
 
     init {
         // Set span size lookup

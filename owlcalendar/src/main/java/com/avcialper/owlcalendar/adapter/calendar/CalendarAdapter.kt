@@ -2,33 +2,25 @@ package com.avcialper.owlcalendar.adapter.calendar
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.avcialper.owlcalendar.adapter.BaseAdapter
-import com.avcialper.owlcalendar.data.models.CalendarData
-import com.avcialper.owlcalendar.data.models.Date
+import androidx.recyclerview.widget.RecyclerView
 import com.avcialper.owlcalendar.data.models.LineDate
 import com.avcialper.owlcalendar.data.models.MarkedDay
 import com.avcialper.owlcalendar.data.models.MonthAndYear
-import com.avcialper.owlcalendar.data.models.SelectedDate
 import com.avcialper.owlcalendar.data.models.findEndIndex
 import com.avcialper.owlcalendar.data.models.findIndex
 import com.avcialper.owlcalendar.data.models.findStartIndex
 import com.avcialper.owlcalendar.databinding.CalendarBinding
-import com.avcialper.owlcalendar.util.constants.CalendarMode
+import com.avcialper.owlcalendar.helper.CalendarManager
 
-internal class CalendarAdapter(
-    dateLists: List<MonthAndYear>,
-    private val calendarData: CalendarData,
-    private val onDayClickListener: (Date) -> Unit,
-    private val handleRangeSelection: (SelectedDate) -> Unit
-) : BaseAdapter<CalendarViewHolder>() {
+internal class CalendarAdapter(dateLists: List<MonthAndYear>) :
+    RecyclerView.Adapter<CalendarViewHolder>() {
 
     init {
-        CalendarData.setOnMarkedDayAddedListener(calendarData, ::onMarkedDayAddedListener)
-        CalendarData.setOnLineDateChangeListener(calendarData, ::onLineDateChangeListener)
+        CalendarManager.setOnMarkedDayAddedListener(::onMarkedDayAddedListener)
+        CalendarManager.setOnLineDateChangeListener(::onLineDateChangeListener)
     }
 
     private val months: MutableList<MonthAndYear> = dateLists.toMutableList()
-    private var clickedDatePosition: Int = 0
 
     /**
      * First item of the list. It change automatically.
@@ -50,10 +42,12 @@ internal class CalendarAdapter(
 
     override fun onBindViewHolder(holder: CalendarViewHolder, position: Int) {
         val date = months[position]
-        holder.bind(date, calendarData) {
-            clickedDatePosition = date.findIndex(months)
-            handleDayClick(it)
-            onDayClickListener.invoke(it)
+        holder.bind(date) {
+            val clickedDatePosition = date.findIndex(months)
+            CalendarManager.handleDayClick(it, clickedDatePosition) { itemPosition ->
+                notifyItemChanged(itemPosition)
+            }
+            CalendarManager.onDayClickListener?.invoke(it)
         }
     }
 
@@ -77,39 +71,12 @@ internal class CalendarAdapter(
         notifyItemInserted(months.size - 1)
     }
 
-    /**
-     * Handle click of the day.
-     * @param date Clicked day instance
-     */
-    override fun handleDayClick(date: Date) {
-        val oldPosition = calendarData.selectedDate.calendarPosition
-
-        if (oldPosition != clickedDatePosition) {
-            notifyItemChanged(oldPosition)
-            notifyItemChanged(clickedDatePosition)
-        }
-
-        val selectedDate = SelectedDate(
-            date.year,
-            date.month,
-            date.dayOfMonth,
-            clickedDatePosition
-        )
-
-        val isSelectable = CalendarMode.isRangeSelectable(calendarData.calendarMode)
-        if (isSelectable) {
-            handleRangeSelection.invoke(selectedDate)
-        }
-
-        CalendarData.updateSelectedDate(calendarData, selectedDate)
-    }
-
     private fun onMarkedDayAddedListener(markedDay: MarkedDay) {
-        val selectedDateCalendarPosition = calendarData.selectedDate.calendarPosition
+        val selectedDateCalendarPosition = CalendarManager.data.selectedDate.calendarPosition
         val markedDayMonthIndex = months.findIndex(markedDay)
 
         if (selectedDateCalendarPosition == markedDayMonthIndex)
-            CalendarData.onDayUpdate(calendarData, markedDay)
+            CalendarManager.onDayUpdate(markedDay)
         else
             notifyItemChanged(markedDayMonthIndex)
     }

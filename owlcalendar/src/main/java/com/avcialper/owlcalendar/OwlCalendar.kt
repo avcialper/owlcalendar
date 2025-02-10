@@ -11,11 +11,11 @@ import com.avcialper.owlcalendar.data.models.Date
 import com.avcialper.owlcalendar.data.models.LineDate
 import com.avcialper.owlcalendar.data.models.LineSelectedDate
 import com.avcialper.owlcalendar.data.models.MarkedDay
-import com.avcialper.owlcalendar.data.models.SelectedDate
 import com.avcialper.owlcalendar.data.repositories.DateRepository
+import com.avcialper.owlcalendar.helper.AttrManager
+import com.avcialper.owlcalendar.helper.CalendarManager
 import com.avcialper.owlcalendar.helper.CalendarScrollListener
 import com.avcialper.owlcalendar.helper.CalendarSnapHelper
-import com.avcialper.owlcalendar.util.constants.CalendarMode
 
 class OwlCalendar @JvmOverloads constructor(
     context: Context,
@@ -29,127 +29,34 @@ class OwlCalendar @JvmOverloads constructor(
     private val calendarData = CalendarData()
 
     // Custom PagerSnapHelper
-    private val snapHelper =
-        CalendarSnapHelper { position -> calendarData.calendarPosition = position }
-
-    private var onDayClickListener: ((Date) -> Unit) = { _ -> }
-    private var onLineDateChangeListener: ((LineSelectedDate, LineSelectedDate) -> Unit) =
-        { _, _ -> }
+    private val snapHelper = CalendarSnapHelper()
 
     init {
-        val defBackgroundColor = getColor(R.color.orange_transparent)
-        val defTodayTextColor = getColor(R.color.orange)
-        val defTextColor = 0
-        val defCalendarMode = CalendarMode.NORMAL
-
-        var selectedBackgroundColor = getAttrColor(
-            R.styleable.OwlCalendar_selected_date_background_color,
-            defBackgroundColor
-        )
-        val todayTextColor = getAttrColor(
-            R.styleable.OwlCalendar_today_text_color,
-            defTodayTextColor
-        )
-        val dayTextColor = getAttrColor(
-            R.styleable.OwlCalendar_day_text_color,
-            defTextColor
-        )
-        val dayNameTextColor = getAttrColor(
-            R.styleable.OwlCalendar_day_name_text_color,
-            defTextColor
-        )
-        val dateTextColor = getAttrColor(
-            R.styleable.OwlCalendar_date_text_color,
-            defTextColor
-        )
-        val lineBackgroundColor = getAttrColor(
-            R.styleable.OwlCalendar_line_background_color,
-            defBackgroundColor
-        )
-        val calendarModeValue = getAttrInt(R.styleable.OwlCalendar_mode, defCalendarMode.value)
-        val calendarMode = CalendarMode.fromValue(calendarModeValue)
-
-        if (CalendarMode.isRangeSelectable(calendarMode) && lineBackgroundColor != selectedBackgroundColor)
-            selectedBackgroundColor = lineBackgroundColor
-
-
-        typedArray.recycle()
-
-        calendarData.setAttrs(
-            selectedBackgroundColor,
-            todayTextColor,
-            dayTextColor,
-            dayNameTextColor,
-            dateTextColor,
-            lineBackgroundColor,
-            calendarMode
-        )
-
+        CalendarManager.data = calendarData
+        AttrManager(typedArray, context) {
+            typedArray.recycle()
+        }
         initAdapter()
+        CalendarManager.calendarAdapter = adapter as CalendarAdapter
     }
-
-    private fun getAttrColor(id: Int, defVal: Int): Int = typedArray.getColor(id, defVal)
-
-    private fun getAttrInt(id: Int, defVal: Int): Int = typedArray.getInt(id, defVal)
-
-    private fun getColor(id: Int): Int = context.getColor(id)
 
     /**
      * Initialize adapter.
      */
     private fun initAdapter() {
-        val dateList = DateRepository().getStartValues()
+        val (year, month, _, _) = CalendarManager.data.selectedDate
+        val dateList = DateRepository().getStartValues(year, month)
         itemAnimator = null
 
         layoutManager = LinearLayoutManager(context, HORIZONTAL, false)
-        adapter =
-            CalendarAdapter(dateList, calendarData, ::handleDayClick, ::handleRangeSelection)
+        adapter = CalendarAdapter(dateList)
 
         snapHelper.attachToRecyclerView(this)
 
-        val calendarScrollListener = CalendarScrollListener(::onPositionChanged)
+        val calendarScrollListener = CalendarScrollListener()
         addOnScrollListener(calendarScrollListener)
 
         scrollToPosition(1)
-    }
-
-    /**
-     * Used to process a calendar position change. When the calendar is shifted to the first item,
-     * the new item is added to the beginning of the date list. And when the calendar is shifted
-     * to the last item, the new item is added at the end of the date list. In this way the calendar
-     * data is automatically updated.
-     */
-    private fun onPositionChanged() {
-        adapter?.let {
-            val adapter = it as CalendarAdapter
-            val position = calendarData.calendarPosition
-            if (position == 0) {
-                handleFirstItemSwipe()
-                snapHelper.addedNewItemOnStart()
-            } else if (position == adapter.itemCount - 1)
-                handleLastItemSwipe()
-        }
-    }
-
-    /**
-     * Handles the swipe gesture on the first item in the list.
-     * Adds the previous month to the beginning of the calendar adapter.
-     */
-    private fun handleFirstItemSwipe() {
-        val adapter = adapter as CalendarAdapter
-        val prevMonth = adapter.firstItem.prev()
-        adapter.addItemToStart(prevMonth)
-        calendarData.selectedDate.increasePosition()
-    }
-
-    /**
-     * Handles the swipe gesture on the last item in the list.
-     * Adds the next month to the end of the calendar adapter.
-     */
-    private fun handleLastItemSwipe() {
-        val adapter = adapter as CalendarAdapter
-        val nextMonth = adapter.lastItem.next()
-        adapter.addItemToEnd(nextMonth)
     }
 
     /**
@@ -158,9 +65,7 @@ class OwlCalendar @JvmOverloads constructor(
      * @param newDays New marked days
      */
     fun addMarkedDays(newDays: List<MarkedDay>) {
-        val isSelectableType = CalendarMode.isSelectable(calendarData.calendarMode)
-        if (isSelectableType) return
-        CalendarData.addMarkedDays(calendarData, newDays)
+        CalendarManager.addMarkedDays(newDays)
     }
 
     /**
@@ -169,67 +74,15 @@ class OwlCalendar @JvmOverloads constructor(
      * @param newDay New marked day
      */
     fun addMarkedDay(newDay: MarkedDay) {
-        val isSelectableType = CalendarMode.isSelectable(calendarData.calendarMode)
-        if (isSelectableType) return
-        CalendarData.addMarkedDay(calendarData, newDay)
-    }
-
-    /**
-     * Add new line date to the list.
-     * @param lineDate New line date
-     */
-    fun setLineDate(lineDate: LineDate) {
-        val isSingleSelectable = CalendarMode.isSingleSelectable(calendarData.calendarMode)
-        if (isSingleSelectable) return
-
-        val isRangeSelectable = CalendarMode.isRangeSelectable(calendarData.calendarMode)
-        if (isRangeSelectable) {
-            val (year, month, dayOfMonth) = lineDate.startDate
-            val selectedDate = SelectedDate(year, month, dayOfMonth, calendarData.calendarPosition)
-            calendarData.selectedDate = selectedDate
-        }
-
-        CalendarData.setLineDate(calendarData, lineDate)
+        CalendarManager.addMarkedDay(newDay)
     }
 
     /**
      * Handle click of the day.
-     * @param date Clicked day instancenot
+     * @param date Clicked day instance
      */
     private fun handleDayClick(date: Date) {
-        onDayClickListener.invoke(date)
-    }
-
-    /**
-     * Handle range selection.
-     * @param date Selected date
-     */
-    private fun handleRangeSelection(date: SelectedDate) {
-        val oldSelectedDate = calendarData.selectedDate
-        val isEqual = oldSelectedDate.isEqual(date)
-
-        if (isEqual || calendarData.lineDate != null) {
-            CalendarData.clearLineDate(calendarData)
-            return
-        }
-
-        val isBefore = oldSelectedDate.isBefore(date)
-        val startDate = if (isBefore) oldSelectedDate else date
-        val endDate = if (isBefore) date else oldSelectedDate
-
-        val start = LineSelectedDate(
-            startDate.year,
-            startDate.month,
-            startDate.dayOfMonth
-        )
-        val end = LineSelectedDate(
-            endDate.year,
-            endDate.month,
-            endDate.dayOfMonth
-        )
-        val lineDate = LineDate(start, end)
-        setLineDate(lineDate)
-        onLineDateChangeListener.invoke(start, end)
+        CalendarManager.onDayClickListener?.invoke(date)
     }
 
     /**
@@ -237,7 +90,7 @@ class OwlCalendar @JvmOverloads constructor(
      * @param listener Click listener.
      */
     fun setOnDayClickListener(listener: (Date) -> Unit) {
-        onDayClickListener = listener
+        CalendarManager.onDayClickListener = listener
     }
 
     /**
@@ -245,6 +98,19 @@ class OwlCalendar @JvmOverloads constructor(
      * @param listener Listener
      */
     fun setOnLineDateChangeListener(listener: (LineSelectedDate, LineSelectedDate) -> Unit) {
-        onLineDateChangeListener = listener
+        CalendarManager.onLineDateChangeListener = listener
+    }
+
+    fun setLineDate(lineDate: LineDate) {
+        CalendarManager.setLineDate(lineDate)
+    }
+
+    /**
+     * Updates the calendar state with the provided data.
+     * Call this function to restore the calendar data when the calendar manager instance
+     * needs to be reinitialized or updated with new data during the app's lifecycle.
+     */
+    fun restore() {
+        CalendarManager.restore(calendarData)
     }
 }

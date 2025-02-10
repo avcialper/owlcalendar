@@ -5,12 +5,12 @@ import android.widget.LinearLayout.VERTICAL
 import androidx.recyclerview.widget.RecyclerView
 import com.avcialper.owlcalendar.adapter.calendardayname.CalendarDayNameAdapter
 import com.avcialper.owlcalendar.adapter.calendarmonth.CalendarMonthAdapter
-import com.avcialper.owlcalendar.data.models.CalendarData
 import com.avcialper.owlcalendar.data.models.Date
 import com.avcialper.owlcalendar.data.models.MonthAndYear
 import com.avcialper.owlcalendar.data.repositories.DateRepository
 import com.avcialper.owlcalendar.databinding.CalendarBinding
 import com.avcialper.owlcalendar.helper.CalendarLayoutManager
+import com.avcialper.owlcalendar.helper.CalendarManager
 import com.avcialper.owlcalendar.util.constants.Constants
 import java.util.Locale
 
@@ -32,15 +32,14 @@ internal class OwlMonthCalendar(private val binding: CalendarBinding) {
      */
     fun init(
         monthAndYear: MonthAndYear,
-        calendarData: CalendarData,
         onDayClickListener: (Date) -> Unit
     ) {
         val year = monthAndYear.year
         val month = monthAndYear.month
 
-        initHeader(year, month, calendarData)
-        initCalendarDayNameAdapter(calendarData)
-        initCalendarAdapter(year, month, calendarData, onDayClickListener)
+        initHeader(year, month)
+        initCalendarDayNameAdapter()
+        initCalendarAdapter(year, month, onDayClickListener)
     }
 
     /**
@@ -48,13 +47,14 @@ internal class OwlMonthCalendar(private val binding: CalendarBinding) {
      * @param year Year of the calendar
      * @param month Month of the calendar
      */
-    private fun initHeader(year: Int, month: Int, calendarData: CalendarData) {
+    private fun initHeader(year: Int, month: Int) {
         val monthName = Constants.monthNames[month]
         val locale = Locale.getDefault()
         val label = String.format(locale, "%s %d", monthName, year)
 
+        val dateTextColor = CalendarManager.data.dateTextColor
         val textColor =
-            if (calendarData.dateTextColor == 0) defaultTextColor else calendarData.dateTextColor
+            if (dateTextColor == 0) defaultTextColor else dateTextColor
 
         binding.tvCalendarHeader.apply {
             text = label
@@ -65,10 +65,10 @@ internal class OwlMonthCalendar(private val binding: CalendarBinding) {
     /**
      * Initialize adapter for calendar day name. It's name of the days.
      */
-    private fun initCalendarDayNameAdapter(calendarData: CalendarData) {
+    private fun initCalendarDayNameAdapter() {
         val dayNames = Constants.dayNames
         calendarLayoutManager = CalendarLayoutManager(context, RecyclerView.VERTICAL)
-        calendarDayNameAdapter = CalendarDayNameAdapter(dayNames, calendarData)
+        calendarDayNameAdapter = CalendarDayNameAdapter(dayNames)
 
         binding.rvCalendarDayName.apply {
             itemAnimator = null
@@ -86,12 +86,11 @@ internal class OwlMonthCalendar(private val binding: CalendarBinding) {
     private fun initCalendarAdapter(
         year: Int,
         month: Int,
-        calendarData: CalendarData,
         onDayClickListener: (Date) -> Unit
     ) {
         val days = DateRepository().getDays(year, month)
         val calendarLayoutManager = CalendarLayoutManager(context, VERTICAL)
-        calendarMonthAdapter = CalendarMonthAdapter(days, calendarData, onDayClickListener)
+        calendarMonthAdapter = CalendarMonthAdapter(days, onDayClickListener)
 
         binding.rvCalendar.apply {
             setHasFixedSize(true)
