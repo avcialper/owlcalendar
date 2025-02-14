@@ -42,25 +42,22 @@ internal object CalendarManager {
     }
 
     fun addMarkedDays(newDays: List<MarkedDay>) {
-        val mode = data.calendarMode
-        val isSelectableMode = CalendarMode.isSelectable(mode)
+        val isSelectableMode = data.calendarMode.isSelectable()
         if (isSelectableMode) return
         data.addMarkedDays(newDays)
     }
 
     fun addMarkedDay(newDay: MarkedDay) {
-        val mode = data.calendarMode
-        val isSelectableMode = CalendarMode.isSelectable(mode)
+        val isSelectableMode = data.calendarMode.isSelectable()
         if (isSelectableMode) return
         data.addMarkedDay(newDay)
     }
 
     fun setLineDate(lineDate: LineDate) {
-        val mode = data.calendarMode
-        val isSingleSelectable = CalendarMode.isSingleSelectable(mode)
+        val isSingleSelectable = data.calendarMode.isSingleSelectable()
         if (isSingleSelectable) return
 
-        val isRangeSelectable = CalendarMode.isRangeSelectable(mode)
+        val isRangeSelectable = data.calendarMode.isRangeSelectable()
         if (isRangeSelectable) {
             val (year, moth, dayOfMonth) = lineDate.startDate
             val selectedDate = SelectedDate(year, moth, dayOfMonth, data.calendarPosition)
@@ -107,8 +104,7 @@ internal object CalendarManager {
 
         val selectedDate = SelectedDate(date.year, date.month, date.dayOfMonth, clickedPosition)
 
-        val mode = data.calendarMode
-        val isSelectableMode = CalendarMode.isRangeSelectable(mode)
+        val isSelectableMode = data.calendarMode.isRangeSelectable()
         if (isSelectableMode) {
             handleRangeSelection(selectedDate)
         }
@@ -196,7 +192,7 @@ internal object CalendarManager {
     fun setStartDate(year: Int, month: Int, onCompleteListener: () -> Unit) {
         data.startDate = YearAndMonth(year, month)
         calendarAdapter?.let {
-            val dateList = DateRepository().getStartValues(year, month)
+            val dateList = DateRepository.getStartValues(year, month)
             it.updateDateList(dateList)
             data.calendarPosition = 1
             onCompleteListener.invoke()

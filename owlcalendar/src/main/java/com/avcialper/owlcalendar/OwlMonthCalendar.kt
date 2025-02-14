@@ -11,7 +11,6 @@ import com.avcialper.owlcalendar.data.repositories.DateRepository
 import com.avcialper.owlcalendar.databinding.CalendarBinding
 import com.avcialper.owlcalendar.helper.CalendarLayoutManager
 import com.avcialper.owlcalendar.helper.CalendarManager
-import com.avcialper.owlcalendar.util.constants.Constants
 import java.util.Locale
 
 internal class OwlMonthCalendar(private val binding: CalendarBinding) {
@@ -47,7 +46,7 @@ internal class OwlMonthCalendar(private val binding: CalendarBinding) {
      * @param month Month of the calendar
      */
     private fun initHeader(year: Int, month: Int) {
-        val monthNames = Constants.getLocalizedMonthNames()
+        val monthNames = DateRepository.getLocalizedMonthNames()
         val monthName = monthNames[month]
         val locale = Locale.getDefault()
         val label = String.format(locale, "%s %d", monthName, year)
@@ -66,7 +65,7 @@ internal class OwlMonthCalendar(private val binding: CalendarBinding) {
      * Initialize adapter for calendar day name. It's name of the days.
      */
     private fun initCalendarDayNameAdapter() {
-        val dayNames = Constants.getLocalizedDayNames()
+        val dayNames = DateRepository.getLocalizedDayNames()
         calendarLayoutManager = CalendarLayoutManager(context, RecyclerView.VERTICAL)
         calendarDayNameAdapter = CalendarDayNameAdapter(dayNames)
 
@@ -88,7 +87,7 @@ internal class OwlMonthCalendar(private val binding: CalendarBinding) {
         month: Int,
         onDayClickListener: (Date) -> Unit
     ) {
-        val days = DateRepository().getDays(year, month)
+        val days = DateRepository.getDays(year, month)
         val calendarLayoutManager = CalendarLayoutManager(context, VERTICAL)
         calendarMonthAdapter = CalendarMonthAdapter(days, onDayClickListener)
 

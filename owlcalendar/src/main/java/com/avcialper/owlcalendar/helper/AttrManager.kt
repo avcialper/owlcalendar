@@ -64,9 +64,6 @@ internal class AttrManager(
         val calendarModeValue = getInt(R.styleable.OwlCalendar_mode, defCalendarMode.value)
         val calendarMode = CalendarMode.fromValue(calendarModeValue)
 
-        if (CalendarMode.isRangeSelectable(calendarMode) && lineBackgroundColor != selectedBackgroundColor)
-            selectedBackgroundColor = lineBackgroundColor
-
         CalendarManager.setAttrs(
             selectedBackgroundColor,
             todayTextColor,

@@ -90,7 +90,9 @@ internal class CalendarMonthViewHolder(
             lineDrawable?.setColor(color)
         }
 
-        val selectedBackgroundColor = calendarData.selectedDateBackgroundColor
+        val isRangeSelectable = calendarData.calendarMode.isRangeSelectable()
+        val selectedBackgroundColor =
+            if (isRangeSelectable) calendarData.lineBackgroundColor else calendarData.selectedDateBackgroundColor
         selectedDrawable.setColor(selectedBackgroundColor)
 
         val drawable = when {

@@ -28,6 +28,12 @@ class OwlCalendar @JvmOverloads constructor(
     // Custom PagerSnapHelper
     private val snapHelper = CalendarSnapHelper()
 
+    var mode: CalendarMode
+        get() = CalendarManager.data.calendarMode
+        set(value) {
+            CalendarManager.data.calendarMode = value
+        }
+
     init {
         val typedArray =
             context.obtainStyledAttributes(attrs, R.styleable.OwlCalendar, defStyleAttr, 0)
@@ -45,7 +51,7 @@ class OwlCalendar @JvmOverloads constructor(
      */
     private fun initAdapter() {
         val (year, month, _, _) = CalendarManager.data.selectedDate
-        val dateList = DateRepository().getStartValues(year, month)
+        val dateList = DateRepository.getStartValues(year, month)
         itemAnimator = null
 
         layoutManager = LinearLayoutManager(context, HORIZONTAL, false)
@@ -108,8 +114,7 @@ class OwlCalendar @JvmOverloads constructor(
      */
     fun setLineDate(lineDate: LineDate) {
         CalendarManager.setLineDate(lineDate)
-        val mode = CalendarManager.data.calendarMode
-        val isRangeSelectableMode = CalendarMode.isRangeSelectable(mode)
+        val isRangeSelectableMode = CalendarManager.data.calendarMode.isRangeSelectable()
         if (isRangeSelectableMode) {
             val (year, month, _) = lineDate.startDate
             setStartDate(year, month)
