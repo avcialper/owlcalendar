@@ -15,6 +15,12 @@ internal class CalendarData {
     private var onDayUpdateListener: ((MarkedDay) -> Unit)? = null
 
     var lineDate: LineDate? = null
+        set(value) {
+            field = value
+            value?.let {
+                onLineDateChangeListener?.invoke(it)
+            }
+        }
     private var onLineDateChangeListener: ((LineDate) -> Unit)? = null
 
     var calendarPosition = 1

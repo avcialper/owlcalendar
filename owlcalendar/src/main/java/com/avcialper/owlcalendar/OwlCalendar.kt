@@ -1,7 +1,6 @@
 package com.avcialper.owlcalendar
 
 import android.content.Context
-import android.content.res.TypedArray
 import android.util.AttributeSet
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,6 +15,7 @@ import com.avcialper.owlcalendar.helper.AttrManager
 import com.avcialper.owlcalendar.helper.CalendarManager
 import com.avcialper.owlcalendar.helper.CalendarScrollListener
 import com.avcialper.owlcalendar.helper.CalendarSnapHelper
+import com.avcialper.owlcalendar.util.constants.CalendarMode
 
 class OwlCalendar @JvmOverloads constructor(
     context: Context,
@@ -23,15 +23,15 @@ class OwlCalendar @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : RecyclerView(context, attrs, defStyleAttr) {
 
-    private var typedArray: TypedArray =
-        context.obtainStyledAttributes(attrs, R.styleable.OwlCalendar, defStyleAttr, 0)
-
     private val calendarData = CalendarData()
 
     // Custom PagerSnapHelper
     private val snapHelper = CalendarSnapHelper()
 
     init {
+        val typedArray =
+            context.obtainStyledAttributes(attrs, R.styleable.OwlCalendar, defStyleAttr, 0)
+
         CalendarManager.data = calendarData
         AttrManager(typedArray, context) {
             typedArray.recycle()
@@ -101,8 +101,19 @@ class OwlCalendar @JvmOverloads constructor(
         CalendarManager.onLineDateChangeListener = listener
     }
 
+    /**
+     * Set line date.
+     * If the calendar is in range selectable mode, scroll to the start of the line date.
+     * @param lineDate Line date.
+     */
     fun setLineDate(lineDate: LineDate) {
         CalendarManager.setLineDate(lineDate)
+        val mode = CalendarManager.data.calendarMode
+        val isRangeSelectableMode = CalendarMode.isRangeSelectable(mode)
+        if (isRangeSelectableMode) {
+            val (year, month, _) = lineDate.startDate
+            setStartDate(year, month)
+        }
     }
 
     /**
