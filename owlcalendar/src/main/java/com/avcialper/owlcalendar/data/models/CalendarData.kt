@@ -9,6 +9,7 @@ internal class CalendarData {
     var selectedDate = SelectedDate(jDateTime.year, jDateTime.month, jDateTime.dayOfMonth, null)
 
     var startDate = YearAndMonth(jDateTime.year, jDateTime.month)
+    var onStartDateChangeListener: (() -> Unit)? = null
 
     private val markedDays = mutableListOf<MarkedDay>()
     private var onMarkedDayAddedListener: ((MarkedDay) -> Unit)? = null
@@ -33,6 +34,8 @@ internal class CalendarData {
     var dateTextColor: Int = 0
     var lineBackgroundColor: Int = 0
     var calendarMode: CalendarMode = CalendarMode.NORMAL
+    var pickerButtonTextColor: Int = 0
+    var pickerButtonText: String = ""
 
     fun setAttrs(
         selectedDateBackgroundColor: Int,
@@ -41,7 +44,9 @@ internal class CalendarData {
         dayNameTextColor: Int,
         dateTextColor: Int,
         lineBackgroundColor: Int,
-        calendarMode: CalendarMode
+        calendarMode: CalendarMode,
+        pickerButtonTextColor: Int,
+        pickerButtonText: String
     ) {
         this.selectedDateBackgroundColor = selectedDateBackgroundColor
         this.todayTextColor = todayTextColor
@@ -50,6 +55,8 @@ internal class CalendarData {
         this.dateTextColor = dateTextColor
         this.lineBackgroundColor = lineBackgroundColor
         this.calendarMode = calendarMode
+        this.pickerButtonTextColor = pickerButtonTextColor
+        this.pickerButtonText = pickerButtonText
     }
 
 

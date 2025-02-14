@@ -36,8 +36,22 @@ internal class AttrManager(
      */
     private fun getInt(index: Int, defVal: Int): Int = typedArray.getInt(index, defVal)
 
+    /**
+     * Get string from the attributes.
+     * @param index Attribute index
+     * @param defVal Default value
+     */
+    private fun getString(index: Int, defVal: String): String =
+        typedArray.getString(index) ?: defVal
+
+    /**
+     * Get string from resources.
+     * @param id Resource id
+     */
+    private fun getString(id: Int): String = context.getString(id)
+
     init {
-        var selectedBackgroundColor = getColor(
+        val selectedBackgroundColor = getColor(
             R.styleable.OwlCalendar_selected_date_background_color,
             defBackgroundColor
         )
@@ -61,6 +75,15 @@ internal class AttrManager(
             R.styleable.OwlCalendar_line_background_color,
             defBackgroundColor
         )
+        val pickerButtonTextColor = getColor(
+            R.styleable.OwlCalendar_picker_button_text_color,
+            defTodayTextColor
+        )
+        val pickerButtonText = getString(
+            R.styleable.OwlCalendar_picker_button_text,
+            getString(R.string.confirm)
+        )
+
         val calendarModeValue = getInt(R.styleable.OwlCalendar_mode, defCalendarMode.value)
         val calendarMode = CalendarMode.fromValue(calendarModeValue)
 
@@ -71,7 +94,9 @@ internal class AttrManager(
             dayNameTextColor,
             dateTextColor,
             lineBackgroundColor,
-            calendarMode
+            calendarMode,
+            pickerButtonTextColor,
+            pickerButtonText
         )
 
         onCompleteListener.invoke()

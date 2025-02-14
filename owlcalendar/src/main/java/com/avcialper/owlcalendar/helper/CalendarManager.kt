@@ -28,7 +28,9 @@ internal object CalendarManager {
         dayNameTextColor: Int,
         dateTextColor: Int,
         lineBackgroundColor: Int,
-        calendarMode: CalendarMode
+        calendarMode: CalendarMode,
+        pickerButtonTextColor: Int,
+        pickerButtonText: String
     ) {
         data.setAttrs(
             selectedDateBackgroundColor,
@@ -37,7 +39,9 @@ internal object CalendarManager {
             dayNameTextColor,
             dateTextColor,
             lineBackgroundColor,
-            calendarMode
+            calendarMode,
+            pickerButtonTextColor,
+            pickerButtonText
         )
     }
 
@@ -186,16 +190,14 @@ internal object CalendarManager {
     /**
      * Set start date for the calendar.
      * @param year Year of the start date
-     * @param month Month of the start date
-     * @param onCompleteListener Callback function to be executed when the start date is set.
      */
-    fun setStartDate(year: Int, month: Int, onCompleteListener: () -> Unit) {
+    fun setStartDate(year: Int, month: Int) {
         data.startDate = YearAndMonth(year, month)
         calendarAdapter?.let {
             val dateList = DateRepository.getStartValues(year, month)
             it.updateDateList(dateList)
             data.calendarPosition = 1
-            onCompleteListener.invoke()
+            data.onStartDateChangeListener?.invoke()
         }
     }
 }

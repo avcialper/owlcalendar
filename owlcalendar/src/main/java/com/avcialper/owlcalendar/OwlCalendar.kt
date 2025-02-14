@@ -35,13 +35,17 @@ class OwlCalendar @JvmOverloads constructor(
         }
 
     init {
+        CalendarManager.data = calendarData
+        CalendarManager.data.onStartDateChangeListener = {
+            scrollToPosition(1)
+        }
+
         val typedArray =
             context.obtainStyledAttributes(attrs, R.styleable.OwlCalendar, defStyleAttr, 0)
-
-        CalendarManager.data = calendarData
         AttrManager(typedArray, context) {
             typedArray.recycle()
         }
+
         initAdapter()
         CalendarManager.calendarAdapter = adapter as CalendarAdapter
     }
@@ -136,8 +140,6 @@ class OwlCalendar @JvmOverloads constructor(
      * @param month Month of the start date
      */
     fun setStartDate(year: Int, month: Int) {
-        CalendarManager.setStartDate(year, month) {
-            scrollToPosition(1)
-        }
+        CalendarManager.setStartDate(year, month)
     }
 }

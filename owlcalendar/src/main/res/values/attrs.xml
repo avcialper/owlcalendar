@@ -7,6 +7,8 @@
         <attr name="day_name_text_color" format="color" />
         <attr name="date_text_color" format="color" />
         <attr name="line_background_color" format="color" />
+        <attr name="picker_button_text_color" format="color" />
+        <attr name="picker_button_text" format="string" />
         <attr name="mode" format="enum">
             <enum name="normal" value="0" />
             <enum name="single_selectable" value="1" />
