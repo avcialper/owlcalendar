@@ -47,7 +47,8 @@ internal class OwlMonthCalendar(private val binding: CalendarBinding) {
      * @param month Month of the calendar
      */
     private fun initHeader(year: Int, month: Int) {
-        val monthName = Constants.monthNames[month]
+        val monthNames = Constants.getLocalizedMonthNames()
+        val monthName = monthNames[month]
         val locale = Locale.getDefault()
         val label = String.format(locale, "%s %d", monthName, year)
 
@@ -65,7 +66,7 @@ internal class OwlMonthCalendar(private val binding: CalendarBinding) {
      * Initialize adapter for calendar day name. It's name of the days.
      */
     private fun initCalendarDayNameAdapter() {
-        val dayNames = Constants.dayNames
+        val dayNames = Constants.getLocalizedDayNames()
         calendarLayoutManager = CalendarLayoutManager(context, RecyclerView.VERTICAL)
         calendarDayNameAdapter = CalendarDayNameAdapter(dayNames)
 

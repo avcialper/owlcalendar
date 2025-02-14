@@ -1,20 +1,17 @@
 package com.avcialper.owlcalendar.util.constants
 
-internal object Constants {
-    val dayNames = listOf("Pt", "Sa", "Ça", "Pe", "Cu", "Ct", "Pa")
+import java.text.DateFormatSymbols
+import java.util.Locale
 
-    val monthNames = listOf(
-        "Ocak",
-        "Şubat",
-        "Mart",
-        "Nisan",
-        "Mayıs",
-        "Haziran",
-        "Temmuz",
-        "Ağustos",
-        "Eylül",
-        "Ekim",
-        "Kasım",
-        "Aralık"
-    )
+internal object Constants {
+    fun getLocalizedMonthNames(): List<String> {
+        val symbols = DateFormatSymbols(Locale.getDefault())
+        return symbols.months.filter { it.isNotEmpty() }
+    }
+
+    fun getLocalizedDayNames(): List<String> {
+        val symbols = DateFormatSymbols(Locale.getDefault())
+        val weekdays = symbols.shortWeekdays
+        return weekdays.drop(2).plus(weekdays[1])
+    }
 }
