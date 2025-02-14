@@ -2,7 +2,7 @@ package com.avcialper.owlcalendar.data.repositories
 
 import com.avcialper.jdatetime.JDateTime
 import com.avcialper.owlcalendar.data.models.Date
-import com.avcialper.owlcalendar.data.models.MonthAndYear
+import com.avcialper.owlcalendar.data.models.YearAndMonth
 import com.avcialper.owlcalendar.data.models.adjustDay
 import com.avcialper.owlcalendar.util.extensions.toDateList
 
@@ -16,8 +16,8 @@ internal class DateRepository {
      * @param month The month of the calendar.
      * @return A list of dates in the order: yesterday, today, tomorrow.
      */
-    fun getStartValues(year: Int, month: Int): List<MonthAndYear> {
-        val today = MonthAndYear(year, month)
+    fun getStartValues(year: Int, month: Int): List<YearAndMonth> {
+        val today = YearAndMonth(year, month)
         val yesterday = today.prev()
         val tomorrow = today.next()
 

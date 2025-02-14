@@ -113,4 +113,15 @@ class OwlCalendar @JvmOverloads constructor(
     fun restore() {
         CalendarManager.restore(calendarData)
     }
+
+    /**
+     * Set start date for the calendar.
+     * @param year Year of the start date
+     * @param month Month of the start date
+     */
+    fun setStartDate(year: Int, month: Int) {
+        CalendarManager.setStartDate(year, month) {
+            scrollToPosition(1)
+        }
+    }
 }

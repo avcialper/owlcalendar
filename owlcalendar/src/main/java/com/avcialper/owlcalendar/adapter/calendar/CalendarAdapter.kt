@@ -5,14 +5,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.avcialper.owlcalendar.data.models.LineDate
 import com.avcialper.owlcalendar.data.models.MarkedDay
-import com.avcialper.owlcalendar.data.models.MonthAndYear
+import com.avcialper.owlcalendar.data.models.YearAndMonth
 import com.avcialper.owlcalendar.data.models.findEndIndex
 import com.avcialper.owlcalendar.data.models.findIndex
 import com.avcialper.owlcalendar.data.models.findStartIndex
 import com.avcialper.owlcalendar.databinding.CalendarBinding
 import com.avcialper.owlcalendar.helper.CalendarManager
 
-internal class CalendarAdapter(dateLists: List<MonthAndYear>) :
+internal class CalendarAdapter(dateLists: List<YearAndMonth>) :
     RecyclerView.Adapter<CalendarViewHolder>() {
 
     init {
@@ -20,18 +20,18 @@ internal class CalendarAdapter(dateLists: List<MonthAndYear>) :
         CalendarManager.setOnLineDateChangeListener(::onLineDateChangeListener)
     }
 
-    private val months: MutableList<MonthAndYear> = dateLists.toMutableList()
+    private val months: MutableList<YearAndMonth> = dateLists.toMutableList()
 
     /**
      * First item of the list. It change automatically.
      */
-    val firstItem: MonthAndYear
+    val firstItem: YearAndMonth
         get() = months.first()
 
     /**
      * Last item of the list. It change automatically.
      */
-    val lastItem: MonthAndYear
+    val lastItem: YearAndMonth
         get() = months.last()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarViewHolder {
@@ -55,20 +55,31 @@ internal class CalendarAdapter(dateLists: List<MonthAndYear>) :
 
     /**
      * Add new item to the start of the list.
-     * @param monthAndYear new item
+     * @param yearAndMonth new item
      */
-    fun addItemToStart(monthAndYear: MonthAndYear) {
-        months.add(0, monthAndYear)
+    fun addItemToStart(yearAndMonth: YearAndMonth) {
+        months.add(0, yearAndMonth)
         notifyItemInserted(0)
     }
 
     /**
      * Add new item to the end of the list.
-     * @param monthAndYear new item
+     * @param yearAndMonth new item
      */
-    fun addItemToEnd(monthAndYear: MonthAndYear) {
-        months.add(monthAndYear)
+    fun addItemToEnd(yearAndMonth: YearAndMonth) {
+        months.add(yearAndMonth)
         notifyItemInserted(months.size - 1)
+    }
+
+    /**
+     * Update date list when the start date is changed.
+     * @param dateList new date list
+     */
+    fun updateDateList(dateList: List<YearAndMonth>) {
+        months.clear()
+        months.addAll(dateList)
+        for (i in months.indices)
+            notifyItemChanged(i)
     }
 
     private fun onMarkedDayAddedListener(markedDay: MarkedDay) {

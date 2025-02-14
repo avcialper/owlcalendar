@@ -6,7 +6,9 @@ import com.avcialper.owlcalendar.util.constants.CalendarMode
 internal class CalendarData {
 
     private val jDateTime = JDateTime.instance
-    var selectedDate = SelectedDate(jDateTime.year, jDateTime.month, jDateTime.dayOfMonth, 1)
+    var selectedDate = SelectedDate(jDateTime.year, jDateTime.month, jDateTime.dayOfMonth, null)
+
+    var startDate = YearAndMonth(jDateTime.year, jDateTime.month)
 
     private val markedDays = mutableListOf<MarkedDay>()
     private var onMarkedDayAddedListener: ((MarkedDay) -> Unit)? = null

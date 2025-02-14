@@ -7,6 +7,8 @@ import com.avcialper.owlcalendar.data.models.LineDate
 import com.avcialper.owlcalendar.data.models.LineSelectedDate
 import com.avcialper.owlcalendar.data.models.MarkedDay
 import com.avcialper.owlcalendar.data.models.SelectedDate
+import com.avcialper.owlcalendar.data.models.YearAndMonth
+import com.avcialper.owlcalendar.data.repositories.DateRepository
 import com.avcialper.owlcalendar.util.constants.CalendarMode
 
 internal object CalendarManager {
@@ -96,7 +98,9 @@ internal object CalendarManager {
     fun handleDayClick(date: Date, clickedPosition: Int, onNotifyItemChanged: (Int) -> Unit) {
         val oldPosition = data.selectedDate.calendarPosition
 
-        if (oldPosition != clickedPosition) {
+        if (oldPosition == null)
+            onNotifyItemChanged.invoke(clickedPosition)
+        else if (oldPosition != clickedPosition) {
             onNotifyItemChanged.invoke(oldPosition)
             onNotifyItemChanged.invoke(clickedPosition)
         }
@@ -180,6 +184,22 @@ internal object CalendarManager {
                 data.calendarPosition = 1
             } else if (position == it.itemCount - 1)
                 handleLastItemSwipe()
+        }
+    }
+
+    /**
+     * Set start date for the calendar.
+     * @param year Year of the start date
+     * @param month Month of the start date
+     * @param onCompleteListener Callback function to be executed when the start date is set.
+     */
+    fun setStartDate(year: Int, month: Int, onCompleteListener: () -> Unit) {
+        data.startDate = YearAndMonth(year, month)
+        calendarAdapter?.let {
+            val dateList = DateRepository().getStartValues(year, month)
+            it.updateDateList(dateList)
+            data.calendarPosition = 1
+            onCompleteListener.invoke()
         }
     }
 }

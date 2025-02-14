@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.avcialper.owlcalendar.adapter.calendardayname.CalendarDayNameAdapter
 import com.avcialper.owlcalendar.adapter.calendarmonth.CalendarMonthAdapter
 import com.avcialper.owlcalendar.data.models.Date
-import com.avcialper.owlcalendar.data.models.MonthAndYear
+import com.avcialper.owlcalendar.data.models.YearAndMonth
 import com.avcialper.owlcalendar.data.repositories.DateRepository
 import com.avcialper.owlcalendar.databinding.CalendarBinding
 import com.avcialper.owlcalendar.helper.CalendarLayoutManager
@@ -28,14 +28,13 @@ internal class OwlMonthCalendar(private val binding: CalendarBinding) {
 
     /**
      * Initialize calendar view.
-     * @param monthAndYear [MonthAndYear] object. It's use for get days of the month.
+     * @param yearAndMonth [YearAndMonth] object. It's use for get days of the month.
      */
     fun init(
-        monthAndYear: MonthAndYear,
+        yearAndMonth: YearAndMonth,
         onDayClickListener: (Date) -> Unit
     ) {
-        val year = monthAndYear.year
-        val month = monthAndYear.month
+        val (year, month) = yearAndMonth
 
         initHeader(year, month)
         initCalendarDayNameAdapter()

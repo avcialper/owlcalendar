@@ -4,15 +4,8 @@ internal data class SelectedDate(
     val year: Int,
     val month: Int,
     val dayOfMonth: Int,
-    var calendarPosition: Int
+    var calendarPosition: Int?
 ) {
-    /**
-     * Increment calendar position.
-     */
-    fun increasePosition() {
-        calendarPosition++
-    }
-
     /**
      * Checks if the date is same with the other date.
      * @param other The date to compare with.
