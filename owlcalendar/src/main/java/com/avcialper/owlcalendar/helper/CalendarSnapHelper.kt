@@ -2,14 +2,15 @@ package com.avcialper.owlcalendar.helper
 
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.avcialper.owlcalendar.helper.CalendarManager.data
 
 internal class CalendarSnapHelper : PagerSnapHelper() {
 
     private var recyclerView: RecyclerView? = null
     private var position: Int
-        get() = CalendarManager.data.calendarPosition
+        get() = data.calendarPosition
         set(value) {
-            CalendarManager.data.calendarPosition = value
+            data.calendarPosition = value
         }
 
     override fun attachToRecyclerView(recyclerView: RecyclerView?) {

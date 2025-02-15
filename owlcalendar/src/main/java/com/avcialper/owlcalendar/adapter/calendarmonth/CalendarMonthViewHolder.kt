@@ -7,6 +7,8 @@ import com.avcialper.owlcalendar.R
 import com.avcialper.owlcalendar.data.models.Date
 import com.avcialper.owlcalendar.databinding.CalendarDayBinding
 import com.avcialper.owlcalendar.helper.CalendarManager
+import com.avcialper.owlcalendar.helper.CalendarManager.attrs
+import com.avcialper.owlcalendar.helper.CalendarManager.data
 import com.avcialper.owlcalendar.util.extensions.convertToString
 
 internal class CalendarMonthViewHolder(
@@ -48,8 +50,8 @@ internal class CalendarMonthViewHolder(
      * @param day [Date] object
      */
     private fun setTextColor(day: Date) {
-        val todayTextColor = CalendarManager.data.todayTextColor
-        val calendarDayTextColor = CalendarManager.data.dayTextColor
+        val todayTextColor = attrs.todayTextColor
+        val calendarDayTextColor = attrs.dayTextColor
         val defaultTextColor =
             if (calendarDayTextColor == 0) defaultTextColor else calendarDayTextColor
 
@@ -68,10 +70,9 @@ internal class CalendarMonthViewHolder(
      * @param day [Date] object
      */
     private fun setBackground(day: Date) {
-        val calendarData = CalendarManager.data
-        val isSelected = calendarData.selectedDate.isEqual(day)
+        val isSelected = data.selectedDate.isEqual(day)
         val markedDay = CalendarManager.findMarkedDay(day)
-        val lineDate = calendarData.lineDate
+        val lineDate = data.lineDate
 
         if (markedDay != null)
             markedDayDrawable.setColor(markedDay.color)
@@ -84,15 +85,15 @@ internal class CalendarMonthViewHolder(
                 else -> null
             }
             val color =
-                if (isSelected) calendarData.selectedDateBackgroundColor
-                else markedDay?.color ?: calendarData.lineBackgroundColor
+                if (isSelected) attrs.selectedDateBackgroundColor
+                else markedDay?.color ?: attrs.lineBackgroundColor
 
             lineDrawable?.setColor(color)
         }
 
-        val isRangeSelectable = calendarData.calendarMode.isRangeSelectable()
+        val isRangeSelectable = attrs.calendarMode.isRangeSelectable()
         val selectedBackgroundColor =
-            if (isRangeSelectable) calendarData.lineBackgroundColor else calendarData.selectedDateBackgroundColor
+            if (isRangeSelectable) attrs.lineBackgroundColor else attrs.selectedDateBackgroundColor
         selectedDrawable.setColor(selectedBackgroundColor)
 
         val drawable = when {

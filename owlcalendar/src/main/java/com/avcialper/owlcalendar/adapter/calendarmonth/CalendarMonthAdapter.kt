@@ -8,6 +8,7 @@ import com.avcialper.owlcalendar.data.models.MarkedDay
 import com.avcialper.owlcalendar.data.models.findIndex
 import com.avcialper.owlcalendar.databinding.CalendarDayBinding
 import com.avcialper.owlcalendar.helper.CalendarManager
+import com.avcialper.owlcalendar.helper.CalendarManager.data
 
 internal class CalendarMonthAdapter(
     private val days: List<Date?>,
@@ -42,7 +43,7 @@ internal class CalendarMonthAdapter(
      * @param date Clicked day instance
      */
     private fun handleDayClick(date: Date) {
-        val selectedDate = CalendarManager.data.selectedDate
+        val selectedDate = data.selectedDate
         val oldPosition = days.findIndex(selectedDate)
         val newPosition = days.findIndex(date)
 

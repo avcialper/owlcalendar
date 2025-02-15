@@ -12,6 +12,7 @@ import com.avcialper.owlcalendar.data.repositories.DateRepository
 import com.avcialper.owlcalendar.databinding.CalendarBinding
 import com.avcialper.owlcalendar.helper.CalendarLayoutManager
 import com.avcialper.owlcalendar.helper.CalendarManager
+import com.avcialper.owlcalendar.helper.CalendarManager.attrs
 import java.util.Locale
 
 internal class OwlMonthCalendar(private val binding: CalendarBinding) {
@@ -52,7 +53,7 @@ internal class OwlMonthCalendar(private val binding: CalendarBinding) {
         val locale = Locale.getDefault()
         val label = String.format(locale, "%s %d", monthName, year)
 
-        val dateTextColor = CalendarManager.data.dateTextColor
+        val dateTextColor = attrs.dateTextColor
         val textColor =
             if (dateTextColor == 0) defaultTextColor else dateTextColor
 

@@ -1,6 +1,7 @@
 package com.avcialper.owlcalendar.helper
 
 import com.avcialper.owlcalendar.adapter.calendar.CalendarAdapter
+import com.avcialper.owlcalendar.data.models.CalendarAttrs
 import com.avcialper.owlcalendar.data.models.CalendarData
 import com.avcialper.owlcalendar.data.models.Date
 import com.avcialper.owlcalendar.data.models.LineDate
@@ -9,59 +10,32 @@ import com.avcialper.owlcalendar.data.models.MarkedDay
 import com.avcialper.owlcalendar.data.models.SelectedDate
 import com.avcialper.owlcalendar.data.models.YearAndMonth
 import com.avcialper.owlcalendar.data.repositories.DateRepository
-import com.avcialper.owlcalendar.util.constants.CalendarMode
 
 internal object CalendarManager {
     var data = CalendarData()
+    var attrs = CalendarAttrs()
     var calendarAdapter: CalendarAdapter? = null
 
     var onDayClickListener: ((Date) -> Unit)? = null
     var onLineDateChangeListener: ((LineSelectedDate, LineSelectedDate) -> Unit)? = null
 
-    /**
-     * Set calendar attributes.
-     */
-    fun setAttrs(
-        selectedDateBackgroundColor: Int,
-        todayTextColor: Int,
-        dayTextColor: Int,
-        dayNameTextColor: Int,
-        dateTextColor: Int,
-        lineBackgroundColor: Int,
-        calendarMode: CalendarMode,
-        pickerButtonTextColor: Int,
-        pickerButtonText: String
-    ) {
-        data.setAttrs(
-            selectedDateBackgroundColor,
-            todayTextColor,
-            dayTextColor,
-            dayNameTextColor,
-            dateTextColor,
-            lineBackgroundColor,
-            calendarMode,
-            pickerButtonTextColor,
-            pickerButtonText
-        )
-    }
-
     fun addMarkedDays(newDays: List<MarkedDay>) {
-        val isSelectableMode = data.calendarMode.isSelectable()
+        val isSelectableMode = attrs.calendarMode.isSelectable()
         if (isSelectableMode) return
         data.addMarkedDays(newDays)
     }
 
     fun addMarkedDay(newDay: MarkedDay) {
-        val isSelectableMode = data.calendarMode.isSelectable()
+        val isSelectableMode = attrs.calendarMode.isSelectable()
         if (isSelectableMode) return
         data.addMarkedDay(newDay)
     }
 
     fun setLineDate(lineDate: LineDate) {
-        val isSingleSelectable = data.calendarMode.isSingleSelectable()
+        val isSingleSelectable = attrs.calendarMode.isSingleSelectable()
         if (isSingleSelectable) return
 
-        val isRangeSelectable = data.calendarMode.isRangeSelectable()
+        val isRangeSelectable = attrs.calendarMode.isRangeSelectable()
         if (isRangeSelectable) {
             val (year, moth, dayOfMonth) = lineDate.startDate
             val selectedDate = SelectedDate(year, moth, dayOfMonth, data.calendarPosition)
@@ -108,7 +82,7 @@ internal object CalendarManager {
 
         val selectedDate = SelectedDate(date.year, date.month, date.dayOfMonth, clickedPosition)
 
-        val isSelectableMode = data.calendarMode.isRangeSelectable()
+        val isSelectableMode = attrs.calendarMode.isRangeSelectable()
         if (isSelectableMode) {
             handleRangeSelection(selectedDate)
         }
@@ -143,8 +117,9 @@ internal object CalendarManager {
      * Call this function to restore the calendar data when the calendar manager instance
      * needs to be reinitialized or updated with new data during the app's lifecycle.
      */
-    fun restore(instance: CalendarData) {
+    fun restore(instance: CalendarData, attrs: CalendarAttrs) {
         this.data = instance
+        this.attrs = attrs
     }
 
     /**

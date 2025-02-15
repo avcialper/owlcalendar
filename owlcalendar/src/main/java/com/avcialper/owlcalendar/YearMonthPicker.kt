@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.avcialper.owlcalendar.databinding.YearMonthPickerBinding
-import com.avcialper.owlcalendar.helper.CalendarManager
+import com.avcialper.owlcalendar.helper.CalendarManager.attrs
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 internal class YearMonthPicker(
@@ -43,9 +43,8 @@ internal class YearMonthPicker(
                 value = currentMonth + 1
             }
 
-            val data = CalendarManager.data
-            val textColor = data.pickerButtonTextColor
-            val text = data.pickerButtonText
+            val textColor = attrs.pickerButtonTextColor
+            val text = attrs.pickerButtonText
             complete.apply {
                 setTextColor(textColor)
                 this.text = text

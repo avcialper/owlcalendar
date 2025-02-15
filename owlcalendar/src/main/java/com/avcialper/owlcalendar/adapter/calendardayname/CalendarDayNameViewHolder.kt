@@ -2,7 +2,7 @@ package com.avcialper.owlcalendar.adapter.calendardayname
 
 import androidx.recyclerview.widget.RecyclerView
 import com.avcialper.owlcalendar.databinding.CalendarDayNameBinding
-import com.avcialper.owlcalendar.helper.CalendarManager
+import com.avcialper.owlcalendar.helper.CalendarManager.attrs
 
 internal class CalendarDayNameViewHolder(
     private val binding: CalendarDayNameBinding
@@ -14,7 +14,7 @@ internal class CalendarDayNameViewHolder(
         binding.tvDayName.apply {
             text = dayName
 
-            val calendarDayNameTextColor = CalendarManager.data.dayNameTextColor
+            val calendarDayNameTextColor = attrs.dayNameTextColor
             val dayNameTextColor =
                 if (calendarDayNameTextColor == 0) defaultTextColor else calendarDayNameTextColor
             setTextColor(dayNameTextColor)

@@ -3,6 +3,7 @@ package com.avcialper.owlcalendar.helper
 import android.content.Context
 import android.content.res.TypedArray
 import com.avcialper.owlcalendar.R
+import com.avcialper.owlcalendar.data.models.CalendarAttrs
 import com.avcialper.owlcalendar.util.constants.CalendarMode
 
 internal class AttrManager(
@@ -87,17 +88,19 @@ internal class AttrManager(
         val calendarModeValue = getInt(R.styleable.OwlCalendar_mode, defCalendarMode.value)
         val calendarMode = CalendarMode.fromValue(calendarModeValue)
 
-        CalendarManager.setAttrs(
-            selectedBackgroundColor,
-            todayTextColor,
-            dayTextColor,
-            dayNameTextColor,
-            dateTextColor,
-            lineBackgroundColor,
-            calendarMode,
-            pickerButtonTextColor,
-            pickerButtonText
-        )
+        val attrs = CalendarAttrs().apply {
+            this.selectedDateBackgroundColor = selectedBackgroundColor
+            this.todayTextColor = todayTextColor
+            this.dayTextColor = dayTextColor
+            this.dayNameTextColor = dayNameTextColor
+            this.dateTextColor = dateTextColor
+            this.lineBackgroundColor = lineBackgroundColor
+            this.calendarMode = calendarMode
+            this.pickerButtonTextColor = pickerButtonTextColor
+            this.pickerButtonText = pickerButtonText
+        }
+
+        CalendarManager.attrs.update(attrs)
 
         onCompleteListener.invoke()
     }

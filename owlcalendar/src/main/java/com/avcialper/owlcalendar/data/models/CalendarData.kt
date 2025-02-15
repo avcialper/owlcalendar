@@ -1,7 +1,6 @@
 package com.avcialper.owlcalendar.data.models
 
 import com.avcialper.jdatetime.JDateTime
-import com.avcialper.owlcalendar.util.constants.CalendarMode
 
 internal class CalendarData {
 
@@ -25,40 +24,6 @@ internal class CalendarData {
     private var onLineDateChangeListener: ((LineDate) -> Unit)? = null
 
     var calendarPosition = 1
-
-    // attrs
-    var selectedDateBackgroundColor: Int = 0
-    var todayTextColor: Int = 0
-    var dayTextColor: Int = 0
-    var dayNameTextColor: Int = 0
-    var dateTextColor: Int = 0
-    var lineBackgroundColor: Int = 0
-    var calendarMode: CalendarMode = CalendarMode.NORMAL
-    var pickerButtonTextColor: Int = 0
-    var pickerButtonText: String = ""
-
-    fun setAttrs(
-        selectedDateBackgroundColor: Int,
-        todayTextColor: Int,
-        dayTextColor: Int,
-        dayNameTextColor: Int,
-        dateTextColor: Int,
-        lineBackgroundColor: Int,
-        calendarMode: CalendarMode,
-        pickerButtonTextColor: Int,
-        pickerButtonText: String
-    ) {
-        this.selectedDateBackgroundColor = selectedDateBackgroundColor
-        this.todayTextColor = todayTextColor
-        this.dayTextColor = dayTextColor
-        this.dayNameTextColor = dayNameTextColor
-        this.dateTextColor = dateTextColor
-        this.lineBackgroundColor = lineBackgroundColor
-        this.calendarMode = calendarMode
-        this.pickerButtonTextColor = pickerButtonTextColor
-        this.pickerButtonText = pickerButtonText
-    }
-
 
     /**
      * Add new marked days to the list.

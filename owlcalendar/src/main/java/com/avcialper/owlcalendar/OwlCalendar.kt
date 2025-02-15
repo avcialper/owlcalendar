@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.avcialper.owlcalendar.adapter.calendar.CalendarAdapter
+import com.avcialper.owlcalendar.data.models.CalendarAttrs
 import com.avcialper.owlcalendar.data.models.CalendarData
 import com.avcialper.owlcalendar.data.models.Date
 import com.avcialper.owlcalendar.data.models.LineDate
@@ -13,35 +14,45 @@ import com.avcialper.owlcalendar.data.models.MarkedDay
 import com.avcialper.owlcalendar.data.repositories.DateRepository
 import com.avcialper.owlcalendar.helper.AttrManager
 import com.avcialper.owlcalendar.helper.CalendarManager
+import com.avcialper.owlcalendar.helper.CalendarManager.attrs
+import com.avcialper.owlcalendar.helper.CalendarManager.data
 import com.avcialper.owlcalendar.helper.CalendarScrollListener
 import com.avcialper.owlcalendar.helper.CalendarSnapHelper
-import com.avcialper.owlcalendar.util.constants.CalendarMode
 
 class OwlCalendar @JvmOverloads constructor(
     context: Context,
-    attrs: AttributeSet? = null,
+    defAttrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : RecyclerView(context, attrs, defStyleAttr) {
+) : RecyclerView(context, defAttrs, defStyleAttr) {
 
     private val calendarData = CalendarData()
+    private val calendarAttrs = CalendarAttrs()
 
     // Custom PagerSnapHelper
     private val snapHelper = CalendarSnapHelper()
 
-    var mode: CalendarMode
-        get() = CalendarManager.data.calendarMode
+    var calendarMode = attrs.calendarMode
         set(value) {
-            CalendarManager.data.calendarMode = value
+            field = value
+            attrs.calendarMode = value
+        }
+
+    var pickerButtonText = attrs.pickerButtonText
+        set(value) {
+            field = value
+            attrs.pickerButtonText = value
         }
 
     init {
-        CalendarManager.data = calendarData
-        CalendarManager.data.onStartDateChangeListener = {
-            scrollToPosition(1)
+        CalendarManager.apply {
+            data = calendarData
+            attrs = calendarAttrs
+
+            data.onStartDateChangeListener = { scrollToPosition(1) }
         }
 
         val typedArray =
-            context.obtainStyledAttributes(attrs, R.styleable.OwlCalendar, defStyleAttr, 0)
+            context.obtainStyledAttributes(defAttrs, R.styleable.OwlCalendar, defStyleAttr, 0)
         AttrManager(typedArray, context) {
             typedArray.recycle()
         }
@@ -54,7 +65,7 @@ class OwlCalendar @JvmOverloads constructor(
      * Initialize adapter.
      */
     private fun initAdapter() {
-        val (year, month, _, _) = CalendarManager.data.selectedDate
+        val (year, month, _, _) = data.selectedDate
         val dateList = DateRepository.getStartValues(year, month)
         itemAnimator = null
 
@@ -118,7 +129,7 @@ class OwlCalendar @JvmOverloads constructor(
      */
     fun setLineDate(lineDate: LineDate) {
         CalendarManager.setLineDate(lineDate)
-        val isRangeSelectableMode = CalendarManager.data.calendarMode.isRangeSelectable()
+        val isRangeSelectableMode = attrs.calendarMode.isRangeSelectable()
         if (isRangeSelectableMode) {
             val (year, month, _) = lineDate.startDate
             setStartDate(year, month)
@@ -131,7 +142,7 @@ class OwlCalendar @JvmOverloads constructor(
      * needs to be reinitialized or updated with new data during the app's lifecycle.
      */
     fun restore() {
-        CalendarManager.restore(calendarData)
+        CalendarManager.restore(calendarData, calendarAttrs)
     }
 
     /**
