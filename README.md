@@ -1,5 +1,7 @@
 # OwlCalendar
 
+[![](https://jitpack.io/v/avcialper/owlcalendar.svg)](https://jitpack.io/#avcialper/owlcalendar)
+
 ![banner](./assets/owl.png)
 
 **OwlCalendar** is a calendar library developed for **Android** applications. It contains a ready-to-use calendar component. Users can add **marked days** and a **line date** to the calendar. When adding marked days, colors can also be specified. The calendar can operate in three different modes:
@@ -10,6 +12,43 @@
     This mode is used to select a single date from the calendar. Marked days and line date cannot be added in this mode. However, a start date can be set in this mode.
 -   **Range Selectable Mode** <br>
     This mode allows the user to select a specific date or a date range. Marked days cannot be added, but line date and start date can be added. If a line date is set, the start date cannot be set again. Only one of these two values can be set at a time. Depending on the needs, the user can either provide line date data (start and end date) or a single day information.
+
+```gradle
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        maven { url = uri("https://jitpack.io") }
+    }
+}
+```
+
+Later, add this implementation build.gradle.kts (Module:app)
+
+```gradle
+dependencies {
+    ..
+    implementation("com.github.avcialper:owlcalendar:${latest_version}")
+}
+```
+
+TOML usage
+
+```toml
+[versions]
+owlcalendar = "latest_version"
+
+[libraries]
+owlcalendar = { module = "com.github.avcialper:owlcalendar", version.ref = "owlcalendar" }
+```
+
+```gradle
+dependencies {
+    ..
+    implementation(libs.owlcalendar)
+}
+```
 
 # Usage
 
