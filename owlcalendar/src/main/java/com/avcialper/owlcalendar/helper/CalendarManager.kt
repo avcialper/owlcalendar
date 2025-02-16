@@ -164,6 +164,7 @@ internal object CalendarManager {
     /**
      * Set start date for the calendar.
      * @param year Year of the start date
+     * @param month Month of the start date
      */
     fun setStartDate(year: Int, month: Int) {
         data.startDate = YearAndMonth(year, month)
@@ -173,5 +174,16 @@ internal object CalendarManager {
             data.calendarPosition = 1
             data.onStartDateChangeListener?.invoke()
         }
+    }
+
+    /**
+     * Set start date for the calendar.
+     * @param year Year of the start date
+     * @param month Month of the start date
+     * @param dayOfMonth Day of the month of the start date
+     */
+    fun setStartDate(year: Int, month: Int, dayOfMonth: Int) {
+        setStartDate(year, month)
+        data.selectedDate = SelectedDate(year, month, dayOfMonth, 1)
     }
 }
