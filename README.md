@@ -13,6 +13,10 @@
 -   **Range Selectable Mode** <br>
     This mode allows the user to select a specific date or a date range. Marked days cannot be added, but line date and start date can be added. If a line date is set, the start date cannot be set again. Only one of these two values can be set at a time. Depending on the needs, the user can either provide line date data (start and end date) or a single day information.
 
+# Installation
+
+First, add the following dependency to settings.gradle.kts file
+
 ```gradle
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
@@ -64,10 +68,10 @@ Add these codes to the used layout
 
 # Parameters
 
-| Name             | Description                              |
-| ---------------- | ---------------------------------------- |
-| calendarMode     | Get and update calendar mode.            |
-| pickerButtonText | Get and update picker button text color. |
+| Name             | Description                        |
+| ---------------- | ---------------------------------- |
+| calendarMode     | Get and update calendar mode.      |
+| pickerButtonText | Get and update picker button text. |
 
 # Functions
 
@@ -83,7 +87,7 @@ Add these codes to the used layout
 | restore                     | Restores the calendar state when multiple calendar instances are used.                        |
 
 > [!WARNING]  
-> If you have multiple calendars in your application, use the restore function in the onResume method. This function will restore all data and attributes for the current calendar instance.
+> If you have multiple calendars in your application, use the **restore** function in the **onResume** method. This function will restore all data and attributes for the current calendar instance.
 
 # Attributes
 
