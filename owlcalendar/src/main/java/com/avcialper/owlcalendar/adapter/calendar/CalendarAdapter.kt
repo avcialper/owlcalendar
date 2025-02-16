@@ -11,6 +11,7 @@ import com.avcialper.owlcalendar.data.models.findIndex
 import com.avcialper.owlcalendar.data.models.findStartIndex
 import com.avcialper.owlcalendar.databinding.CalendarBinding
 import com.avcialper.owlcalendar.helper.CalendarManager
+import com.avcialper.owlcalendar.helper.CalendarManager.data
 
 internal class CalendarAdapter(dateLists: List<YearAndMonth>) :
     RecyclerView.Adapter<CalendarViewHolder>() {
@@ -83,7 +84,7 @@ internal class CalendarAdapter(dateLists: List<YearAndMonth>) :
     }
 
     private fun onMarkedDayAddedListener(markedDay: MarkedDay) {
-        val selectedDateCalendarPosition = CalendarManager.data.selectedDate.calendarPosition
+        val selectedDateCalendarPosition = data.selectedDate.calendarPosition
         val markedDayMonthIndex = months.findIndex(markedDay)
 
         if (selectedDateCalendarPosition == markedDayMonthIndex)

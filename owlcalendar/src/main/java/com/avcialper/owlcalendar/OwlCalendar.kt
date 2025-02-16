@@ -99,14 +99,6 @@ class OwlCalendar @JvmOverloads constructor(
     }
 
     /**
-     * Handle click of the day.
-     * @param date Clicked day instance
-     */
-    private fun handleDayClick(date: Date) {
-        CalendarManager.onDayClickListener?.invoke(date)
-    }
-
-    /**
      * To handle click of the day.
      * @param listener Click listener.
      */

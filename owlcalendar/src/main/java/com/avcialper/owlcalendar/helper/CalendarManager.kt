@@ -73,12 +73,11 @@ internal object CalendarManager {
     fun handleDayClick(date: Date, clickedPosition: Int, onNotifyItemChanged: (Int) -> Unit) {
         val oldPosition = data.selectedDate.calendarPosition
 
-        if (oldPosition == null)
-            onNotifyItemChanged.invoke(clickedPosition)
-        else if (oldPosition != clickedPosition) {
+        if (oldPosition != clickedPosition && oldPosition != null)
             onNotifyItemChanged.invoke(oldPosition)
+        else
             onNotifyItemChanged.invoke(clickedPosition)
-        }
+
 
         val selectedDate = SelectedDate(date.year, date.month, date.dayOfMonth, clickedPosition)
 
