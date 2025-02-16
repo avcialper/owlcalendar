@@ -81,8 +81,8 @@ internal object CalendarManager {
 
         val selectedDate = SelectedDate(date.year, date.month, date.dayOfMonth, clickedPosition)
 
-        val isSelectableMode = attrs.calendarMode.isRangeSelectable()
-        if (isSelectableMode) {
+        val isRangeSelectable = attrs.calendarMode.isRangeSelectable()
+        if (isRangeSelectable) {
             handleRangeSelection(selectedDate)
         }
 

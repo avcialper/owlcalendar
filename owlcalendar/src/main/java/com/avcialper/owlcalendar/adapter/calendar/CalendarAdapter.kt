@@ -95,7 +95,10 @@ internal class CalendarAdapter(dateLists: List<YearAndMonth>) :
 
     private fun onLineDateChangeListener(lineDate: LineDate) {
         val startIndex = months.findStartIndex(lineDate)
-        val endIndex = months.findEndIndex(lineDate)
+        var endIndex = months.findEndIndex(lineDate)
+
+        if (endIndex == -1)
+            endIndex = months.size
 
         for (i in startIndex..endIndex)
             notifyItemChanged(i)
