@@ -72,6 +72,8 @@ Add these codes to the used layout
 | ---------------- | ---------------------------------- |
 | calendarMode     | Get and update calendar mode.      |
 | pickerButtonText | Get and update picker button text. |
+| startYear        | Get current start year.            |
+| startMonth       | Get current start month.           |
 
 # Functions
 

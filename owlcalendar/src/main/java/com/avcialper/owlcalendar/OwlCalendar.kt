@@ -43,6 +43,12 @@ class OwlCalendar @JvmOverloads constructor(
             attrs.pickerButtonText = value
         }
 
+    val startYear
+        get() = data.startDate.year
+
+    val startMonth
+        get() = data.startDate.month
+
     init {
         CalendarManager.apply {
             data = calendarData
