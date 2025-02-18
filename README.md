@@ -66,7 +66,7 @@ Add these codes to the used layout
 
 ```
 
-[![Download APK](./assets/download-apk.png)](./sample/build/outputs/apk/debug/sample-debug.apk)
+[![Download APK](./assets/download-apk.png)](./sample/apk/)
 
 # Parameters
 
