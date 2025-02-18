@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_main"
+    app:startDestination="@id/listFragment">
+
+    <fragment
+        android:id="@+id/listFragment"
+        android:name="com.avcialper.sample.view.ListFragment"
+        android:label="fragment_list"
+        tools:layout="@layout/fragment_list" >
+        <action
+            android:id="@+id/toNormal"
+            app:destination="@id/normalModeFragment" />
+        <action
+            android:id="@+id/toSingle"
+            app:destination="@id/singleModeFragment" />
+        <action
+            android:id="@+id/toRange"
+            app:destination="@id/rangeModeFragment" />
+        <action
+            android:id="@+id/toMarking"
+            app:destination="@id/dayMarkingFragment" />
+        <action
+            android:id="@+id/toSample"
+            app:destination="@id/sampleFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/dayMarkingFragment"
+        android:name="com.avcialper.sample.view.DayMarkingFragment"
+        android:label="fragment_day_marking"
+        tools:layout="@layout/fragment_day_marking" />
+    <fragment
+        android:id="@+id/normalModeFragment"
+        android:name="com.avcialper.sample.view.NormalModeFragment"
+        android:label="fragment_normal_mode"
+        tools:layout="@layout/fragment_normal_mode" />
+    <fragment
+        android:id="@+id/rangeModeFragment"
+        android:name="com.avcialper.sample.view.RangeModeFragment"
+        android:label="fragment_range_mode"
+        tools:layout="@layout/fragment_range_mode" />
+    <fragment
+        android:id="@+id/sampleFragment"
+        android:name="com.avcialper.sample.view.SampleFragment"
+        android:label="fragment_sample"
+        tools:layout="@layout/fragment_sample" />
+    <fragment
+        android:id="@+id/singleModeFragment"
+        android:name="com.avcialper.sample.view.SingleModeFragment"
+        android:label="fragment_single_mode"
+        tools:layout="@layout/fragment_single_mode" />
+</navigation>

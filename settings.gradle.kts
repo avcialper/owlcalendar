@@ -23,3 +23,4 @@ dependencyResolutionManagement {
 rootProject.name = "OwlCalendar"
 include(":app")
 include(":owlcalendar")
+include(":sample")
