@@ -116,7 +116,7 @@ class OwlCalendar @JvmOverloads constructor(
      * Set listener for day update.
      * @param listener Listener
      */
-    fun setOnLineDateChangeListener(listener: (LineSelectedDate, LineSelectedDate) -> Unit) {
+    fun setOnLineDateChangeListener(listener: (LineSelectedDate?, LineSelectedDate?) -> Unit) {
         CalendarManager.onLineDateChangeListener = listener
     }
 

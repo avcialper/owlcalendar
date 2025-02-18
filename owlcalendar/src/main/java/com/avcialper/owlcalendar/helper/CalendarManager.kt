@@ -17,7 +17,7 @@ internal object CalendarManager {
     var calendarAdapter: CalendarAdapter? = null
 
     var onDayClickListener: ((Date) -> Unit)? = null
-    var onLineDateChangeListener: ((LineSelectedDate, LineSelectedDate) -> Unit)? = null
+    var onLineDateChangeListener: ((LineSelectedDate?, LineSelectedDate?) -> Unit)? = null
 
     fun addMarkedDays(newDays: List<MarkedDay>) {
         val isSelectableMode = attrs.calendarMode.isSelectable()
@@ -55,6 +55,7 @@ internal object CalendarManager {
 
         if (isEqual || data.lineDate != null) {
             clearLineDate()
+            onLineDateChangeListener?.invoke(null, null)
             return
         }
 
@@ -93,7 +94,7 @@ internal object CalendarManager {
         data.setOnMarkedDayAddedListener(listener)
     }
 
-    fun setOnLineDateChangeListener(listener: (LineDate) -> Unit) {
+    fun setOnLineDateChangeListener(listener: (LineDate?) -> Unit) {
         data.setOnLineDateChangeListener(listener)
     }
 

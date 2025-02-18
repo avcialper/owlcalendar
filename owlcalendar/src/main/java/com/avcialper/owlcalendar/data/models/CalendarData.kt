@@ -17,11 +17,9 @@ internal class CalendarData {
     var lineDate: LineDate? = null
         set(value) {
             field = value
-            value?.let {
-                onLineDateChangeListener?.invoke(it)
-            }
+            onLineDateChangeListener?.invoke(value)
         }
-    private var onLineDateChangeListener: ((LineDate) -> Unit)? = null
+    private var onLineDateChangeListener: ((LineDate?) -> Unit)? = null
 
     var calendarPosition = 1
 
@@ -88,7 +86,7 @@ internal class CalendarData {
      * Set listener for new line date.
      * @param listener Listener for new line date
      */
-    fun setOnLineDateChangeListener(listener: (LineDate) -> Unit) {
+    fun setOnLineDateChangeListener(listener: (LineDate?) -> Unit) {
         onLineDateChangeListener = listener
     }
 
