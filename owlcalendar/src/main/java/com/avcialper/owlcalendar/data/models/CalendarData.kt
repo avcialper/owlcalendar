@@ -7,7 +7,7 @@ internal class CalendarData {
     private val jDateTime = JDateTime.instance
     var selectedDate = SelectedDate(jDateTime.year, jDateTime.month, jDateTime.dayOfMonth, null)
 
-    var startDate = YearAndMonth(jDateTime.year, jDateTime.month)
+    var startDate = StartDate(jDateTime.year, jDateTime.month, jDateTime.dayOfMonth)
     var onStartDateChangeListener: (() -> Unit)? = null
 
     private val markedDays = mutableListOf<MarkedDay>()

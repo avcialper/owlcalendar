@@ -11,6 +11,7 @@ import com.avcialper.owlcalendar.data.models.Date
 import com.avcialper.owlcalendar.data.models.LineDate
 import com.avcialper.owlcalendar.data.models.LineSelectedDate
 import com.avcialper.owlcalendar.data.models.MarkedDay
+import com.avcialper.owlcalendar.data.models.StartDate
 import com.avcialper.owlcalendar.data.repositories.DateRepository
 import com.avcialper.owlcalendar.helper.AttrManager
 import com.avcialper.owlcalendar.helper.CalendarManager
@@ -48,6 +49,9 @@ class OwlCalendar @JvmOverloads constructor(
 
     val startMonth
         get() = data.startDate.month
+
+    val starDate: StartDate
+        get() = data.startDate
 
     init {
         CalendarManager.apply {

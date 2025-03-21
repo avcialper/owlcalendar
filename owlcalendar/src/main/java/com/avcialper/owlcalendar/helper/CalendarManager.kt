@@ -8,7 +8,7 @@ import com.avcialper.owlcalendar.data.models.LineDate
 import com.avcialper.owlcalendar.data.models.LineSelectedDate
 import com.avcialper.owlcalendar.data.models.MarkedDay
 import com.avcialper.owlcalendar.data.models.SelectedDate
-import com.avcialper.owlcalendar.data.models.YearAndMonth
+import com.avcialper.owlcalendar.data.models.StartDate
 import com.avcialper.owlcalendar.data.repositories.DateRepository
 
 internal object CalendarManager {
@@ -168,7 +168,7 @@ internal object CalendarManager {
      * @param month Month of the start date
      */
     fun setStartDate(year: Int, month: Int) {
-        data.startDate = YearAndMonth(year, month)
+        data.startDate = StartDate(year, month, 1)
         calendarAdapter?.let {
             val dateList = DateRepository.getStartValues(year, month)
             it.updateDateList(dateList)

@@ -36,7 +36,7 @@ class SampleFragment : Fragment() {
         binding.owlCalendar.apply {
             val markedDays = listOf(
                 MarkedDay(startYear, startMonth, 8, purple),
-                MarkedDay(startYear, startMonth, 18, green),
+                MarkedDay(startYear, startMonth, 19, green),
                 MarkedDay(startYear, startMonth, 28, red),
             )
 

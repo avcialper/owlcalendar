@@ -71,11 +71,12 @@ Add these codes to the used layout
 # Parameters
 
 | Name             | Description                        |
-| ---------------- | ---------------------------------- |
+|------------------|------------------------------------|
 | calendarMode     | Get and update calendar mode.      |
 | pickerButtonText | Get and update picker button text. |
 | startYear        | Get current start year.            |
 | startMonth       | Get current start month.           |
+| startDate        | Get start date.                    |
 
 # Functions
 
