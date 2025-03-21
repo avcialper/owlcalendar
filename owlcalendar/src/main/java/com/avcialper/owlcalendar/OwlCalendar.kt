@@ -50,7 +50,7 @@ class OwlCalendar @JvmOverloads constructor(
     val startMonth
         get() = data.startDate.month
 
-    val starDate: StartDate
+    val startDate: StartDate
         get() = data.startDate
 
     init {
