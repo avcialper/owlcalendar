@@ -2,7 +2,6 @@ package com.avcialper.owlcalendar
 
 import android.content.Context
 import android.widget.LinearLayout.VERTICAL
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.avcialper.owlcalendar.adapter.calendardayname.CalendarDayNameAdapter
 import com.avcialper.owlcalendar.adapter.calendarmonth.CalendarMonthAdapter
@@ -13,6 +12,7 @@ import com.avcialper.owlcalendar.databinding.CalendarBinding
 import com.avcialper.owlcalendar.helper.CalendarLayoutManager
 import com.avcialper.owlcalendar.helper.CalendarManager
 import com.avcialper.owlcalendar.helper.CalendarManager.attrs
+import com.avcialper.owlcalendar.util.extensions.getActivity
 import java.util.Locale
 
 internal class OwlMonthCalendar(private val binding: CalendarBinding) {
@@ -64,7 +64,9 @@ internal class OwlMonthCalendar(private val binding: CalendarBinding) {
                 val picker = YearMonthPicker(year, month) { y, m ->
                     CalendarManager.setStartDate(y, m)
                 }
-                picker.show((context as AppCompatActivity).supportFragmentManager, "picker")
+                context.getActivity()?.let {
+                    picker.show(it.supportFragmentManager, "picker")
+                }
             }
         }
     }
