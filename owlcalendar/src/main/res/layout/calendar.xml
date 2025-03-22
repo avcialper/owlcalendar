@@ -4,13 +4,13 @@
     android:layout_height="wrap_content"
     android:gravity="center"
     android:orientation="vertical"
-    android:layout_marginHorizontal="@dimen/horizontal_margin">
+    android:layout_marginHorizontal="@dimen/owl_horizontal_margin">
 
     <TextView
         android:id="@+id/tvCalendarHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/text_size_medium"
+        android:textSize="@dimen/owl_text_size_medium"
         android:textStyle="bold" />
 
     <androidx.recyclerview.widget.RecyclerView

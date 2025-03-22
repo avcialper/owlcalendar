@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="text_size">14sp</dimen>
-    <dimen name="text_size_medium">16sp</dimen>
-    <dimen name="text_size_large">18sp</dimen>
-    <dimen name="height">40dp</dimen>
-    <dimen name="width">40dp</dimen>
-    <dimen name="border_radius">8dp</dimen>
-    <dimen name="picker_button_radius">24dp</dimen>
-    <dimen name="padding">8dp</dimen>
-    <dimen name="vertical_margin">2dp</dimen>
-    <dimen name="horizontal_margin">4dp</dimen>
-    <dimen name="margin_bottom">8dp</dimen>
-    <dimen name="margin_bottom_large">16dp</dimen>
-    <dimen name="horizontal_margin_large">16dp</dimen>
+    <dimen name="owl_text_size">14sp</dimen>
+    <dimen name="owl_text_size_medium">16sp</dimen>
+    <dimen name="owl_text_size_large">18sp</dimen>
+    <dimen name="owl_height">40dp</dimen>
+    <dimen name="owl_width">40dp</dimen>
+    <dimen name="owl_border_radius">8dp</dimen>
+    <dimen name="owl_picker_button_radius">24dp</dimen>
+    <dimen name="owl_padding">8dp</dimen>
+    <dimen name="owl_vertical_margin">2dp</dimen>
+    <dimen name="owl_horizontal_margin">4dp</dimen>
+    <dimen name="owl_margin_bottom">8dp</dimen>
+    <dimen name="owl_margin_bottom_large">16dp</dimen>
+    <dimen name="owl_horizontal_margin_large">16dp</dimen>
 </resources>
