@@ -6,8 +6,11 @@
     <dimen name="height">40dp</dimen>
     <dimen name="width">40dp</dimen>
     <dimen name="border_radius">8dp</dimen>
+    <dimen name="picker_button_radius">24dp</dimen>
+    <dimen name="padding">8dp</dimen>
     <dimen name="vertical_margin">2dp</dimen>
     <dimen name="horizontal_margin">4dp</dimen>
     <dimen name="margin_bottom">8dp</dimen>
+    <dimen name="margin_bottom_large">16dp</dimen>
     <dimen name="horizontal_margin_large">16dp</dimen>
 </resources>

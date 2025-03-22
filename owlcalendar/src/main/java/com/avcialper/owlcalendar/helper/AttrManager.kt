@@ -16,6 +16,8 @@ internal class AttrManager(
     private val defTodayTextColor = getColor(R.color.orange)
     private val defTextColor = 0
     private val defCalendarMode = CalendarMode.NORMAL
+    private val black = getColor(R.color.black)
+    private val orange = getColor(R.color.orange)
 
     /**
      * Get color from the attributes.
@@ -78,11 +80,20 @@ internal class AttrManager(
         )
         val pickerButtonTextColor = getColor(
             R.styleable.OwlCalendar_picker_button_text_color,
-            defTodayTextColor
+            black
         )
         val pickerButtonText = getString(
             R.styleable.OwlCalendar_picker_button_text,
             getString(R.string.confirm)
+        )
+        val pickerButtonBackgroundColor = getColor(
+            R.styleable.OwlCalendar_picker_button_background_color,
+            orange
+        )
+
+        val pickerBackgroundColor = getColor(
+            R.styleable.OwlCalendar_picker_background_color,
+            0
         )
 
         val calendarModeValue = getInt(R.styleable.OwlCalendar_mode, defCalendarMode.value)
@@ -98,6 +109,8 @@ internal class AttrManager(
             this.calendarMode = calendarMode
             this.pickerButtonTextColor = pickerButtonTextColor
             this.pickerButtonText = pickerButtonText
+            this.pickerButtonBackgroundColor = pickerButtonBackgroundColor
+            this.pickerBackgroundColor = pickerBackgroundColor
         }
 
         CalendarManager.attrs.update(attrs)

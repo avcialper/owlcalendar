@@ -3,4 +3,5 @@
     <color name="transparent">#00FFFFFF</color>
     <color name="orange">#C8871C</color>
     <color name="orange_transparent">#80FFA823</color>
+    <color name="black">#000000</color>
 </resources>

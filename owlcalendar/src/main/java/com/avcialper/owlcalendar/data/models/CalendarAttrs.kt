@@ -17,6 +17,8 @@ internal class CalendarAttrs {
     var calendarMode: CalendarMode = CalendarMode.NORMAL
     var pickerButtonTextColor: Int = 0
     var pickerButtonText: String = ""
+    var pickerButtonBackgroundColor: Int = 0
+    var pickerBackgroundColor: Int = 0
 
     fun update(attrs: CalendarAttrs) {
         selectedDateBackgroundColor = attrs.selectedDateBackgroundColor
@@ -28,5 +30,7 @@ internal class CalendarAttrs {
         calendarMode = attrs.calendarMode
         pickerButtonTextColor = attrs.pickerButtonTextColor
         pickerButtonText = attrs.pickerButtonText
+        pickerButtonBackgroundColor = attrs.pickerButtonBackgroundColor
+        pickerBackgroundColor = attrs.pickerBackgroundColor
     }
 }
