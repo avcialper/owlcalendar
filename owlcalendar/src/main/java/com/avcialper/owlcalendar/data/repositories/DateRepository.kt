@@ -4,9 +4,9 @@ import com.avcialper.jdatetime.JDateTime
 import com.avcialper.owlcalendar.data.models.Date
 import com.avcialper.owlcalendar.data.models.YearAndMonth
 import com.avcialper.owlcalendar.data.models.adjustDay
+import com.avcialper.owlcalendar.helper.CalendarManager.locale
 import com.avcialper.owlcalendar.util.extensions.toDateList
 import java.text.DateFormatSymbols
-import java.util.Locale
 
 internal class DateRepository {
 
@@ -44,7 +44,7 @@ internal class DateRepository {
          * @return List of localized month names.
          */
         fun getLocalizedMonthNames(): List<String> {
-            val symbols = DateFormatSymbols(Locale.getDefault())
+            val symbols = DateFormatSymbols(locale)
             return symbols.months.filter { it.isNotEmpty() }
         }
 
@@ -53,7 +53,7 @@ internal class DateRepository {
          * @return List of localized day names. Monday - Sunday
          */
         fun getLocalizedDayNames(): List<String> {
-            val symbols = DateFormatSymbols(Locale.getDefault())
+            val symbols = DateFormatSymbols(locale)
             val weekdays = symbols.shortWeekdays
             return weekdays.drop(2).plus(weekdays[1])
         }

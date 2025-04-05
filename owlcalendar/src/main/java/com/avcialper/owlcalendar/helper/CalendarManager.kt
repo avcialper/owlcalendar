@@ -10,11 +10,13 @@ import com.avcialper.owlcalendar.data.models.MarkedDay
 import com.avcialper.owlcalendar.data.models.SelectedDate
 import com.avcialper.owlcalendar.data.models.StartDate
 import com.avcialper.owlcalendar.data.repositories.DateRepository
+import java.util.Locale
 
 internal object CalendarManager {
     var data = CalendarData()
     var attrs = CalendarAttrs()
     var calendarAdapter: CalendarAdapter? = null
+    var locale = Locale.getDefault()
 
     var onDayClickListener: ((Date) -> Unit)? = null
     var onLineDateChangeListener: ((LineSelectedDate?, LineSelectedDate?) -> Unit)? = null

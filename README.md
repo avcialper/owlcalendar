@@ -97,6 +97,7 @@ Add these codes to the used layout
 | setOnDayClickListener       | Sets a listener that triggers when a day is clicked.                                          |
 | setOnLineDateChangeListener | Sets a listener that triggers when a range selection is completed.                            |
 | restore                     | Restores the calendar state when multiple calendar instances are used.                        |
+| changeLocale                | Changes the calendar's locale.                                                                |
 
 > [!WARNING]  
 > If you have multiple calendars in your application, use the **restore** function in the **onResume

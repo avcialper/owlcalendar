@@ -19,6 +19,7 @@ import com.avcialper.owlcalendar.helper.CalendarManager.attrs
 import com.avcialper.owlcalendar.helper.CalendarManager.data
 import com.avcialper.owlcalendar.helper.CalendarScrollListener
 import com.avcialper.owlcalendar.helper.CalendarSnapHelper
+import java.util.Locale
 
 class OwlCalendar @JvmOverloads constructor(
     context: Context,
@@ -167,5 +168,13 @@ class OwlCalendar @JvmOverloads constructor(
         val isRangeSelectable = attrs.calendarMode.isRangeSelectable()
         if (!isRangeSelectable)
             CalendarManager.setStartDate(year, month, dayOfMonth)
+    }
+
+    /**
+     * Set locale for the calendar.
+     * @param locale Locale
+     */
+    fun changeLocale(locale: Locale) {
+        CalendarManager.locale = locale
     }
 }
