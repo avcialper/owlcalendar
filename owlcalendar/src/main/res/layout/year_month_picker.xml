@@ -2,23 +2,31 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/bottom_sheet_background">
+    android:background="@drawable/bottom_sheet_background"
+    android:paddingLeft="@dimen/owl_padding_medium"
+    android:paddingRight="@dimen/owl_padding_medium"
+    android:paddingBottom="@dimen/owl_padding_medium">
+
+    <include
+        android:id="@+id/drag_handle"
+        layout="@layout/drag_handle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <NumberPicker
         android:id="@+id/month"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/owl_horizontal_margin_large"
         android:gravity="center"
         app:layout_constraintEnd_toStartOf="@id/year"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/drag_handle" />
 
     <NumberPicker
         android:id="@+id/year"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/owl_horizontal_margin_large"
         android:gravity="center"
         app:layout_constraintBottom_toBottomOf="@id/month"
         app:layout_constraintEnd_toEndOf="parent"

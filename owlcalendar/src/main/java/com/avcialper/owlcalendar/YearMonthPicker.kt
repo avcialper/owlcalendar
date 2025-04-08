@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import com.avcialper.owlcalendar.data.repositories.DateRepository
 import com.avcialper.owlcalendar.databinding.YearMonthPickerBinding
 import com.avcialper.owlcalendar.helper.CalendarManager.attrs
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -45,6 +46,7 @@ internal class YearMonthPicker(
             minValue = 1
             maxValue = 12
             value = currentMonth + 1
+            displayedValues = DateRepository.getLocalizedMonthNames().toTypedArray()
         }
 
         val backgroundColor = attrs.pickerBackgroundColor

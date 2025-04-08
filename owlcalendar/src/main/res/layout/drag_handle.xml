@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="@dimen/owl_padding_medium">
+
+    <View
+        android:layout_width="@dimen/owl_drag_handle_width"
+        android:layout_height="@dimen/owl_drag_handle_height"
+        android:background="@drawable/drag_handle_background" />
+
+</LinearLayout>
