@@ -2,8 +2,6 @@ package com.avcialper.owlcalendar
 
 import android.content.Context
 import android.widget.LinearLayout.VERTICAL
-import androidx.recyclerview.widget.RecyclerView
-import com.avcialper.owlcalendar.adapter.calendardayname.CalendarDayNameAdapter
 import com.avcialper.owlcalendar.adapter.calendarmonth.CalendarMonthAdapter
 import com.avcialper.owlcalendar.data.models.Date
 import com.avcialper.owlcalendar.data.models.YearAndMonth
@@ -21,11 +19,7 @@ internal class OwlMonthCalendar(private val binding: CalendarBinding) {
     private val defaultTextColor = binding.tvCalendarHeader.currentTextColor
 
     // Adapters
-    private var calendarDayNameAdapter: CalendarDayNameAdapter? = null
     private var calendarMonthAdapter: CalendarMonthAdapter? = null
-
-    // Custom layout manager for calendar
-    private var calendarLayoutManager: CalendarLayoutManager? = null
 
     /**
      * Initialize calendar view.
@@ -38,7 +32,6 @@ internal class OwlMonthCalendar(private val binding: CalendarBinding) {
         val (year, month) = yearAndMonth
 
         initHeader(year, month)
-        initCalendarDayNameAdapter()
         initCalendarAdapter(year, month, onDayClickListener)
     }
 
@@ -67,21 +60,6 @@ internal class OwlMonthCalendar(private val binding: CalendarBinding) {
                     picker.show(it.supportFragmentManager, "picker")
                 }
             }
-        }
-    }
-
-    /**
-     * Initialize adapter for calendar day name. It's name of the days.
-     */
-    private fun initCalendarDayNameAdapter() {
-        val dayNames = DateRepository.getLocalizedDayNames()
-        calendarLayoutManager = CalendarLayoutManager(context, RecyclerView.VERTICAL)
-        calendarDayNameAdapter = CalendarDayNameAdapter(dayNames)
-
-        binding.rvCalendarDayName.apply {
-            itemAnimator = null
-            adapter = calendarDayNameAdapter
-            layoutManager = calendarLayoutManager
         }
     }
 

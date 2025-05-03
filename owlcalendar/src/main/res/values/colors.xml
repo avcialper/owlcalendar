@@ -5,4 +5,7 @@
     <color name="orange_transparent">#80FFA823</color>
     <color name="black">#000000</color>
     <color name="spun_pearl">#A49FA8</color>
+    <color name="pink">#FFA09B</color>
+    <color name="pink_transparent">#80FCC6FF</color>
+    <color name="red">#FF0E00</color>
 </resources>

@@ -13,11 +13,9 @@
         android:textSize="@dimen/owl_text_size_medium"
         android:textStyle="bold" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvCalendarDayName"
+    <com.avcialper.owlcalendar.component.dayname.DayName
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/transparent" />
+        android:layout_height="wrap_content" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvCalendar"
