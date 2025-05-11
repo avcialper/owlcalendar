@@ -8,7 +8,7 @@ import android.widget.TextView
 import com.avcialper.owlcalendar.R
 import com.avcialper.owlcalendar.data.repositories.DateRepository
 
-class DayName @JvmOverloads constructor(
+internal class DayName @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0

@@ -134,8 +134,8 @@ class OwlCalendar @JvmOverloads constructor(
         CalendarManager.setLineDate(lineDate)
         val isRangeSelectableMode = attrs.calendarMode.isRangeSelectable()
         if (isRangeSelectableMode) {
-            val (year, month, _) = lineDate.startDate
-            setStartDate(year, month)
+            val (year, month, dayOfMonth) = lineDate.startDate
+            setStartDate(year, month, dayOfMonth)
         }
     }
 
@@ -158,16 +158,13 @@ class OwlCalendar @JvmOverloads constructor(
     }
 
     /**
-     * Set start date for the calendar. If the calendar is in single selectable mode or normal mode,
-     * use this function to change the start date of the calendar.
+     * Set start date for the calendar.
      * @param year Year of the start date
      * @param month Month of the start date. Is between 0 and 11.
      * @param dayOfMonth Day of the month of the start date
      */
     fun setStartDate(year: Int, month: Int, dayOfMonth: Int) {
-        val isRangeSelectable = attrs.calendarMode.isRangeSelectable()
-        if (!isRangeSelectable)
-            CalendarManager.setStartDate(year, month, dayOfMonth)
+        CalendarManager.setStartDate(year, month, dayOfMonth)
     }
 
     /**

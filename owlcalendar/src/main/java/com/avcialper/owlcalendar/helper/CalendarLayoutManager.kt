@@ -19,7 +19,7 @@ internal class CalendarLayoutManager(context: Context, orientation: Int) :
 
 }
 
-private class CalendarSpanSize : GridLayoutManager.SpanSizeLookup() {
+internal class CalendarSpanSize : GridLayoutManager.SpanSizeLookup() {
     // Set all items span size to 1
     override fun getSpanSize(position: Int): Int = 1
 }
